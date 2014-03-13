@@ -1,10 +1,10 @@
 {
-  "name": "codecombat",
+  "name": "codecombat-replay",
   "description": "A multiplayer programming game for learning how to code",
   "author": "Nick Winter <nick@codecombat.com>",
   "homepage": "https://github.com/codecombat/codecombat",
   "domains": [
-    "codecombat.com"
+    "codecombat-replay.com"
   ],
   "repository": {
     "type": "git",
@@ -83,5 +83,7 @@
   "private": true,
   "engines": {
     "node": "0.10.x"
-  }
+  },
+  "subdomain": "ccr",
+  "version": "0.0.1"
 }
