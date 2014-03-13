@@ -1,4 +1,4 @@
-codecombat
+CodeCombat
 ==========
 
-Multiplayer programming game for learning how to code.
+Multiplayer live coding for learning to program.
