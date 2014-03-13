@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ulimit -n 10000
+until brunch w; do
+  echo "Brunch Crashed. Recompiling entire project. Press Ctrl-C quickly to quit." >&2
+  sleep 1
+done
