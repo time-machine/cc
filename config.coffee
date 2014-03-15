@@ -15,7 +15,7 @@ exports.config =
     javascripts:
       defaultExtension: 'coffee'
       joinTo:
-        # XXX
+        'javascripts/world.js': /^((app(\/|\\)lib(\/|\\)world(?!(\/|\\)test))|(app(\/|\\)lib(\/|\\)CocoClass.coffee)|(app(\/|\\)lib(\/|\\)utils.coffee)|(vendor(\/|\\)scripts(\/|\\)Box2dWeb-2.1.a.3)|(bower_components(\/|\\)lodash(\/|\\)dist(\/|\\)lodash.js)|(vendor(\/|\\)scripts(\/|\\)string_score.js)|(bower_components(\/|\\)aether(\/|\\)build(\/|\\)aether.js))/
         'javascripts/app.js': /^app/
         'javascripts/vendor.js': /^(vendor(\/|\\)(?!(scripts\/Box2d|scripts\/box2d))|bower_components)/
         'javascripts/vendor_with_box2d.js': /^(vendor(\/|\\)(?!scripts\/box2d)|bower_components)/ # include box2dweb for profiling (and for IE9...)
