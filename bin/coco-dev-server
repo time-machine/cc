@@ -1,0 +1,4 @@
+#!/bin/bash
+
+node_modules/.bin/nodemon . --ext ".coffee|.js" --watch server --watch app.js --watch server_config.js
+# https://github.com/remy/nodemon/issues/145 prevents us from going to 0.7.6+ until we understand what is going on
