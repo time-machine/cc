@@ -23,7 +23,26 @@ exports.config =
           'bower_components/lodash/dist/lodash.js'
           'bower_components/backbone/backbone.js'
           # Twitter Bootstrap jquery plugins
-          # ...
+          'vendor/scripts/bootstrap/bootstrap-transition.js'
+          'vendor/scripts/bootstrap/bootstrap-affix.js'
+          'vendor/scripts/bootstrap/bootstrap-alert.js'
+          'vendor/scripts/bootstrap/bootstrap-button.js'
+          'vendor/scripts/bootstrap/bootstrap-carousel.js'
+          'vendor/scripts/bootstrap/bootstrap-collapse.js'
+          'vendor/scripts/bootstrap/bootstrap-dropdown.js'
+          'vendor/scripts/bootstrap/bootstrap-modal.js'
+          'vendor/scripts/bootstrap/bootstrap-scrollspy.js'
+          'vendor/scripts/bootstrap/bootstrap-tab.js'
+          'vendor/scripts/bootstrap/bootstrap-tooltip.js'
+          'vendor/scripts/bootstrap/bootstrap-popover.js'
+          'vendor/scripts/bootstrap/bootstrap-typeahead.js'
+          # CreateJS dependencies
+          'vendor/scripts/easeljs-NEXT.combined.js'
+          'vendor/scripts/preloadjs-NEXT.combined.js'
+          'vendor/scripts/soundjs-NEXT.combined.js'
+          'vendor/scripts/tweenjs-NEXT.combined.js'
+          'vendor/scripts/movieclip-NEXT.min.js'
+
           # Aether before box2d for some strange Object.defineProperty thing
           'bower_components/aether/build/aether.js'
         ]
