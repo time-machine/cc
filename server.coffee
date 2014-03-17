@@ -15,6 +15,7 @@ config = require('./server_config')
 app = express()
 
 app.configure(->
+  app.use(express.static(path.join(__dirname, 'public')))
   app.set('port', config.port)
 )
 
