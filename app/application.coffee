@@ -1,9 +1,10 @@
 locale = require 'locale/locale'
+{me} = require 'lib/auth'
 
 Application = initialize: ->
   Router = require('lib/Router')
   $.i18n.init {
-    lng: 'en'
+    lng: me?.lang() ? 'en'
     fallbackLng: 'en'
     resStore: locale
   }, (t) =>
