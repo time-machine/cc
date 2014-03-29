@@ -9,5 +9,6 @@ init = ->
   # Also refresh and cache the gravatar info.
   loadedUser = loadObjectFromStorage(CURRENT_USER_KEY)
   module.exports.me = window.me = if loadedUser then new User(loadedUser) else null
+  # TODO
 
 init()
