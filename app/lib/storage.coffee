@@ -1,6 +1,5 @@
 module.exports.loadObjectFromStorage = (key) ->
   s = localStorage.getItem(key)
-
   return null unless s
   try
     value = JSON.parse(s)
