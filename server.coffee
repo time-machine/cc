@@ -42,8 +42,8 @@ app.configure(->
   app.use(express.bodyParser())
   app.use(express.methodOverride())
   app.use(express.cookieSession({ secret: 'defenestrate' }))
-  app.use(passport.initialize())
-  app.use(passport.session())
+  # app.use(passport.initialize())
+  # app.use(passport.session())
   if (config.slow_down)
     app.use((req, res, next) -> setTimeout((-> next()), 1000))
 
