@@ -1,4 +1,4 @@
-# FacebookHandler = require 'lib/FacebookHandler'
+FacebookHandler = require 'lib/FacebookHandler'
 locale = require 'locale/locale'
 {me} = require 'lib/auth'
 Tracker = require 'lib/Tracker'
@@ -6,7 +6,7 @@ Tracker = require 'lib/Tracker'
 Application = initialize: ->
   Router = require('lib/Router')
   @tracker = new Tracker()
-  # new FacebookHandler()
+  new FacebookHandler()
   # $.i18n.init {
   #   # lng: me?.lang() ? 'en'
   #   fallbackLng: 'en'
