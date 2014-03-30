@@ -9,9 +9,15 @@ winston = require('winston')
 passport = require('passport')
 useragent = require 'express-useragent'
 
+logging = require './server/logging'
+
 http = require('http')
 
 config = require('./server_config')
+
+logging.setup()
+
+console.log 'TODO'
 
 # Express server setup
 app = express()
