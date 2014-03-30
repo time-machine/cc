@@ -19,8 +19,6 @@ config = require('./server_config')
 logging.setup()
 db.connectDatabase()
 
-winston.debug 'TODO: server.coffee'
-
 # Express server setup
 app = express()
 
@@ -54,7 +52,7 @@ app.configure(->
   # app.use(passport.session())
   if (config.slow_down)
     app.use((req, res, next) -> setTimeout((-> next()), 1000))
-
+  winston.debug 'TODO: server.coffee'
   app.use(app.router)
 )
 
