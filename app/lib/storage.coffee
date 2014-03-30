@@ -7,3 +7,7 @@ module.exports.loadObjectFromStorage = (key) ->
   catch e
     console.warning 'error loading from storage', key
     return null
+
+module.exports.saveObjectToStorage = (key, value) ->
+  s = JSON.stringify(value)
+  localStorage.setItem(key, s)
