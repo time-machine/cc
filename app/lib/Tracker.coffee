@@ -11,8 +11,12 @@ module.exports = class Tracker
 
   identify: (traits) ->
     return unless me and @isProduction and analytics?
-    # TODO
+    console.log 'TODO'
 
   updateOlark: ->
     return unless me and olark?
-    # TODO
+    console.log 'TODO'
+
+  trackEvent: (event, properties, includeProviders=null) =>
+    return unless me and @isProduction and analytics?
+    console.log 'TODO'
