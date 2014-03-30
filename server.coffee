@@ -9,6 +9,7 @@ winston = require('winston')
 passport = require('passport')
 useragent = require 'express-useragent'
 
+db = require './server/db'
 logging = require './server/logging'
 
 http = require('http')
@@ -16,8 +17,9 @@ http = require('http')
 config = require('./server_config')
 
 logging.setup()
+db.connectDatabase()
 
-console.log 'TODO'
+winston.debug 'TODO: server.coffee'
 
 # Express server setup
 app = express()
