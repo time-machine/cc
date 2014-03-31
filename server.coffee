@@ -10,6 +10,7 @@ passport = require('passport')
 useragent = require 'express-useragent'
 
 db = require './server/db'
+user = require './server/handlers/user'
 logging = require './server/logging'
 
 http = require('http')
@@ -52,7 +53,8 @@ app.configure(->
   # app.use(passport.session())
   if (config.slow_down)
     app.use((req, res, next) -> setTimeout((-> next()), 1000))
-  winston.debug 'TODO: server.coffee'
+  user.setupMiddleware(app)
+
   app.use(app.router)
 )
 
