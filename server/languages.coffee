@@ -1,8 +1,12 @@
 locale = require '../app/locale/locale' # requiring from app; will break if we stop serving from where app lives
+
 languages = []
+for code, localeInfo of locale
+  languages.push code: code, nativeDescription: localeInfo.nativeDescription, englishDescription: localeInfo.englishDescription
 
 module.exports.languages = languages
-# TODO: module.exports.languageCodesLower = languageCodesLower = (code.)
+module.exports.languageCodes = languageCodes = (language.code for language in languages)
+module.exports.languageCodesLower = languageCodesLower = (code.toLowerCase() for code in languageCodes)
 
 # keep keys lower-case for matching and values with second subtag uppercase like i18next expects
 languageAliases =
@@ -25,5 +29,6 @@ module.exports.languageCodeFromAcceptedLanguages = languageCodeFromAcceptedLangu
     code = languageAliases[lang.toLowerCase()]
     return code if code
     codeIndex = _.indexOf languageCodesLower, lang
-    #
+    if codeIndex isnt -1
+      return languageCodes[codeIndex]
   return 'en-US'
