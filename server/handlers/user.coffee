@@ -14,5 +14,8 @@ module.exports.setupMiddleware = (app) ->
       user = new User({ anonymous: true })
       user.set 'testGroupNumber', Math.floor(Math.random() * 256) # also in app/lib/auth
       user.set 'preferredLanguage', languages.languageCodeFromAcceptedLanguages req.acceptedLanguages
-      console.log 'TODO[server/handlers/user.coffee]', user
+      loginUser(req, res, user, false, next)
+
+loginUser = (req, res, user, send=true, next=null) ->
+  console.log 'TODOX', user
 
