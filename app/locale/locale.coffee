@@ -5,3 +5,4 @@
 
 module.exports =
   en: require './en' # English - English
+  zh: require './zh'  # 中文, Chinese
