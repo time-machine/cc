@@ -1,5 +1,6 @@
 User = require '../models/User'
 Handler = require './Handler'
+languages = require '../languages'
 
 UserHandler = class UserHandler extends Handler
 
@@ -12,5 +13,6 @@ module.exports.setupMiddleware = (app) ->
     else
       user = new User({ anonymous: true })
       user.set 'testGroupNumber', Math.floor(Math.random() * 256) # also in app/lib/auth
+      user.set 'preferredLanguage', languages.languageCodeFromAcceptedLanguages req.acceptedLanguages
       console.log 'TODO[server/handlers/user.coffee]', user
 
