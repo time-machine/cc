@@ -17,5 +17,18 @@ module.exports.setupMiddleware = (app) ->
       loginUser(req, res, user, false, next)
 
 loginUser = (req, res, user, send=true, next=null) ->
-  console.log 'TODOX', user
+  user.save((err) ->
+    if (err)
+      res.status(500)
+      return res.end()
 
+    req.logIn(user, (err) ->
+      if err
+        res.status(500)
+        return res.end()
+
+      if send
+        console.log 'TODO: loginUser'
+      next() if next
+    )
+  )
