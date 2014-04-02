@@ -9,6 +9,7 @@ winston = require('winston')
 passport = require('passport')
 useragent = require 'express-useragent'
 
+auth = require './server/auth'
 db = require './server/db'
 user = require './server/handlers/user'
 logging = require './server/logging'
@@ -49,8 +50,8 @@ app.configure(->
   app.use(express.bodyParser())
   app.use(express.methodOverride())
   app.use(express.cookieSession({ secret: 'defenestrate' }))
-  # app.use(passport.initialize())
-  # app.use(passport.session())
+  app.use(passport.initialize())
+  app.use(passport.session())
   if (config.slow_down)
     app.use((req, res, next) -> setTimeout((-> next()), 1000))
   user.setupMiddleware(app)
@@ -59,6 +60,8 @@ app.configure(->
 )
 
 app.configure('development', -> app.use(express.errorHandler()))
+
+auth.setupRoutes(app)
 
 # Anything that isn't handled at this point get index.html
 app.get('*', (req, res) ->
