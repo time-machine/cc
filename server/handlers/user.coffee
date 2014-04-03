@@ -3,6 +3,21 @@ Handler = require './Handler'
 languages = require '../languages'
 
 UserHandler = class UserHandler extends Handler
+  modelClass: User
+
+  getById: (req, res, id) ->
+    console.log 'getById'
+
+  post: (req, res) ->
+    console.log('post')
+
+  hasAccessToDocument: (req, doc) ->
+    console.log 'hasAccessToDocument'
+
+  getByRelationship: (req, res, args...) ->
+    console.log 'getByRelationship'
+
+  # TODOX: check is method trigger
 
 module.exports = new UserHandler()
 
@@ -18,11 +33,14 @@ module.exports.setupMiddleware = (app) ->
 
 loginUser = (req, res, user, send=true, next=null) ->
   user.save((err) ->
-    if (err)
+    if err
       res.status(500)
       return res.end()
 
+    console.log 'logIn'
     req.logIn(user, (err) ->
+      console.log err
+
       if err
         res.status(500)
         return res.end()

@@ -10,7 +10,8 @@ init = ->
   # Also refresh and cache the gravatar info.
   loadedUser = loadObjectFromStorage(CURRENT_USER_KEY)
   module.exports.me = window.me = if loadedUser then new User(loadedUser) else null
-  console.log 'TODO' if me and not me.get('wizardColor1') # me.set('wizardColor1', Math.random())
+  console.log 'TODO: wizardColor1' if me and not me.get('wizardColor1') # me.set('wizardColor1', Math.random())
+  debugger
   $.get('/auth/whoami', (downloadedUser) ->
     trackFirstArrival() # should happen after trackEvent has loaded, due to the callback
     console.log 'TODO'
