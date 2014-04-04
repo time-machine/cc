@@ -1,4 +1,5 @@
 mongoose = require 'mongoose'
+jsonschema = require '../schemas/user'
 
 UserSchema = new mongoose.Schema({
   dateCreated:
