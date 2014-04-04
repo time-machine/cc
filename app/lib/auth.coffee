@@ -11,8 +11,10 @@ init = ->
   loadedUser = loadObjectFromStorage(CURRENT_USER_KEY)
   module.exports.me = window.me = if loadedUser then new User(loadedUser) else null
   console.log 'TODO: wizardColor1' if me and not me.get('wizardColor1') # me.set('wizardColor1', Math.random())
-  debugger
+  console.log 'going to get auth whoami from client'
+
   $.get('/auth/whoami', (downloadedUser) ->
+    console.log 'getting auth whoami from client'
     trackFirstArrival() # should happen after trackEvent has loaded, due to the callback
     console.log 'TODO'
   )
