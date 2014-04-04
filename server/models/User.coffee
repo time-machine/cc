@@ -8,13 +8,20 @@ UserSchema = new mongoose.Schema({
 }, { strict: false })
 
 UserSchema.pre('init', (next) ->
-  console.log 'TODO: pre init'
+  return next() unless jsonschema.properties?
+  for prop, sch of jsonschema.properties
+    @set(prop, sch.default) if sch.default?
   next()
 )
 
 UserSchema.post('init', ->
-  console.log 'TODO: post init'
+  @set('anonymous', false) if @get('email')
+  @currentSubscriptions = JSON.stringify(@get('emailSubscriptions'))
 )
+
+UserSchema.methods.isAdmin = ->
+  p = @get('permissions')
+  return p and 'admin' in p
 
 UserSchema.statics.updateMailChimp = (doc, callback) ->
   return callback?() if doc.updatedMailChimp
