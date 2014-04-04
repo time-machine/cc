@@ -1,5 +1,7 @@
 passport = require 'passport'
+LocalStrategy = require('passport-local').Strategy
 User = require './models/User'
+UserHandler = require './handlers/user'
 
 module.exports.setupRoutes = (app) ->
   passport.serializeUser((user, done) -> done(null, user._id))
@@ -7,12 +9,13 @@ module.exports.setupRoutes = (app) ->
     User.findById(id, (err, user) -> done(err, user))
   )
 
-  app.get('/auth/whoami', (req, res) ->
-    console.log 'getting auth whoami from server'
-    res.setHeader('Content-Type', 'text/json') # what's setHeader
-    res.send('server whoamii') # what's send
-    res.end()
-    console.log 'server whoami'
-  )
+  passport.use(new LocalStrategy(
+    (username, password, done) ->
+      console.log 'TODO: username', username
+  ))
 
-  console.log 'TODOX server auth coffee'
+  app.get('/auth/whoami', (req, res) ->
+    res.setHeader('Content-Type', 'text/json')
+    res.send(UserHandler.formatEntity(req, req.user))
+    res.end()
+  )
