@@ -12,7 +12,8 @@ init = ->
   module.exports.me = window.me = if loadedUser then new User(loadedUser) else null
   console.log 'TODO: wizardColor1' if me and not me.get('wizardColor1') # me.set('wizardColor1', Math.random())
 
-  # downloadedUser is the json response returned from server get /auth/whoami
+  # self invoke automatically, will invoke server /auth/whoami if there is any
+  # JSON response returned from server /auth/whoami is stored in `downloadedUser`
   $.get('/auth/whoami', (downloadedUser) ->
     trackFirstArrival() # should happen after trackEvent has loaded, due to the callback
     changedState = Boolean(downloadedUser) isnt Boolean(loadedUser)
