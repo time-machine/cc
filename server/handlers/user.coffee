@@ -37,10 +37,7 @@ loginUser = (req, res, user, send=true, next=null) ->
       res.status(500)
       return res.end()
 
-    console.log 'logIn'
     req.logIn(user, (err) ->
-      console.log err
-
       if err
         res.status(500)
         return res.end()
