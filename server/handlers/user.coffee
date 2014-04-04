@@ -1,23 +1,28 @@
+crypto = require 'crypto'
 User = require '../models/User'
 Handler = require './Handler'
 languages = require '../languages'
 
+serverProperties = ['passwordHash', 'emailLower', 'nameLower', 'passwordReset']
+privateProperties = ['permissions', 'email', 'firstName', 'lastName', 'gender', 'facebookID', 'music', 'volume']
+
 UserHandler = class UserHandler extends Handler
-  modelClass: User
+  formatEntity: (req, document) ->
+    return null unless document?
+    obj = document.toObject()
+    delete obj[prop] for prop in serverProperties
+    includePrivates = req.user and (req.user.isAdmin() or req.user._id.equals(document._id))
+    delete obj[prop] for prop in privateProperties unless includePrivates
 
-  getById: (req, res, id) ->
-    console.log 'getById'
+    # emailHash is used by gravatar
+    hash = crypto.createHash('md5')
+    if document.get('email')
+      hash.update(_.trim(document.get('email')).toLowerCase())
+    else
+      hash.update(@_id + '')
+    obj.emailHash = hash.digest('hex')
 
-  post: (req, res) ->
-    console.log('post')
-
-  hasAccessToDocument: (req, doc) ->
-    console.log 'hasAccessToDocument'
-
-  getByRelationship: (req, res, args...) ->
-    console.log 'getByRelationship'
-
-  # TODOX: check is method trigger
+    return obj
 
 module.exports = new UserHandler()
 
