@@ -14,6 +14,7 @@ module.exports.setupRoutes = (app) ->
       console.log 'TODO: username', username
   ))
 
+  # this will get invoke when client calls $.get('/auth/whoami')
   app.get('/auth/whoami', (req, res) ->
     res.setHeader('Content-Type', 'text/json')
     res.send(UserHandler.formatEntity(req, req.user))
