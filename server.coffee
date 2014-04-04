@@ -61,7 +61,7 @@ app.configure(->
 
 app.configure('development', -> app.use(express.errorHandler()))
 
-# auth.setupRoutes(app)
+auth.setupRoutes(app)
 
 # Anything that isn't handled at this point get index.html
 app.get('*', (req, res) ->
