@@ -4,6 +4,7 @@ locale = require 'locale/locale'
 Tracker = require 'lib/Tracker'
 
 Application = initialize: ->
+  console.log 'TD: initialize'
   # Router = require('lib/Router')
   # @tracker = new Tracker()
   # new FacebookHandler()
