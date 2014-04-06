@@ -8,19 +8,37 @@ init = ->
   # load the user from local storage, and refresh it from the server.
   # If the server info doesn't match the local storage, refresh the page.
   # Also refresh and cache the gravatar info.
+
   loadedUser = loadObjectFromStorage(CURRENT_USER_KEY)
   module.exports.me = window.me = if loadedUser then new User(loadedUser) else null
-  console.log 'TODO: wizardColor1' if me and not me.get('wizardColor1') # me.set('wizardColor1', Math.random())
-
-  # self invoke automatically, will invoke server /auth/whoami if there is any
-  # JSON response returned from server /auth/whoami is stored in `downloadedUser`
+  me.set('wizardColor1', Math.random()) if me and not me.get('wizardColor1')
   $.get('/auth/whoami', (downloadedUser) ->
     trackFirstArrival() # should happen after trackEvent has loaded, due to the callback
     changedState = Boolean(downloadedUser) isnt Boolean(loadedUser)
-    console.log 'TODOX', changedState
+    switchedUser = downloadedUser and loadedUser and downloadedUser._id isnt loadedUser._id
+
+    if changedState or switchedUser
+      saveObjectToStorage(CURRENT_USER_KEY, downloadedUser)
+      window.location.reload()
+
+    if me and not me.get('testGroupNumber')?
+      # assign testGroupNumber to returning visitors; new ones in server/handlers/user
+      console.log 'TD: testGroupNumber'
+    saveObjectToStorage(CURRENT_USER_KEY, downloadedUser)
   )
+  if module.exports.me
+    module.exports.me.loadGravatarProfile()
+    module.exports.me.on('sync', userSynced)
+
+userSynced = (user) ->
+  console.log 'TD: userSynced', user
 
 init()
+
+onSetVolume = (e) ->
+  console.log 'TD: onSetVolume', e
+
+Backbone.Mediator.subscribe('level-set-volume', onSetVolume, module.exports)
 
 trackFirstArrival = ->
   # will have to filter out users who log in with existing accounts separately
