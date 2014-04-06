@@ -42,9 +42,24 @@ class CocoModel extends Backbone.Model
       @constructor.schema.fetch()
 
     @constructor.schema.on 'sync', =>
-      console.log 'TD: sync'
+      @constructor.schema.loaded = true
+      @addSchemaDefaults()
+      @markToRevert
+      @trigger 'schema-loaded'
+
+  @hasSchema: -> return @schema?.loaded
+  schema: -> console.log "TD: schema (don't know when will this called"
 
   markToRevert: ->
     @_revertAttributes = _.clone @attributes
+
+  addSchemaDefaults: ->
+    return if @addedSchemaDefaults or not @constructor.hasSchema()
+    @addedSchemaDefaults = true
+    for prop, defaultValue of @constructor.schema.attributes.default or {}
+      console.log 'TD: addSchemaDefaults1', prop
+    for prop, sch of @constructor.schema.attributes.properties or {}
+      continue if @get(prop)?
+      console.log 'TD: addSchemaDefaults2' if sch.default?
 
 module.exports = CocoModel
