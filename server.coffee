@@ -62,7 +62,7 @@ app.configure(->
 app.configure('development', -> app.use(express.errorHandler()))
 
 auth.setupRoutes(app)
-console.log 'TD'
+console.log 'TD: server.coffee'
 
 # Anything that isn't handled at this point get index.html
 app.get('*', (req, res) ->
