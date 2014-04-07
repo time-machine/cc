@@ -26,7 +26,10 @@ config = require('./server_config')
 logging.setup()
 db.connectDatabase()
 
-console.log 'TD: mailchimp'
+# MailChimp setup
+mcapi = require 'mailchimp-api'
+mc = new mcapi.Mailchimp(config.mail.mailchimpAPIKey)
+GLOBAL.mc = mc
 
 # Express server setup
 app = express()
