@@ -13,6 +13,7 @@ auth = require './server/auth'
 db = require './server/db'
 user = require './server/handlers/user'
 logging = require './server/logging'
+sprites = require './server/sprites'
 
 http = require('http')
 
@@ -63,6 +64,7 @@ app.configure('development', -> app.use(express.errorHandler()))
 
 auth.setupRoutes(app)
 db.setupRoutes(app)
+sprites.setupRoutes(app)
 console.log 'TD: server.coffee'
 
 # Anything that isn't handled at this point get index.html
