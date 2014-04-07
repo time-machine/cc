@@ -11,6 +11,7 @@ useragent = require 'express-useragent'
 
 auth = require './server/auth'
 db = require './server/db'
+file = require './server/file'
 user = require './server/handlers/user'
 logging = require './server/logging'
 sprites = require './server/sprites'
@@ -67,6 +68,7 @@ auth.setupRoutes(app)
 db.setupRoutes(app)
 sprites.setupRoutes(app)
 contact.setupRoutes(app)
+file.setupRoutes(app)
 console.log 'TD: server.coffee'
 
 # Anything that isn't handled at this point get index.html
