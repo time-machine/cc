@@ -21,7 +21,7 @@ Application = initialize: ->
     resStore: locale
   }, (t) =>
     @router = new Router()
-  #   @router.subscribe()
+    @router.subscribe()
   #   Object.freeze this if typeof Object.freeze is 'function'
   #   @router = Router
     console.log 'TD: i18n.init', t
