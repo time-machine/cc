@@ -16,11 +16,9 @@ init = ->
     trackFirstArrival() # should happen after trackEvent has loaded, due to the callback
     changedState = Boolean(downloadedUser) isnt Boolean(loadedUser)
     switchedUser = downloadedUser and loadedUser and downloadedUser._id isnt loadedUser._id
-
     if changedState or switchedUser
       saveObjectToStorage(CURRENT_USER_KEY, downloadedUser)
       window.location.reload()
-
     if me and not me.get('testGroupNumber')?
       # assign testGroupNumber to returning visitors; new ones in server/handlers/user
       console.log 'TD: testGroupNumber'
