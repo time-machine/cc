@@ -19,4 +19,4 @@ module.exports = class Tracker
 
   trackEvent: (event, properties, includeProviders=null) =>
     return unless me and @isProduction and analytics?
-    console.log 'TODO'
+    console.log 'TD: trackEvent'
