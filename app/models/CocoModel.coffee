@@ -24,7 +24,7 @@ class CocoModel extends Backbone.Model
       console.error "#{@} needs a className set."
     @markToRevert()
     if @constructor.schema?.loaded
-      console.log 'TD: init'
+      console.log 'TD: initialize'
     else
       @loadSchema()
     @once 'sync', @onLoaded
@@ -49,14 +49,19 @@ class CocoModel extends Backbone.Model
 
   # @method (direct method) can access @attr (direct attr) of class
   @hasSchema: -> return @schema?.loaded
-  schema: -> console.log "TD: schema (don't know when will this called"
+  schema: -> console.log "TD: schema (don't know when will this be called"
+
+  validate: ->
+    console.log 'TD: validate'
+
+  save: (attrs, options) ->
+    console.log 'TD: save'
 
   markToRevert: ->
     @_revertAttributes = _.clone @attributes
 
   addSchemaDefaults: ->
     return if @addedSchemaDefaults or not @constructor.hasSchema()
-
     @addedSchemaDefaults = true
     for prop, defaultValue of @constructor.schema.attributes.default or {}
       console.log 'TD: addSchemaDefaults', prop
