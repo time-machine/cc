@@ -76,7 +76,13 @@ file.setupRoutes(app)
 folder.setupRoutes(app)
 languages.setupRoutes(app)
 
-console.log 'TD: routes'
+# Some sort of cross-domain communication hack facebook requires
+app.get '/channel.html', (req, res) ->
+  console.log 'TD: channel'
+
+# blitz.io (load tester) auth
+app.get 'mu-a2a0832f-10763ae9-170d6c87-70a62423', (req, res) ->
+  console.log 'TD: blitz'
 
 # Anything that isn't handled at this point get index.html
 app.get('*', (req, res) ->
