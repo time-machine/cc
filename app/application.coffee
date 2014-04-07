@@ -1,7 +1,7 @@
 FacebookHandler = require 'lib/FacebookHandler'
 GPlusHandler = require 'lib/GPlusHandler'
-# locale = require 'locale/locale'
-# {me} = require 'lib/auth'
+locale = require 'locale/locale'
+{me} = require 'lib/auth'
 Tracker = require 'lib/Tracker'
 
 COMMON_FILES = ['/images/modal_background.png', '/images/level/code_palette_background.png']
@@ -10,21 +10,21 @@ preload = (arrayOfImages) ->
     $('<img/>')[0].src = @
 
 Application = initialize: ->
-  # Router = require 'lib/Router'
+  Router = require 'lib/Router'
   @tracker = new Tracker()
   new FacebookHandler()
   new GPlusHandler()
   preload(COMMON_FILES)
   $.i18n.init {
-  #   # lng: me?.lang() ? 'en'
-  #   fallbackLng: 'en'
-  #   resStore: locale
+    lng: me?.lang() ? 'en'
+    fallbackLng: 'en'
+    resStore: locale
   }, (t) =>
-    console.log 'TD: i18n.init', t
-  #   @router = new Router()
+    @router = new Router()
   #   @router.subscribe()
   #   Object.freeze this if typeof Object.freeze is 'function'
   #   @router = Router
+    console.log 'TD: i18n.init', t
 
 module.exports = Application
 window.application = Application
