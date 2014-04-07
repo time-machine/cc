@@ -30,3 +30,6 @@ module.exports = class User extends CocoModel
 
     # need to set longer timeout so that `callback` is run 1st before `func`
     setTimeout(func, 1000)
+
+  lang: ->
+    @get('preferredLanguage') or 'en-US'
