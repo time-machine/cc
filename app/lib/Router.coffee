@@ -2,11 +2,16 @@ application = require 'application'
 
 module.exports = class CocoRouter extends Backbone.Router
   subscribe: ->
-    console.log 'TD: subscribe'
+    Backbone.Mediator.subscribe 'gapi-loaded', @onGPlusAPILoaded, @
+    Backbone.Mediator.subscribe 'router:navigate', @onNavigate, @
 
   routes:
     # every abnormla view gets listed here
     '': 'home'
+
+    # db and files url call the server directly
+    'db/*path': 'routeToServer'
+    'file/*path': 'routeToServer'
 
     # most go through here
     '*name': 'general'
@@ -22,6 +27,9 @@ module.exports = class CocoRouter extends Backbone.Router
     route = route.split('#')[0]
     view = @getViewFromCache(route)
     console.log 'TD: openRoute', view
+
+  onGPlusAPILoaded: =>
+    console.log 'TD: onGPlusAPILoaded'
 
   getViewFromCache: (route) ->
     if route of @cache
@@ -42,3 +50,6 @@ module.exports = class CocoRouter extends Backbone.Router
 
   onNavigate: (e) ->
     console.log 'TD: onNavigate', e
+
+  routeToServer: (e) ->
+    console.log 'TD: routeToServer', e
