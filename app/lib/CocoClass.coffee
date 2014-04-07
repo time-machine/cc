@@ -8,6 +8,7 @@ module.exports = class CocoClass
   shortcuts: {}
 
   # setup / teardown
+
   constructor: ->
     @subscriptions = utils.combineAncestralObject(@, 'subscriptions')
     @shortcuts = utils.combineAncestralObject(@, 'shortcuts')
@@ -16,7 +17,12 @@ module.exports = class CocoClass
     @listenToShortcuts()
     _.extend(@, Backbone.Events) if Backbone?
 
+  destroy: ->
+    # teardown subscriptions, prevent new ones
+    console.log 'TD: destroy'
+
   # subscriptions
+
   listenToSubscriptions: ->
     # for initting subscriptions
     return unless Backbone?.Mediator?
@@ -25,6 +31,7 @@ module.exports = class CocoClass
       Backbone.Mediator.subscribe(channel, func, @)
 
   # keymaster shortcuts
+
   listenToShortcuts: ->
     return unless key?
     for shortcut, func of @shortcuts
