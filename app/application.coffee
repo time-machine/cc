@@ -22,9 +22,8 @@ Application = initialize: ->
   }, (t) =>
     @router = new Router()
     @router.subscribe()
-  #   Object.freeze this if typeof Object.freeze is 'function'
-  #   @router = Router
-    console.log 'TD: i18n.init', t
+    Object.freeze @ if typeof Object.freeze is 'function'
+    @router = Router
 
 module.exports = Application
 window.application = Application
