@@ -4,11 +4,17 @@ GPlusHandler = require 'lib/GPlusHandler'
 # {me} = require 'lib/auth'
 Tracker = require 'lib/Tracker'
 
+COMMON_FILES = ['/images/modal_background.png', '/images/level/code_palette_background.png']
+preload = (arrayOfImages) ->
+  $(arrayOfImages).each ->
+    $('<img/>')[0].src = @
+
 Application = initialize: ->
   # Router = require 'lib/Router'
   @tracker = new Tracker()
   new FacebookHandler()
   new GPlusHandler()
+  preload(COMMON_FILES)
   console.log 'TD: initialize'
   # $.i18n.init {
   #   # lng: me?.lang() ? 'en'
