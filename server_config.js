@@ -21,6 +21,9 @@ if (config.unittest) {
   config.mongo.password = process.env.COCO_MONGO_PASSWORD || '';
 }
 
+config.mail = {}
+config.mail.mailchimpAPIKey = process.env.COCO_MAILCHIMP_API_KEY || ''
+
 config.cookie_secret = process.env.COCO_COOKIE_SECRET || 'chips ahoy';
 
 config.isProduction = config.mongo.host !== 'localhost';
