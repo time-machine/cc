@@ -15,12 +15,12 @@ Application = initialize: ->
   new FacebookHandler()
   new GPlusHandler()
   preload(COMMON_FILES)
-  console.log 'TD: initialize'
-  # $.i18n.init {
+  $.i18n.init {
   #   # lng: me?.lang() ? 'en'
   #   fallbackLng: 'en'
   #   resStore: locale
-  # }, (t) =>
+  }, (t) =>
+    console.log 'TD: i18n.init', t
   #   @router = new Router()
   #   @router.subscribe()
   #   Object.freeze this if typeof Object.freeze is 'function'
