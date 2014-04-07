@@ -17,6 +17,7 @@ user = require './server/handlers/user'
 logging = require './server/logging'
 sprites = require './server/sprites'
 contact = require './server/contact'
+languages = require './server/languages'
 
 http = require('http')
 
@@ -71,7 +72,7 @@ sprites.setupRoutes(app)
 contact.setupRoutes(app)
 file.setupRoutes(app)
 folder.setupRoutes(app)
-console.log 'TD: server.coffee'
+languages.setupRoutes(app)
 
 # Anything that isn't handled at this point get index.html
 app.get('*', (req, res) ->
