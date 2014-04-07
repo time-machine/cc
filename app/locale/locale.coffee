@@ -4,5 +4,6 @@
 # http://en.wikipedia.org/wiki/Languages_used_on_the_Internet
 
 module.exports =
-  en: require './en' # English - English
-  zh: require './zh'  # 中文, Chinese
+  en: require './en'             # English - English
+  'en-US': require './en-US'     # English (US), English (US)
+  zh: require './zh'             # 中文, Chinese
