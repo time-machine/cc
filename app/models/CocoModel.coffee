@@ -57,9 +57,9 @@ class CocoModel extends Backbone.Model
     return if @addedSchemaDefaults or not @constructor.hasSchema()
     @addedSchemaDefaults = true
     for prop, defaultValue of @constructor.schema.attributes.default or {}
-      console.log 'TD: addSchemaDefaults1', prop
+      console.log 'TD: addSchemaDefaults', prop
     for prop, sch of @constructor.schema.attributes.properties or {}
       continue if @get(prop)?
-      console.log 'TD: addSchemaDefaults2' if sch.default?
+      @set prop, sch.default if sch.default?
 
 module.exports = CocoModel
