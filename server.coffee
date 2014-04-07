@@ -11,8 +11,13 @@ useragent = require 'express-useragent'
 
 auth = require './server/auth'
 db = require './server/db'
+file = require './server/file'
+folder = require './server/folder'
 user = require './server/handlers/user'
 logging = require './server/logging'
+sprites = require './server/sprites'
+contact = require './server/contact'
+languages = require './server/languages'
 
 http = require('http')
 
@@ -20,6 +25,8 @@ config = require('./server_config')
 
 logging.setup()
 db.connectDatabase()
+
+console.log 'TD: mailchimp'
 
 # Express server setup
 app = express()
@@ -63,7 +70,13 @@ app.configure('development', -> app.use(express.errorHandler()))
 
 auth.setupRoutes(app)
 db.setupRoutes(app)
-console.log 'TD: server.coffee'
+sprites.setupRoutes(app)
+contact.setupRoutes(app)
+file.setupRoutes(app)
+folder.setupRoutes(app)
+languages.setupRoutes(app)
+
+console.log 'TD: routes'
 
 # Anything that isn't handled at this point get index.html
 app.get('*', (req, res) ->
