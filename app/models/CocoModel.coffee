@@ -47,6 +47,7 @@ class CocoModel extends Backbone.Model
       @markToRevert
       @trigger 'schema-loaded'
 
+  # @method (direct method) can access @attr (direct attr) of class
   @hasSchema: -> return @schema?.loaded
   schema: -> console.log "TD: schema (don't know when will this called"
 
@@ -55,6 +56,7 @@ class CocoModel extends Backbone.Model
 
   addSchemaDefaults: ->
     return if @addedSchemaDefaults or not @constructor.hasSchema()
+
     @addedSchemaDefaults = true
     for prop, defaultValue of @constructor.schema.attributes.default or {}
       console.log 'TD: addSchemaDefaults1', prop
