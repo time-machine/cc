@@ -13,7 +13,7 @@ module.exports = class User extends CocoModel
   initialize: ->
     super()
     @on 'change:emailHash', ->
-      console.log 'TD: hash changed yo'
+      console.log 'TD: change:emailHash'
 
   loadGravatarProfile: ->
     emailHash = @get('emailHash')
