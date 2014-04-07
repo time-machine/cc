@@ -26,6 +26,8 @@ config = require('./server_config')
 logging.setup()
 db.connectDatabase()
 
+console.log 'TD: mailchimp'
+
 # Express server setup
 app = express()
 
@@ -73,6 +75,8 @@ contact.setupRoutes(app)
 file.setupRoutes(app)
 folder.setupRoutes(app)
 languages.setupRoutes(app)
+
+console.log 'TD: routes'
 
 # Anything that isn't handled at this point get index.html
 app.get('*', (req, res) ->
