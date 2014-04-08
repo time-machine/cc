@@ -51,11 +51,27 @@ module.exports = class CocoRouter extends Backbone.Router
       sub_route = _.str.join('/', pieces[0..split]...)
       path = "views/#{sub_route}#{suffix}"
       ViewClass = @tryToLoadModule(path)
-      console.log 'TD: getView', path
+      break if ViewClass
       split -= 1
 
+    return @showNotFound() if not ViewClass
+    args = pieces[split+1..]
+
+    # options, then any path fragment args
+    # e.g. route = 'home/alone/two' => ViewClass = 'HomeView', args = ['alone', 'two']
+    view = new ViewClass({}, args...)
+    console.log 'TD: getView', view
+
   tryToLoadModule: (path) ->
-    console.log 'TD: tryToLoadModule', path
+    try
+      return require path
+    catch error
+      # FIX: why not use `error.message` instead of `error.toString()`
+      if error.toString().search('Cannot find module "' + path + '" from') is -1
+        throw error
+
+  showNotFound: ->
+    console.log 'TD: showNotFound'
 
   initialize: ->
     @cache = {}
