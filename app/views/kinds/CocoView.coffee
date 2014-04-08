@@ -1,8 +1,11 @@
+SuperModel = require 'models/SuperModel'
+
 module.exports = class CocoView extends Backbone.View
   # Setup, Teardown
 
   constructor: (options) ->
-    console.log 'TD: constructor', arguments
+    @supermodel ?= options?.supermodel or new SuperModel()
+    console.log 'TD: constructor', @supermodel
 
   destroy: ->
     console.log 'TD: destroy'
