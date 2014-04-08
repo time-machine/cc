@@ -60,7 +60,8 @@ module.exports = class CocoRouter extends Backbone.Router
     # options, then any path fragment args
     # e.g. route = 'home/alone/two' => ViewClass = 'HomeView', args = ['alone', 'two']
     view = new ViewClass({}, args...)
-    console.log 'TD: getView', view
+
+    view.render()
 
   tryToLoadModule: (path) ->
     try
