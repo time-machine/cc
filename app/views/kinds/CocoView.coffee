@@ -4,11 +4,15 @@ utils = require 'lib/utils'
 classCount = 0
 makeScopeName = -> "view-scope-#{classCount++}"
 module.exports = class CocoView extends Backbone.View
+  cache: true # signals to the router to keep this view around
+  template: => ''
+
   events:
     'click a': 'toggleModal'
     'click button': 'toggleModal'
 
   subscriptions: {}
+  shortcuts: {}
 
   # Setup, Teardown
 
