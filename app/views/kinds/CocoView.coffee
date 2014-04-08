@@ -46,6 +46,13 @@ module.exports = class CocoView extends Backbone.View
   listenToShortcuts: (recurse) ->
     return unless key
     for shortcut, func of @shortcuts
-      console.log 'TD: listenToShortcuts shortcut', shortcut
+      func = utils.normalizeFunc(func, @)
+      key(shortcut, @scope, _.bind(func, @))
     if recurse
-      console.log 'TD: listenToShortcuts recurse', recurse
+      console.log 'TD: listenToShortcuts', recurse
+
+  preventBackspace: (event) ->
+    event.preventDefault() if event.keyCode is 8 and not @elementAcceptsKeystrokes(event.srcElement or event.target)
+
+  elementAcceptsKeystrokes: (el) ->
+    console.log 'TD: elementAcceptsKeystrokes', el
