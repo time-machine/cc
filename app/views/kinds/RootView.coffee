@@ -4,3 +4,15 @@
 CocoView = require './CocoView'
 
 module.exports = class RootView extends CocoView
+  events:
+    'click #logout-button': 'logoutAccount'
+    'change .language-dropdown': 'showDiplomatSuggestionModal'
+
+  shortcuts:
+    'backspace, delete': 'preventBackspace'
+
+  logoutAccount: ->
+    console.log 'TD: logoutAccount'
+
+  showDiplomatSuggestionModal: ->
+    console.log 'TD: showDiplomatSuggestionModal'
