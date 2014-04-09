@@ -11,8 +11,15 @@ module.exports = class RootView extends CocoView
   shortcuts:
     'backspace, delete': 'preventBackspace'
 
+  afterRender: ->
+    super()
+    @buildLanguages()
+
   logoutAccount: ->
     console.log 'TD: logoutAccount'
+
+  buildLanguages: ->
+    console.log 'TD: buildLanguages'
 
   showDiplomatSuggestionModal: ->
     console.log 'TD: showDiplomatSuggestionModal'
