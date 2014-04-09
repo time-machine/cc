@@ -18,8 +18,8 @@ module.exports = class CocoRouter extends Backbone.Router
 
   home: -> @openRoute('home')
 
-  general: ->
-    console.log 'TD: general'
+  general: (name) ->
+    console.log 'TD: general', name
 
   cache: {}
   openRoute: (route) ->
