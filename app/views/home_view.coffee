@@ -8,5 +8,17 @@ module.exports = class HomeView extends View
   events:
     'hover #beginner-campaign': 'onHover'
 
+  getRenderData: ->
+    c = super()
+    if $.browser
+      console.log 'TD: getRenderData', $.browser
+    else
+      console.warn 'no more jquery browser version'
+    c
+
+  afterRender: ->
+    super()
+    console.log 'TD: afterRender home'
+
   onHover: (e) ->
     console.log 'TD: onHover', e
