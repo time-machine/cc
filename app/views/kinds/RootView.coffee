@@ -19,7 +19,8 @@ module.exports = class RootView extends CocoView
     console.log 'TD: logoutAccount'
 
   buildLanguages: ->
-    console.log 'TD: buildLanguages'
+    $select = @$el.find('.language-dropdown').empty()
+    console.log 'TD: buildLanguages', $select
 
   showDiplomatSuggestionModal: ->
     console.log 'TD: showDiplomatSuggestionModal'
