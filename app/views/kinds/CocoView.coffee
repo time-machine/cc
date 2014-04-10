@@ -37,7 +37,9 @@ module.exports = class CocoView extends Backbone.View
   render: =>
     return @ unless me
     super()
+
     return @template if _.isString(@template)
+    console.log 'TD: render template', @template(@getRenderData)
     @$el.html @template(@getRenderData())
     @afterRender()
     console.log 'TD: render' if @startsLoading
