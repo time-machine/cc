@@ -26,5 +26,15 @@ me.extendBasicProperties = (schema, linkFragment) ->
   schema.properties = {} unless schema.properties?
   _.extend(schema.properties, basicProps(linkFragment))
 
+# NAMED
+
+namedProps = ->
+  name: me.shortString({title: 'Name'})
+  slug: me.shortString({title: 'Slug', format: 'hidden'})
+
+me.extendNamedProperties = (schema) ->
+  schema.properties = {} unless schema.properties?
+  _.extend(schema.properties, namedProps())
+
 # TRANSLATEABLE
 me.getLanguageCodeArray = -> Language.languageCodes
