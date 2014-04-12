@@ -1,5 +1,6 @@
 View = require 'views/kinds/RootView'
 template = require 'templates/home'
+ThangType = require 'models/ThangType'
 
 module.exports = class HomeView extends View
   id: 'home-view'
@@ -18,7 +19,13 @@ module.exports = class HomeView extends View
 
   afterRender: ->
     super()
-    console.log 'TD: afterRender home'
+    @$el.find('.modal').on 'shown', ->
+      console.log 'TD: afterRender'
+
+    wizOriginal = "52a00d55cf1818f2be00000b"
+    url = "/db/thang_type/#{wizOriginal}/version"
+    @wizardType = new ThangType()
+    console.log 'TD: afterRender home',
 
   onHover: (e) ->
     console.log 'TD: onHover', e
