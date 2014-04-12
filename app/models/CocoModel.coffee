@@ -49,7 +49,9 @@ class CocoModel extends Backbone.Model
 
   # @method (direct method) can access @attr (direct attr) of class
   @hasSchema: -> return @schema?.loaded
-  schema: -> console.log "TD: schema (don't know when will this be called"
+
+  # shorthand to access schema from child class (e.g. call `@schema()` at child class file)
+  schema: -> return @constructor.schema
 
   validate: ->
     console.log 'TD: validate'
