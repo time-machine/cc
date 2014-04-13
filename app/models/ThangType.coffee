@@ -9,7 +9,7 @@ module.exports = class ThangType extends CocoModel
     @setDefaults()
     @on 'sync', @setDefaults
     @spriteSheets = {}
-    console.log 'TD: initialize', @schema()
+    console.log 'TD: initialize', @constructor.schema
 
   setDefaults: ->
     @resetRawData() unless @get('raw')
