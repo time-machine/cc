@@ -17,6 +17,12 @@ me.pct = (ext) -> combine {type: 'number', maximum: 1.0, minumum: 0.0}, ext
 me.date = (ext) -> combine {type: 'string', format: 'date-time'}, ext
 me.objectId = (ext) -> schema = combine {type: ['object', 'string']}, ext # should just be string (Mongo ID), but sometimes mongoose turns them into objects representing those, so we are lenient
 
+PointSchema = me.object {title: 'Point', description: 'An {x, y} coordinate point.', format: 'point2d', required: ['x', 'y']},
+  x: {title: 'x', description: 'The x coordinate.', type: 'number', 'default': 15}
+  y: {title: 'y', description: 'The y coordinate.', type: 'number', 'default': 20}
+
+me.point2d = (ext) -> combine(_.cloneDeep(PointSchema), ext)
+
 # BASICS
 basicProps = (linkFragment) ->
   _id: me.objectId(links: [{rel: 'self', href: "/db/#{linkFragment}/{($)}"}], format: 'hidden')
