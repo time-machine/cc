@@ -1,4 +1,5 @@
 c = require './common'
+ThangComponentSchema = require './thang_component'
 
 ThangTypeSchema = c.object()
 c.extendNamedProperties ThangTypeSchema # name first
@@ -53,7 +54,13 @@ RawAnimationObjectSchema = c.object {},
 
 PositionsSchema = c.object { title: 'Positions', description: 'Customize position offsets.' },
   registration: c.point2d { title: 'Registration Point', description: 'Action-specific registration point override.' }
-  # TODO
+  torso: c.point2d { title: 'Torso Offset', description: 'Action-specific torso offset override.' }
+  mouth: c.point2d { title: 'Mouth Offset', description: 'Action-specific mouth offset override.' }
+  aboveHead: c.point2d { title: 'Above Head Offset', description: 'Action-specific above-head offset override.' }
+
+# scale: { title: 'Scale', type: 'number' }
+# flipX: { title: 'Flip X', type: 'boolean', description: 'Flip this animation horizontally?' }
+# flipY: { title: 'Flip Y', type: 'boolean', description: 'Flip this animation vertically?' }
 
 _.extend ThangTypeSchema.properties,
   raw: c.object {title: 'Raw Vector Data'},
@@ -72,6 +79,11 @@ _.extend ThangTypeSchema.properties,
   layerPriority: { title: 'Layer Priority', type: 'integer', description: 'Within its layer, sprites are sorted by layer priority, then y, then z.' }
   scale: { title: 'Scale', type: 'number' }
   positions: PositionsSchema
-  # TODO
+  snap: c.object { title: 'Snap', description: 'In the level editor, snap positioning to these intervals', required: ['x', 'y'] },
+    x: { title: 'Snap X', type: 'number', description: 'Snap to this many meters in the x-direction.', default: 4 }
+    y: { title: 'Snap Y', type: 'number', description: 'Snap to this many meters in the y-direction.', default: 4 }
+  components: c.array {title: 'Components', description: 'Thangs are configured by changing the Components attached to them.', uniqueItems: true, format: 'thang-components-array'}, ThangComponentSchema # TODO: uniqueness should be based on 'original', not whole thing
+
+# TODO
 
 module.exports = ThangTypeSchema
