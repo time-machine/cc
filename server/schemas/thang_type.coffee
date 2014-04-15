@@ -58,9 +58,41 @@ PositionsSchema = c.object { title: 'Positions', description: 'Customize positio
   mouth: c.point2d { title: 'Mouth Offset', description: 'Action-specific mouth offset override.' }
   aboveHead: c.point2d { title: 'Above Head Offset', description: 'Action-specific above-head offset override.' }
 
-# scale: { title: 'Scale', type: 'number' }
-# flipX: { title: 'Flip X', type: 'boolean', description: 'Flip this animation horizontally?' }
-# flipY: { title: 'Flip Y', type: 'boolean', description: 'Flip this animation vertically?' }
+ActionSchema = c.object {},
+  animation: { type: 'string', description: 'Raw animation being sourced', format: 'raw-animation' }
+  container: { type: 'string', description: 'Name of the container to show' }
+  relatedActions: c.object {},
+    begin: { $ref: '#/definitions/action' }
+    end: { $ref: '#/definitions/action' }
+    main: { $ref: '#/definitions/action' }
+    fore: { $ref: '#/definitions/action' }
+    back: { $ref: '#/definitions/action' }
+    side: { $ref: '#/definitions/action' }
+
+    '?0?011?11?11': { $ref: '#/definitions/action', title: 'NW corner' }
+    '?0?11011?11?': { $ref: '#/definitions/action', title: 'NE corner, flipped' }
+    '?0?111111111': { $ref: '#/definitions/action', title: 'N face' }
+    '?11011011?0?': { $ref: '#/definitions/action', title: 'SW corner, top' }
+    '11?11?110?0?': { $ref: '#/definitions/action', title: 'SE corner, top, flipped' }
+    '?11011?0????': { $ref: '#/definitions/action', title: 'SW corner, bottom' }
+    '11?110?0????': { $ref: '#/definitions/action', title: 'SE corner, bottom, flipped' }
+    '?11011?11?11': { $ref: '#/definitions/action', title: 'W face' }
+    '11?11011?11?': { $ref: '#/definitions/action', title: 'E face, flipped' }
+    '011111111111': { $ref: '#/definitions/action', title: 'NW elbow' }
+    '110111111111': { $ref: '#/definitions/action', title: 'NE elbow, flipped' }
+    '111111111?0?': { $ref: '#/definitions/action', title: 'S face, top' }
+    '111111?0????': { $ref: '#/definitions/action', title: 'S face, bottom' }
+    '111111111011': { $ref: '#/definitions/action', title: 'SW elbow, top' }
+    '111111111110': { $ref: '#/definitions/action', title: 'SE elbow, top, flipped' }
+    '111111011?11': { $ref: '#/definitions/action', title: 'SW elbow, bottom' }
+    '11111111011?': { $ref: '#/definitions/action', title: 'SE elbow, bottom, flipped' }
+    '111111111111': { $ref: '#/definitions/action', title: 'Middle' }
+
+  loops: { type: 'boolean' }
+  # TODO
+  # scale: { title: 'Scale', type: 'number' }
+  # flipX: { title: 'Flip X', type: 'boolean', description: 'Flip this animation horizontally?' }
+  # flipY: { title: 'Flip Y', type: 'boolean', description: 'Flip this animation vertically?' }
 
 _.extend ThangTypeSchema.properties,
   raw: c.object {title: 'Raw Vector Data'},
@@ -84,6 +116,8 @@ _.extend ThangTypeSchema.properties,
     y: { title: 'Snap Y', type: 'number', description: 'Snap to this many meters in the y-direction.', default: 4 }
   components: c.array {title: 'Components', description: 'Thangs are configured by changing the Components attached to them.', uniqueItems: true, format: 'thang-components-array'}, ThangComponentSchema # TODO: uniqueness should be based on 'original', not whole thing
 
-# TODO
+ThangTypeSchema.definitions =
+  action: ActionSchema
+  # TODO
 
 module.exports = ThangTypeSchema
