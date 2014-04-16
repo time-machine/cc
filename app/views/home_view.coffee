@@ -20,12 +20,17 @@ module.exports = class HomeView extends View
   afterRender: ->
     super()
     @$el.find('.modal').on 'shown', ->
-      console.log 'TD: afterRender'
+      console.log 'TD: afterRender, shown'
 
     wizOriginal = "52a00d55cf1818f2be00000b"
     url = "/db/thang_type/#{wizOriginal}/version"
     @wizardType = new ThangType()
-    console.log 'TD: afterRender home',
+    @wizardType.url = -> url
+    @wizardType.fetch()
+    @wizardType.once 'sync', @initCanvas
+
+  initCanvas: =>
+    console.log 'TD: initCanvas'
 
   onHover: (e) ->
     console.log 'TD: onHover', e
