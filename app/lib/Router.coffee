@@ -33,9 +33,10 @@ module.exports = class CocoRouter extends Backbone.Router
 
   getViewFromCache: (route) ->
     if route of @cache
-      console.log 'TD: getViewFromCache1', route
+      console.log 'TD: getViewFromCache route is key of cache', route
     view = @getView(route)
-    console.log 'TD: getViewFromCache', view
+    @cache[route] = view unless view and view.cache is false
+    return view
 
   getView: (route, suffix='_view') ->
     # iteratively breaks down the url places looking for the view
