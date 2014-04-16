@@ -27,9 +27,15 @@ module.exports.setupRoutes = (app) ->
     return getSchema(req, res, module) if parts[1] is 'schema'
 
     try
-      console.log 'TD: setupRoutes', parts
+      name = "./handlers/#{module.replace '.', '_'}"
+      module = require(name)
+      console.log 'TD: setupRoutes', module
     catch error
-      winston.error("Error trying db method TODO")
+      winston.error("Error trying db method #{req.route.method} route #{parts} from #{name}: #{error}")
+      winston.error(error)
+      res.status(404)
+      res.write("Route #{req.path} not found.")
+      res.end()
 
 getSchema = (req, res, moduleName) ->
   try
