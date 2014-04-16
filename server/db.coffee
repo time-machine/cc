@@ -24,10 +24,12 @@ module.exports.setupRoutes = (app) ->
 
     parts = module.split('/')
     module = parts[0]
-
     return getSchema(req, res, module) if parts[1] is 'schema'
 
-    console.log 'TD: setupRoutes'
+    try
+      console.log 'TD: setupRoutes', parts
+    catch error
+      winston.error("Error trying db method TODO")
 
 getSchema = (req, res, moduleName) ->
   try
