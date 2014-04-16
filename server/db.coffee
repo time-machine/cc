@@ -10,7 +10,7 @@ module.exports.connectDatabase = ->
   dbName += '_unittest' if testing
   address = config.mongo.host + ':' + config.mongo.port
   if config.mongo.username and config.mongo.passport
-    console.log 'TODO'
+    console.log 'TD: connectDatabase'
   address = "mongodb://#{address}/#{dbName}"
   console.log 'got address:', address
   mongoose.connect address
