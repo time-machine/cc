@@ -26,7 +26,10 @@ module.exports = class CocoRouter extends Backbone.Router
     route = route.split('?')[0]
     route = route.split('#')[0]
     view = @getViewFromCache(route)
-    console.log 'TD: openRoute', view
+    @openView(view)
+
+  openView: (view) ->
+    console.log 'TD: openView', view
 
   onGPlusAPILoaded: =>
     console.log 'TD: onGPlusAPILoaded'
