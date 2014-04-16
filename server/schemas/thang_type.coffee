@@ -89,10 +89,16 @@ ActionSchema = c.object {},
     '111111111111': { $ref: '#/definitions/action', title: 'Middle' }
 
   loops: { type: 'boolean' }
-  # TODO
-  # scale: { title: 'Scale', type: 'number' }
-  # flipX: { title: 'Flip X', type: 'boolean', description: 'Flip this animation horizontally?' }
-  # flipY: { title: 'Flip Y', type: 'boolean', description: 'Flip this animation vertically?' }
+  speed: { type: 'number' }
+  goesTo: { type: 'string', description: 'Action (animation?) to which we switch after this animation.' }
+  frames: { type: 'string', pattern: '^[0-9,]+$', description: 'Manually way to specify frames.' }
+  framerate: { type: 'number', description: 'Get this from the HTML output.' }
+  positions: PositionsSchema
+  scale: { title: 'Scale', type: 'number' }
+  flipX: { title: 'Flip X', type: 'boolean', description: 'Flip this animation horizontally?' }
+  flipY: { title: 'Flip Y', type: 'boolean', description: 'Flip this animation vertically?' }
+
+SoundSchema = c.sound({delay: { type: 'number' }})
 
 _.extend ThangTypeSchema.properties,
   raw: c.object {title: 'Raw Vector Data'},
@@ -118,6 +124,10 @@ _.extend ThangTypeSchema.properties,
 
 ThangTypeSchema.definitions =
   action: ActionSchema
-  # TODO
+  sound: SoundSchema
+
+c.extendBasicProperties(ThangTypeSchema, 'thang.type')
+c.extendSearchableProperties(ThangTypeSchema)
+c.extendVersionedProperties(ThangTypeSchema, 'thang.type')
 
 module.exports = ThangTypeSchema
