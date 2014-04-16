@@ -1,2 +1,7 @@
 module.exports = class Handler
-  # TODOX: check is method triggered
+  # subclasses should overried these properties
+  modelClass: null
+  editableProperties: []
+
+  # subclasses should overried these methods
+  hasAccess: (req) -> true
