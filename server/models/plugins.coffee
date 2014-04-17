@@ -39,6 +39,7 @@ module.exports.SearchablePlugin = (schema, options) ->
     throw Error('SearchablePlugin options must include list of searchable properties.')
 
   index = {}
+
   schema.uses_coco_search = true
   if schema.uses_coco_versions or schema.uses_coco_permissions
     index['index'] = 1
@@ -50,5 +51,4 @@ module.exports.SearchablePlugin = (schema, options) ->
   schema.plugin(textSearch)
   schema.index(index, { sparse: true, name: 'search index', language_override: 'searchLanguage' })
 
-  schema.pre 'save', (next) ->
-    console.log 'TD: SearchablePlugin save'
+  schema.pre 'save', (next) -> console.log 'TD: SearchablePlugin save'
