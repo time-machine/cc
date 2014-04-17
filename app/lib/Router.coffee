@@ -1,4 +1,5 @@
 application = require 'application'
+{me} = require 'lib/auth'
 
 module.exports = class CocoRouter extends Backbone.Router
   subscribe: ->
@@ -18,8 +19,7 @@ module.exports = class CocoRouter extends Backbone.Router
 
   home: -> @openRoute('home')
 
-  general: (name) ->
-    console.log 'TD: general', name
+  general: (name) -> console.log 'TD: general', name
 
   cache: {}
   openRoute: (route) ->
@@ -35,8 +35,7 @@ module.exports = class CocoRouter extends Backbone.Router
     @activateTab()
     console.log 'TD: openView', view.el
 
-  onGPlusAPILoaded: =>
-    console.log 'TD: onGPlusAPILoaded'
+  onGPlusAPILoaded: => console.log 'TD: onGPlusAPILoaded'
 
   getViewFromCache: (route) ->
     if route of @cache
@@ -49,14 +48,14 @@ module.exports = class CocoRouter extends Backbone.Router
     # iteratively breaks down the url places looking for the view
     # passing the broken off pieces as args. This way views like "resource/14394893"
     # will get passed to the resource view with arg "14394893"
-    pieces = _.str.words(route, '/')
+    pieces = _.string.words(route, '/')
 
     # FIX: default max should be 0 as it's possible to have only 1 piece of route
     #      if default max to 1, the split loop will run additional one more time
     split = Math.max(1, pieces.length-1)
 
     while split > -1
-      sub_route = _.str.join('/', pieces[0..split]...)
+      sub_route = _.string.join('/', pieces[0..split]...)
       path = "views/#{sub_route}#{suffix}"
       ViewClass = @tryToLoadModule(path)
       break if ViewClass
@@ -65,10 +64,8 @@ module.exports = class CocoRouter extends Backbone.Router
     return @showNotFound() if not ViewClass
     args = pieces[split+1..]
 
-    # options, then any path fragment args
     # e.g. route = 'home/alone/two' => ViewClass = 'HomeView', args = ['alone', 'two']
-    view = new ViewClass({}, args...)
-
+    view = new ViewClass({}, args...) # options, then any path fragment args
     view.render()
 
   tryToLoadModule: (path) ->
@@ -79,8 +76,7 @@ module.exports = class CocoRouter extends Backbone.Router
       if error.toString().search('Cannot find module "' + path + '" from') is -1
         throw error
 
-  showNotFound: ->
-    console.log 'TD: showNotFound'
+  showNotFound: -> console.log 'TD: showNotFound'
 
   closeCurrentView: ->
     if window.currentModal?
@@ -97,11 +93,8 @@ module.exports = class CocoRouter extends Backbone.Router
     # http://nerds.airbnb.com/how-to-add-google-analytics-page-tracking-to-57536
     @bind 'route', @_trackPageView
 
-  _trackPageView: ->
-    console.log 'TD: _trackPageView'
+  _trackPageView: -> console.log 'TD: _trackPageView'
 
-  onNavigate: (e) ->
-    console.log 'TD: onNavigate', e
+  onNavigate: (e) -> console.log 'TD: onNavigate', e
 
-  routeToServer: (e) ->
-    console.log 'TD: routeToServer', e
+  routeToServer: (e) -> console.log 'TD: routeToServer', e
