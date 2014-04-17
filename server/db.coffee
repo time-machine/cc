@@ -5,7 +5,8 @@ Grid = require 'gridfs-stream'
 
 testing = '--unittest' in process.argv
 
-module.exports.connectDatabase = ->
+# FIXIT () not needed for no param?
+module.exports.connectDatabase = () ->
   dbName = config.mongo.db
   dbName += '_unittest' if testing
   address = config.mongo.host + ':' + config.mongo.port
