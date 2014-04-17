@@ -26,14 +26,14 @@ UserSchema.methods.isAdmin = ->
 UserSchema.statics.updateMailChimp = (doc, callback) ->
   return callback?() if doc.updatedMailChimp
   return callback?() unless doc.get('email')
-  console.log 'TODO: updateMailChimp'
+  console.log 'TD: updateMailChimp'
 
 UserSchema.pre('save', (next) ->
   @set('emailLower', @get('email')?.toLowerCase())
   @set('nameLower', @get('name')?.toLowerCase())
   pwd = @get('password')
   if @get('password')
-    console.log 'TODO: pre save'
+    console.log 'TD: pre save'
   @set('anonymous', false) if @get('email')
   next()
 )
