@@ -1,4 +1,5 @@
 crypto = require 'crypto'
+schema = require '../schemas/user'
 User = require '../models/User'
 Handler = require './Handler'
 languages = require '../languages'
@@ -14,6 +15,8 @@ UserHandler = class UserHandler extends Handler
     'firstName', 'lastName', 'gender', 'facebookID', 'emailSubscriptions',
     'testGroupNumber', 'music', 'hourOfCode', 'hourOfCodeComplete', 'preferredLanguage'
   ]
+
+  jsonSchema: schema
 
   formatEntity: (req, document) ->
     return null unless document?
@@ -31,6 +34,20 @@ UserHandler = class UserHandler extends Handler
     obj.emailHash = hash.digest('hex')
 
     return obj
+
+  waterfallFunctions: [
+    # FB access token checking
+    # Check the email is same as FB reports
+    (req, user, callback) -> console.log 'TD: waterfallFunctions'
+  ]
+
+  getById: (req, res, id) -> console.log 'TD: getById'
+
+  post: (req, res) -> console.log 'TD: post'
+
+  hasAccessToDocument: (req, document) -> console.log 'TD: hasAccessToDocument'
+
+  getByRelationship: (req, res, args...) -> console.log 'TD: getByRelationship'
 
 module.exports = new UserHandler()
 
@@ -56,7 +73,7 @@ loginUser = (req, res, user, send=true, next=null) ->
         return res.end()
 
       if send
-        console.log 'TODO: loginUser'
+        console.log 'TD: loginUser'
       next() if next
     )
   )
