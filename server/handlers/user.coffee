@@ -7,6 +7,14 @@ serverProperties = ['passwordHash', 'emailLower', 'nameLower', 'passwordReset']
 privateProperties = ['permissions', 'email', 'firstName', 'lastName', 'gender', 'facebookID', 'music', 'volume']
 
 UserHandler = class UserHandler extends Handler
+  modelClass: User
+
+  editableProperties: [
+    'name', 'photoURL', 'password', 'anonymous', 'wizardColor1', 'volume',
+    'firstName', 'lastName', 'gender', 'facebookID', 'emailSubscriptions',
+    'testGroupNumber', 'music', 'hourOfCode', 'hourOfCodeComplete', 'preferredLanguage'
+  ]
+
   formatEntity: (req, document) ->
     return null unless document?
     obj = document.toObject()
