@@ -88,4 +88,9 @@ me.extendSearchableProperties = (schema) ->
 
 # TRANSLATEABLE
 
-me.getLanguageCodeArray = -> Language.languageCodes
+me.generateLanguageCodeArrayRegex = -> console.log 'TD: generateLanguageCodeArrayRegex'
+
+me.getLanguageCodeArray = ->
+  return Language.languageCodes
+
+me.getLanguageObject = -> console.log 'TD: getLanguageObject'
