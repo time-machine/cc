@@ -29,8 +29,10 @@ module.exports = class HomeView extends View
     @wizardType.fetch()
     @wizardType.once 'sync', @initCanvas
 
-  initCanvas: =>
-    console.log 'TD: initCanvas'
+  initCanvas: => console.log 'TD: initCanvas'
 
-  onHover: (e) ->
-    console.log 'TD: onHover', e
+  onHover: (e) -> console.log 'TD: onHover', e
+
+  willDisapper: -> console.log 'TD: willDisapper'
+
+  didReappear: -> console.log 'TD: didReappear'
