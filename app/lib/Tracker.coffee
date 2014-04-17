@@ -17,6 +17,10 @@ module.exports = class Tracker
     return unless me and olark?
     console.log 'TD: updateOlark'
 
+  updatePlayState: (level, session) -> console.log 'TD: updatePlayState'
+
+  trackPageView: -> console.log 'TD: trackPageView'
+
   trackEvent: (event, properties, includeProviders=null) =>
     return unless me and @isProduction and analytics?
     console.log 'TD: trackEvent'
