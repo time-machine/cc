@@ -3,7 +3,10 @@
 
 CocoView = require './CocoView'
 
+{logoutUser, me} = require 'lib/auth'
 locale = require 'locale/locale'
+
+filterKeyboardEvents = (allowedEvents, func) -> console.log 'TD: filterKeyboardEvents'
 
 module.exports = class RootView extends CocoView
   events:
@@ -17,8 +20,13 @@ module.exports = class RootView extends CocoView
     super()
     @buildLanguages()
 
-  logoutAccount: ->
-    console.log 'TD: logoutAccount'
+  logoutAccount: -> console.log 'TD: logoutAccount'
+
+  showWizardSettingsModal: -> console.log 'TD: showWizardSettingsModal'
+
+  showLoading: ($el) -> console.log 'TD: showLoading'
+
+  afterInsert: -> console.log 'TD: afterInsert'
 
   buildLanguages: ->
     $select = @$el.find('.language-dropdown').empty()
@@ -32,5 +40,4 @@ module.exports = class RootView extends CocoView
         $("<option></option>").attr("value", code).text(localeInfo.nativeDescription))
     $select.val(preferred).fancySelect()
 
-  showDiplomatSuggestionModal: ->
-    console.log 'TD: showDiplomatSuggestionModal'
+  showDiplomatSuggestionModal: -> console.log 'TD: showDiplomatSuggestionModal'
