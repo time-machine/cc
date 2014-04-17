@@ -1,4 +1,5 @@
 GRAVATAR_URL = 'https://www.gravatar.com/'
+cache = {}
 CocoModel = require './CocoModel'
 
 module.exports = class User extends CocoModel
@@ -35,5 +36,11 @@ module.exports = class User extends CocoModel
     # need to set longer timeout so that `callback` is run 1st before `func`
     setTimeout(func, 1000)
 
+  displayName: -> console.log 'TD: displayName'
+
   lang: ->
     @get('preferredLanguage') or 'en-US'
+
+  getPhotoURL: -> console.log 'TD: getPhotoURL'
+
+  @getByID = (id, properties, force) -> console.log 'TD: getByID'
