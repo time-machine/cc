@@ -4,6 +4,8 @@ User = require 'models/User'
 module.exports.CURRENT_USER_KEY = CURRENT_USER_KEY = 'whoami'
 BEEN_HERE_BEFORE_KEY = 'beenHereBefore'
 
+module.exports.logoutUser = -> console.log 'TD: logoutUser'
+
 init = ->
   # load the user from local storage, and refresh it from the server.
   # If the server info doesn't match the local storage, refresh the page.
