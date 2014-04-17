@@ -30,6 +30,8 @@ module.exports = class CocoClass
       func = utils.normalizeFunc(func, @)
       Backbone.Mediator.subscribe(channel, func, @)
 
+  addNewSubscription: (channel, func) -> console.log 'TD: addNewSubscription'
+
   # keymaster shortcuts
 
   listenToShortcuts: ->
