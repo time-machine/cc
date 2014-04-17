@@ -7,6 +7,8 @@ window.CocoSchema = CocoSchema
 
 class CocoModel extends Backbone.Model
   idAttribute: '_id'
+  loaded: false
+  loading: false
   @schema: null
 
   initialize: ->
@@ -29,8 +31,9 @@ class CocoModel extends Backbone.Model
       @loadSchema()
     @once 'sync', @onLoaded
 
-  onLoaded: =>
-    console.log 'TD: onLoaded'
+  type: -> console.log 'TD: type'
+
+  onLoaded: => console.log 'TD: onLoaded'
 
   loadSchema: ->
     unless @constructor.schema
@@ -49,15 +52,24 @@ class CocoModel extends Backbone.Model
 
   # @method (direct method) can access @attr (direct attr) of class
   @hasSchema: -> return @schema?.loaded
+  schema: -> console.log 'TD: schema'
 
-  validate: ->
-    console.log 'TD: validate'
+  validate: -> console.log 'TD: validate'
 
-  save: (attrs, options) ->
-    console.log 'TD: save'
+  save: (attrs, options) -> console.log 'TD: save'
+
+  fetch: -> console.log 'TD: fetch'
 
   markToRevert: ->
     @_revertAttributes = _.clone @attributes
+
+  revert: -> console.log 'TD: revert'
+
+  hasLocalChanges: -> console.log 'TD: hasLocalChanges'
+
+  cloneNewMajorVersion: -> console.log 'TD: cloneNewMajorVersion'
+
+  publish: -> console.log 'TD: publish'
 
   addSchemaDefaults: ->
     return if @addedSchemaDefaults or not @constructor.hasSchema()
@@ -67,5 +79,7 @@ class CocoModel extends Backbone.Model
     for prop, sch of @constructor.schema.attributes.properties or {}
       continue if @get(prop)?
       @set prop, sch.default if sch.default?
+
+  getReferenceModels: (data, schema, path='/') -> console.log 'TD: getReferenceModels'
 
 module.exports = CocoModel
