@@ -17,6 +17,19 @@ module.exports = class Handler
     res.send(message)
     res.end()
 
+  # generic handlers
+  get: (req, res) ->
+    console.log 'TD: Handler get'
+
+  patch: ->
+    console.log 'TD: Handler patch'
+
+  put: (req, res, id) ->
+    console.log 'TD: Handler put', id
+
+  post: (req, res) ->
+    console.log 'TD: Handler post'
+
   getLatestVersion: (req, res, original, version) ->
     # can get latest overall version, latest of a major version, or a specific version
     query = { 'original': mongoose.Types.ObjectId(original) }
