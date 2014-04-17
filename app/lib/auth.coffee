@@ -28,13 +28,11 @@ init = ->
     module.exports.me.loadGravatarProfile()
     module.exports.me.on('sync', userSynced)
 
-userSynced = (user) ->
-  console.log 'TD: userSynced', user
+userSynced = (user) -> console.log 'TD: userSynced', user
 
 init()
 
-onSetVolume = (e) ->
-  console.log 'TD: onSetVolume', e
+onSetVolume = (e) -> console.log 'TD: onSetVolume', e
 
 Backbone.Mediator.subscribe('level-set-volume', onSetVolume, module.exports)
 
