@@ -1,8 +1,10 @@
 SuperModel = require 'models/SuperModel'
 utils = require 'lib/utils'
+CocoClass = require 'lib/CocoClass'
 
 classCount = 0
 makeScopeName = -> "view-scope-#{classCount++}"
+
 module.exports = class CocoView extends Backbone.View
   startsLoading: false
   cache: true # signals to the router to keep this view around
@@ -29,20 +31,21 @@ module.exports = class CocoView extends Backbone.View
     # Backbone.Mediator handles subscription setup/teardown automatically
     super options
 
-  destroy: ->
-    console.log 'TD: destroy'
+  destroy: -> console.log 'TD: destroy'
+
+  didReappear: -> console.log 'TD: didReappear'
 
   # View Rendering
 
   render: =>
     return @ unless me
     super()
-
     return @template if _.isString(@template)
     console.log 'TD: render template', @template(@getRenderData)
     @$el.html @template(@getRenderData())
     @afterRender()
-    console.log 'TD: render' if @startsLoading
+    if @startsLoading
+      console.log 'TD: render'
     @$el.i18n()
     @
 
@@ -61,13 +64,26 @@ module.exports = class CocoView extends Backbone.View
 
   # Modals
 
-  toggleModal: (e) ->
-    console.log 'TD: toggleModal', e
+  toggleModal: (e) -> console.log 'TD: toggleModal', e
 
   registerModalsWithin: (e...) ->
-    # TODO: get rid of this part
+    # TODO: Get rid of this part
     for modal in $('.modal', @$el)
       console.log 'TD: registerModalsWithin', modal
+
+  # Loading RootViews
+
+  hideLoading: -> console.log 'TD: hideLoading'
+
+  # Loading ModalViews
+
+  enableModalInProgress: (modal) -> console.log 'TD: enableModalInProgress'
+
+  disableModalInProgress: (modal) -> console.log 'TD: disableModalInProgress'
+
+  # Subscriptions
+
+  addNewSubscription: CocoClass.prototype.addNewSubscription
 
   # Shortcuts
 
@@ -82,8 +98,17 @@ module.exports = class CocoView extends Backbone.View
   preventBackspace: (event) ->
     event.preventDefault() if event.keyCode is 8 and not @elementAcceptsKeystrokes(event.srcElement or event.target)
 
-  elementAcceptsKeystrokes: (el) ->
-    console.log 'TD: elementAcceptsKeystrokes', el
+  elementAcceptsKeystrokes: (el) -> console.log 'TD: elementAcceptsKeystrokes', el
+
+  # Subviews
+
+  insertSubview: (view) -> console.log 'TD: insertSubview'
+
+  removeSubview: (view) -> console.log 'TD: removeSubview'
+
+  # Utilities
+
+  getQueryVariable: (param) -> console.log 'TD: getQueryVariable'
 
   isMobile: ->
     ua = navigator.userAgent or navigator.vendor or window.opera
