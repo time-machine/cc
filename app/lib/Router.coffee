@@ -31,7 +31,9 @@ module.exports = class CocoRouter extends Backbone.Router
   openView: (view) ->
     @closeCurrentView()
     $('#page-container').empty().append view.el
-    console.log 'TD: openView', view
+    window.currentView = view
+    @activateTab()
+    console.log 'TD: openView', view.el
 
   onGPlusAPILoaded: =>
     console.log 'TD: onGPlusAPILoaded'
@@ -85,6 +87,10 @@ module.exports = class CocoRouter extends Backbone.Router
       console.log 'TD: closeCurrentView currentModal', window.currentModal
     return unless window.currentView?
     console.log 'TD: closeCurrentView'
+
+  activateTab: ->
+    base = _.string.words(document.location.pathname[1..], '/')[0]
+    console.log 'TD: activateTab', base
 
   initialize: ->
     @cache = {}
