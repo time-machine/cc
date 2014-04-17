@@ -8,3 +8,13 @@ body
             img(src="images/pages/base/logo.png", title="CodeCombat", alt="CodeCombat")
 
           select.language-dropdown
+
+          ul(class='navbar-link-text').nav.pull-right
+            li.play
+              a(href='/play', data-i18n='nav.play') Levels
+            li.editor
+              a(href='/editor', data-i18n='nav.editor') Editor
+            li.blog
+              a(href='http://code-combat.tumblr.com/', data-i18n='nav.blog') Blog
+            li.forum
+              a(href='http://discourse.codecombat.com/', data-i18n='nav.forum') Forum
