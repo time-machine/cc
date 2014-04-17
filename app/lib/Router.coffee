@@ -33,9 +33,13 @@ module.exports = class CocoRouter extends Backbone.Router
     $('#page-container').empty().append view.el
     window.currentView = view
     @activateTab()
+    @renderLoginButtons()
     console.log 'TD: openView', view.el
 
   onGPlusAPILoaded: => console.log 'TD: onGPlusAPILoaded'
+
+  renderLoginButtons: ->
+    console.log 'TD: renderLoginButtons'
 
   getViewFromCache: (route) ->
     if route of @cache
@@ -86,7 +90,7 @@ module.exports = class CocoRouter extends Backbone.Router
 
   activateTab: ->
     base = _.string.words(document.location.pathname[1..], '/')[0]
-    console.log 'TD: activateTab', base
+    $("ul.nav li.#{base}").addClass('active')
 
   initialize: ->
     @cache = {}
