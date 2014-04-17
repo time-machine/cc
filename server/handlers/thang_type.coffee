@@ -19,7 +19,6 @@ ThangTypeHandler = class ThangTypeHandler extends Handler
     'components'
   ]
 
-  hasAccess: (req) ->
-    console.log 'TD: hasAccess'
+  hasAccess: (req) -> console.log 'TD: hasAccess'
 
 module.exports = new ThangTypeHandler()
