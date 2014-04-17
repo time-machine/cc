@@ -15,6 +15,10 @@ module.exports = class User extends CocoModel
     @on 'change:emailHash', ->
       console.log 'TD: change:emailHash'
 
+  isAdmin: ->
+    permissions = @attributes['permissions'] or []
+    return 'admin' in permissions
+
   loadGravatarProfile: ->
     emailHash = @get('emailHash')
     return if not emailHash
