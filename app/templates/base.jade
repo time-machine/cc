@@ -28,6 +28,13 @@ body
               li.admin
                 a(href='/admin', data-i18n='nav.admin') Admin
 
+  block outer_content
+    #outer-content-wrapper
+      #inner-content-wrapper
+        .main-content-area
+          block content
+            p If this is showing, you dun goofed
+
   block footer
     .footer
       .share-buttons
