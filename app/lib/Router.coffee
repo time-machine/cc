@@ -39,6 +39,7 @@ module.exports = class CocoRouter extends Backbone.Router
   onGPlusAPILoaded: => console.log 'TD: onGPlusAPILoaded'
 
   renderLoginButtons: ->
+    $('.share-buttons').addClass('fade-in').delay(10000).removeClass('fade-in', 5000)
     console.log 'TD: renderLoginButtons'
 
   getViewFromCache: (route) ->
