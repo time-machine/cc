@@ -1,0 +1,123 @@
+@import "bootstrap/variables"
+@import "bootstrap/mixins"
+
+h1 h2 h3 h4
+  letter-spacing: 2px
+
+.navbar a.brand
+  padding: 4px 20px 0px 20px
+
+.main-content-area
+  position: relative
+  width: 1024px
+  margin: 56px auto 0
+  min-height: 600px
+  padding: 14px 12px 5px 12px
+  @include box-sizing(border-box)
+
+.navbuttontext, .fancy-select .trigger
+  font-family: 'Bangers', cursive
+  font-size: 20px
+  font-weight: normal
+  letter-spacing: 1px
+
+.navbar .nav.navbar-link-text, .navbar .nav.navbar-link-text > li > a
+  font-family: 'Bangers', cursive
+  font-weight: normal
+  font-size: 25px
+  letter-spacing: 2px
+
+.navbar .btn, .navbar .btn-group, .navbar .fancy-select
+  margin-top: 13px
+
+#outer-content-wrapper
+  background: #8cc63f url(/images/pages/base/repeat-tile.png) top center
+
+#inner-content-wrapper
+  background: url(/images/pages/base/background_texture.png) top center no-repeat
+
+.navbar-inner
+  font-size: 25px
+
+  a:not(.btn)
+    line-height: 25px
+
+  .btn, .fancy-select
+    float: right
+    margin-left: 10px
+
+  select
+    opacity: 0
+
+  .fancy-select
+    .trigger
+      padding: 5px 25px 3px 10px
+      width: auto
+      &:after
+        top: 13px
+      max-width: 140px
+
+#front-screenshot
+  width: 710px
+
+.content
+  width: 1024px
+  margin: 0 auto
+
+.footer
+  height: 75px
+  border-top: 1px solid black
+  background-color: #2f261d
+  p
+    margin: 0
+    padding-top: 25px
+    text-align: center
+
+  .mixpanel-badge
+    display: block
+    width: 100px
+    margin: 10px auto 0
+
+.footer-link-text a
+  font-family: 'Bangers', cursive
+  font-weight: normal
+  font-size: 25px
+  letter-spacing: 1px
+  color: #fff
+
+.share-buttons
+  margin-top: 10px
+  text-align: center
+  @include opacity(75)
+
+  &.fade-in
+    @include opacity(0)
+
+  &:hover, &:active
+    @include opacity(100)
+    @include transition(opacity .10s linear)
+
+div.fancy-select
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.25)
+
+  div.trigger
+    background-color: #9d8f5a
+    background-image: linear-gradient(to bottom, #a4955e, #948754)
+    background-repeat: repeat-x
+    border: 1px solid #ccc
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25)
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.05)
+    color: white
+    &:after
+      border-top-color: white
+    &:open
+      background-color: #8b7f51
+      color: #ebebeb
+      &:after
+        border-top-color: #ebebeb
+
+  ul.options
+    max-height: 415px
+    background-color: #9d8f5a
+    li
+      color: #ebebeb
