@@ -104,7 +104,8 @@ module.exports = class CocoRouter extends Backbone.Router
     # http://nerds.airbnb.com/how-to-add-google-analytics-page-tracking-to-57536
     @bind 'route', @_trackPageView
 
-  _trackPageView: -> console.log 'TD: _trackPageView'
+  _trackPageView: ->
+    window.tracker?.trackPageView()
 
   onNavigate: (e) -> console.log 'TD: onNavigate', e
 
