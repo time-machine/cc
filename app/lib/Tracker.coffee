@@ -19,7 +19,9 @@ module.exports = class Tracker
 
   updatePlayState: (level, session) -> console.log 'TD: updatePlayState'
 
-  trackPageView: -> console.log 'TD: trackPageView'
+  trackPageView: ->
+    return unless @isProduction and analytics?
+    console.log 'TD: trackPageView'
 
   trackEvent: (event, properties, includeProviders=null) =>
     return unless me and @isProduction and analytics?
