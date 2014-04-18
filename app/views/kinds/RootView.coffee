@@ -26,7 +26,15 @@ module.exports = class RootView extends CocoView
 
   showLoading: ($el) -> console.log 'TD: showLoading'
 
-  afterInsert: -> console.log 'TD: afterInsert'
+  afterInsert: ->
+    # force the browser to scroll to the hash
+    # also messes with the browser history, so perhaps come up with a better solution
+    super()
+    hash = location.hash
+    location.hash = ''
+    location.hash = hash
+
+    # TODO: automate tabs to put in hashes and navigate to them here
 
   buildLanguages: ->
     $select = @$el.find('.language-dropdown').empty()
