@@ -58,7 +58,9 @@ class CocoModel extends Backbone.Model
 
   save: (attrs, options) -> console.log 'TD: save'
 
-  fetch: -> console.log 'TD: fetch'
+  fetch: ->
+    super()
+    @loading = true
 
   markToRevert: ->
     @_revertAttributes = _.clone @attributes
