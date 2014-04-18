@@ -33,6 +33,8 @@ module.exports = class CocoView extends Backbone.View
 
   destroy: -> console.log 'TD: destroy'
 
+  afterInsert: ->
+
   didReappear: -> console.log 'TD: didReappear'
 
   # View Rendering
