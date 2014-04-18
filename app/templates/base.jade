@@ -9,6 +9,12 @@ body
 
           select.language-dropdown
 
+          if me.get('anonymous')
+            button.btn.btn-primary.navbuttontext(data-toggle='coco-modal', data-target='modal/signup', data-i18n='nav.sign_up') Create Account
+            button.btn.btn-primary.navbuttontext(data-toggle='coco-modal', data-target='modal/login', data-i18n='nav.log_in') Log In
+          else
+            p TD: base
+
           ul(class='navbar-link-text').nav.pull-right
             li.play
               a(href='/play', data-i18n='nav.play') Levels
