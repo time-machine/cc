@@ -18,6 +18,9 @@ body
               a(href='http://code-combat.tumblr.com/', data-i18n='nav.blog') Blog
             li.forum
               a(href='http://discourse.codecombat.com/', data-i18n='nav.forum') Forum
+            if me.isAdmin()
+              li.admin
+                a(href='/admin', data-i18n='nav.admin') Admin
 
   block footer
     .footer
