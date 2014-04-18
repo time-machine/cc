@@ -34,7 +34,9 @@ module.exports = class CocoRouter extends Backbone.Router
     window.currentView = view
     @activateTab()
     @renderLoginButtons()
-    console.log 'TD: openView', view.el
+    console.log 'TD: openView scrollY' if view.scrollY?
+    view.afterInsert()
+    console.log 'TD: openView' if view.fromCache
 
   onGPlusAPILoaded: => console.log 'TD: onGPlusAPILoaded'
 
