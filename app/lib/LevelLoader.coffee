@@ -26,7 +26,11 @@ module.exports = class LevelLoader extends CocoClass
   loadSession: ->
     url = if @sessionID then "/db/level_session/#{@sessionID}" else "/db/level/#{@levelID}/session"
     @session = new LevelSession()
-    console.log 'TD: loadSession', url, @session
+    @session.url = -> url
+    @session.fetch()
+    @session.once 'sync', @onSessionLoaded
+
+  onSessionLoaded: => console.log 'TD: onSessionLoaded'
 
   # Dynamic sound loading
 
