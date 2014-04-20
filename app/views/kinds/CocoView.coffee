@@ -115,7 +115,12 @@ module.exports = class CocoView extends Backbone.View
 
   # Utilities
 
-  getQueryVariable: (param) -> console.log 'TD: getQueryVariable'
+  getQueryVariable: (param) ->
+    query = document.location.search.substring 1
+    pairs = (pair.split('=') for pair in query.split '&')
+    for pair in pairs
+      console.log 'TD: getQueryVariable' if pair[0] is param
+    null
 
   isMobile: ->
     ua = navigator.userAgent or navigator.vendor or window.opera
