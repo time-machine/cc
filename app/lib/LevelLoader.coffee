@@ -1,3 +1,4 @@
+Level = require 'models/Level'
 CocoClass = require 'lib/CocoClass'
 LevelSession =  require 'models/LevelSession'
 
@@ -19,6 +20,7 @@ module.exports = class LevelLoader extends CocoClass
   constructor: (@levelID, @supermodel, @sessionID) ->
     super()
     @loadSession()
+    @loadLevelModels()
     console.log 'TD: constructor', @levelID, @supermodel, @sessionID
 
   # Session Loading
@@ -31,6 +33,20 @@ module.exports = class LevelLoader extends CocoClass
     @session.once 'sync', @onSessionLoaded
 
   onSessionLoaded: => console.log 'TD: onSessionLoaded'
+
+  # Supermodel (Level) Loading
+  loadLevelModels: ->
+    @supermodel.once 'loaded-all', @onSupermodelLoadedAll
+    @supermodel.on 'loaded-one', @onSupermodelLoadedOne
+    @supermodel.once 'error', @onSupermodelError
+    @level = @supermodel.getModel(Level, @levelID) or new Level _id: @levelID
+    console.log 'TD: loadLevelModels', @level.constructor.schema
+
+  onSupermodelError: => console.log 'TD: onSupermodelError'
+
+  onSupermodelLoadedOne: (e) => console.log 'TD: onSupermodelLoadedOne'
+
+  onSupermodelLoadedAll: => console.log 'TD: onSupermodelLoadedAll'
 
   # Dynamic sound loading
 
