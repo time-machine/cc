@@ -26,7 +26,9 @@ module.exports = class Handler
 
   getById: (req, res, id) -> console.log 'TD: getById'
 
-  getByRelationship: (req, res, args...) -> console.log 'TD: getByRelationship'
+  getByRelationship: (req, res, args...) ->
+    # this handler should be overwritten by subclasses
+    return @sendNotFoundError(res)
 
   search: (req, res) -> console.log 'TD: search'
 
