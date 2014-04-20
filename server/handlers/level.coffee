@@ -17,7 +17,15 @@ LevelHandler = class LevelHandler extends Handler
     'icon'
   ]
 
-  getByRelationship: (req, res, args...) -> console.log 'TD: getByRelationship'
+  getByRelationship: (req, res, args...) ->
+    return @getSession(req, res, args[0]) if args[1] is 'session'
+    console.log 'TD: getByRelationship', args
+
+  getSession: (req, res, id) ->
+    @getDocumentForIdOrSlug id, (err, level) =>
+      console.log 'TD: getSession error', if err
+      return @sendNotFoundError(res) unless level?
+      console.log 'TD: getSession', id
 
   postEditableProperties: ['name']
 
