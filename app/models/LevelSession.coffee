@@ -6,7 +6,6 @@ module.exports = class LevelSession extends CocoModel
 
   initialize: ->
     super()
-    console.log 'TD: initialize', @constructor.schema
     @on 'sync', (e) => console.log 'TD: initialize'
 
   updatePermissions: -> console.log 'TD: updatePermissions'
