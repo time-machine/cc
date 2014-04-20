@@ -19,7 +19,9 @@ module.exports = class CocoRouter extends Backbone.Router
 
   home: -> @openRoute('home')
 
-  general: (name) -> console.log 'TD: general', name
+  general: (name) ->
+    console.log 'general', arguments
+    @openRoute(name)
 
   cache: {}
   openRoute: (route) ->
@@ -83,11 +85,14 @@ module.exports = class CocoRouter extends Backbone.Router
     try
       return require path
     catch error
-      # FIX: why not use `error.message` instead of `error.toString()`
+      # TOFIX: why not use `error.message` instead of `error.toString()`
       if error.toString().search('Cannot find module "' + path + '" from') is -1
         throw error
 
-  showNotFound: -> console.log 'TD: showNotFound'
+  showNotFound: ->
+    NotFoundView = require 'views/not_found'
+    view = new NotFoundView()
+    view.render()
 
   closeCurrentView: ->
     if window.currentModal?
