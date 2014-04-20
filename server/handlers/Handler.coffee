@@ -49,3 +49,13 @@ module.exports = class Handler
   put: (req, res, id) -> console.log 'TD: Handler put', id
 
   post: (req, res) -> console.log 'TD: Handler post'
+
+  getDocumentForIdOrSlug: (idOrSlug, done) ->
+    idOrSlug = idOrSlug + ''
+    try
+      mongoose.Types.ObjectId.createFromHexString(idOrSlug) # throw error if not a valid ID (probably a slug)
+      @modelClass.findById(idOrSlug).exec (err, document) ->
+        done(err, document)
+    catch e
+      @modelClass.findOne {slug: idOrSlug}, (err, document) =>
+        done(err, document)
