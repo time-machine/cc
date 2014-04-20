@@ -31,6 +31,10 @@ module.exports.setupRoutes = (app) ->
       name = "./handlers/#{module.replace '.', '_'}"
       module = require(name)
       return module.getLatestVersion(req, res, parts[1], parts[3]) if parts[2] is 'version'
+      console.log 'TD: setupRoutes versions' if parts[2] is 'versions'
+      console.log 'TD: setupRoutes files' if parts[2] is 'files'
+      console.log 'TD: setupRoutes search' if req.route.method is 'get' and parts[1] is 'search'
+      return module.getByRelationship(req, res, parts[1..]...) if parts.length > 2
       console.log 'TD: db setupRoutes', module
     catch error
       winston.error("Error trying db method #{req.route.method} route #{parts} from #{name}: #{error}")
