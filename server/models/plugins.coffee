@@ -9,6 +9,9 @@ module.exports.NamedPlugin = (schema) ->
     console.log 'TD: NamedPlugin save'
   )
 
+module.exports.PermissionsPlugin = (schema) ->
+  console.log 'TD: PermissionsPlugin', schema
+
 module.exports.VersionedPlugin = (schema) ->
   schema.uses_coco_versions = true
 
