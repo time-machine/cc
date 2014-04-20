@@ -65,7 +65,13 @@ module.exports = class CocoView extends Backbone.View
 
   # Modals
 
-  toggleModal: (e) -> console.log 'TD: toggleModal', e
+  toggleModal: (e) ->
+    if $(event.currentTarget).prop('target') is '_blank'
+      console.log 'TD: toggleModal blank'
+    # special handler for opening modals that are dynamically loaded, rather than static in the page. It works (or should work) like Bootstrap's modals, except use coco-modal for the data-toggle value.
+    elem = $(e.target)
+    return if elem.data('toggle') isnt 'coco-modal'
+    console.log 'TD: toggleModal'
 
   registerModalsWithin: (e...) ->
     # TODO: Get rid of this part
