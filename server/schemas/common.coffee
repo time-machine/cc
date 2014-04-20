@@ -86,6 +86,23 @@ me.extendSearchableProperties = (schema) ->
   schema.properties = {} unless schema.properties?
   _.extend(schema.properties, searchableProps())
 
+# PERMISSIONED
+
+permissionsProps = ->
+  permissions:
+    type: 'array'
+    items:
+      type: 'object'
+      additionalProperties: false
+      properties:
+        target: {}
+        access: {type: 'string', 'enum': ['read', 'write', 'owner']}
+    format: 'hidden'
+
+me.extendPermissionsProperties = (schema) ->
+  schema.properties = {} unless schema.properties?
+  _.extend(schema.properties, permissionsProps())
+
 # TRANSLATEABLE
 
 me.generateLanguageCodeArrayRegex = -> console.log 'TD: generateLanguageCodeArrayRegex'
