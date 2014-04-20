@@ -1,4 +1,5 @@
 CocoClass = require 'lib/CocoClass'
+LevelSession =  require 'models/LevelSession'
 
 # This is an initial stab at unifying loading and setup into a single place which can
 # monitor everything and keep a LoadingScreen visible overall progress.
@@ -17,7 +18,15 @@ module.exports = class LevelLoader extends CocoClass
 
   constructor: (@levelID, @supermodel, @sessionID) ->
     super()
+    @loadSession()
     console.log 'TD: constructor', @levelID, @supermodel, @sessionID
+
+  # Session Loading
+
+  loadSession: ->
+    url = if @sessionID then "/db/level_session/#{@sessionID}" else "/db/level/#{@levelID}/session"
+    @session = new LevelSession()
+    console.log 'TD: loadSession', url
 
   # Dynamic sound loading
 
