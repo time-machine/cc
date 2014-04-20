@@ -10,7 +10,25 @@ module.exports.NamedPlugin = (schema) ->
   )
 
 module.exports.PermissionsPlugin = (schema) ->
-  console.log 'TD: PermissionsPlugin', schema
+  schema.uses_coco_permissions = true
+
+  PermissionSchema = new mongoose.Schema
+    target: mongoose.Schema.Types.Mixed
+    access: {type: String, 'enum': ['read', 'write', 'owner']}
+  , {id: false, _id: false}
+
+  schema.add(permissions: [PermissionSchema])
+
+  schema.pre 'save', (next) -> console.log 'PermissionsPlugin pre save'
+
+  schema.methods.hasPermissionsForMethod = (actor, method) ->
+    console.log 'TD: hasPermissionsForMethod'
+
+  schema.methods.getOwner = -> console.log 'TD: getOwner'
+
+  schema.methods.getPublicAccess = -> console.log 'TD: getPublicAccess'
+
+  schema.methods.getAccessForUserObjectId = (ObjectId) -> console.log 'TD: getAccessForUserObjectId'
 
 module.exports.VersionedPlugin = (schema) ->
   schema.uses_coco_versions = true
