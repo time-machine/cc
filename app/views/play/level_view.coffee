@@ -2,6 +2,11 @@ View = require 'views/kinds/RootView'
 template = require 'templates/play/level'
 {me} = require 'lib/auth'
 
+# tools
+LevelLoader = require 'lib/LevelLoader'
+
+PROFILE_ME = false
+
 module.exports = class PlayLevelView extends View
   id: 'level-view'
   template: template
@@ -31,7 +36,15 @@ module.exports = class PlayLevelView extends View
     'click #level-done-butotn': 'onDonePressed'
 
   constructor: (options, @levelId) ->
-    console.log 'TD: constructor', options, @levelId
+    console.profile?() if PROFILE_ME
+    super options
+    if not me.get('hourOfCode') and @getQueryVariable 'hour_of_code'
+      console.log 'TD: constructor hourOfCode'
+
+    @isEditorPreview = @getQueryVariable 'dev'
+    sessionID = @getQueryVariable 'session'
+    @levelLoader = new LevelLoader(@levelId, @supermodel, sessionID)
+    console.log 'TD: constructor'
 
   getRenderData: -> console.log 'TD: getRenderData'
 
