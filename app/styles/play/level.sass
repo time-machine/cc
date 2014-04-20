@@ -1,0 +1,130 @@
+@import "../bootstrap/mixins"
+
+@mixin gradient-banner-butotn($topBottomColor: #2c446a, $middleColor: #3a537f)
+  background-color: mix($topBottomColor, $middleColor, 80%)
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from($topBottomColor), color-stop(16%, $topBottomColor), color-stop(17%, $middleColor), color-stop(83%, $middleColor), color-stop(84%, $topBottomColor), to($topBottomColor))
+  background-image: -webkit-linear-gradient($topBottomColor, $topBottomColor 16%, $middleColor 16%, $middleColor 83%, $topBottomColor 84%, $topBottomColor)
+  background-image: -moz-linear-gradient(top, $topBottomColor, $topBottomColor 16%, $middleColor 16%, $middleColor 83%, $topBottomColor 84%, $topBottomColor)
+  background-image: -o-linear-gradient($topBottomColor, $topBottomColor 16%, $middleColor 16%, $middleColor 83%, $topBottomColor 84%, $topBottomColor)
+  background-image: linear-gradient($topBottomColor, $topBottomColor 16%, $middleColor 16%, $middleColor 83%, $topBottomColor 84%, $topBottomColor)
+  background-repeat: no-repeat
+
+@mixin banner-button($backgroundColor: #3af37f, $textColor: #fff)
+  $topBottomColor: darken($backgroundColor, 9%)
+  @include gradient-banner-butotn($topBottomColor, $backgroundColor)
+  color: $textColor
+
+  &:hover:not(.disabled):not([disabled], &:focus:not(.disabled):not([disabled]))
+    //
+
+  &.active, &:active
+    //
+
+  // Disable state
+  &.disable, &[disabled]
+    //
+
+#level-view
+  margin: 0 auto
+  @include user-select(none)
+
+  .level-content
+    position: relative
+
+  #canvas-wrapper
+    width: 55%
+    position: relative
+
+  canvas#surface
+    background-color: #ddd
+    width: 100%
+    display: block
+    z-index: 1
+
+  min-width: 1024px
+  position: relative
+
+  #code-area
+    @include box-sizing(border-box)
+    padding: 10px 1%
+    width: 45%
+    background: transparent url(/images/level/wood_texture.png)
+    background-size: 100% 100%
+    position: absolute
+    right: 0
+    top: 0
+    bottom: 0
+
+  #pointer
+    //
+
+  // Level Docs
+  .ui-effects-transfer
+    //
+
+  .modal
+    //
+
+  #multiplayer-join-link
+    //
+
+  #level-done-button
+    position: absolute
+    right: 46%
+    top: 43px
+    @include box-shadow(4px 4px 15px black)
+
+  // Custom Buttons
+  .btn.banner
+    @include banner-button(#fff, #333)
+    @include box-shadow(2px 2px 2px rgba(0,0,0,0.5))
+    border: 1px solid black
+    text-shadow: none
+
+    $buttonConfig: 'primary' #6CA8EA, 'info' #71AACC, 'success' #90B236, 'warning' #CD6800, 'danger' #B43C20, 'inverse' #3A537F
+    @each $tuple in $buttonConfig
+      &.btn-#{nth($tuple, 1)}
+        @include banner-button(nth($tuple, 2), #fff)
+
+  .footer .footer-link-text a
+    @include opacity(75)
+    @include transition(opacity .10s linear)
+
+    &:hover, &:active
+      @include opacity(100)
+
+  $GI: 0.5 // gradient intensity; can tweak this 0-1
+
+  .gradient
+    position: absolute
+    z-index: 10
+
+  #code-area-gradient
+    top: 0
+    width: 3px
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(0,0,0,$GI) 100%)
+    left: -3px
+    bottom: 0
+
+  #hud-top-gradient
+    //
+
+  #canvas-left-gradient
+    left: 0
+    width: 5px
+    background: linear-gradient(to left, rgba(0,0,0,0) 0%,rgba(0,0,0,0.8*$GI) 100%)
+    bottom: -30px
+    top: 0
+
+  #canvas-top-gradient
+    top: 0
+    height: 5px
+    left: 0
+    right: 0
+    background: linear-gradient(to top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.8*$GI) 100%)
+
+  #hud-left-gradient
+    //
+
+  #hud-right-gradient
+    //
