@@ -23,7 +23,7 @@ LevelHandler = class LevelHandler extends Handler
 
   getSession: (req, res, id) ->
     @getDocumentForIdOrSlug id, (err, level) =>
-      console.log 'TD: getSession error', if err
+      console.log 'TD: getSession error' if err
       return @sendNotFoundError(res) unless level?
       console.log 'TD: getSession', id
 
