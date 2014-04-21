@@ -19,7 +19,22 @@ EventPrereqSchema = c.object {title: 'Event Prerequisite', format: 'event-prereq
 
 NoteGroupSchema = c.object {title: 'Note Group', description: 'A group of notes that should be sent out as a result of this script triggering.', displayProperty: 'name'},
   name: {title: 'Name', description: 'Short name describing the script, like \"Anya greets the player\", for your convenience.', type: 'string'}
-  dom: {'TODO'}
+  dom: c.object {title: 'DOM', description: 'Manipulate things in the play area DOM, outside of the level area canvas.'},
+    focus: c.shortString(title: 'Target', description: 'Target highlight element DOM selector string.')
+    showVictory: {
+      title: 'Show Victory'
+      description: 'Show the done button and maybe also the victory modal.'
+      enum: [true, 'Done Button', 'Done Button And Modal'] # deprecate true, same as 'done_button_and_modal'
+    }
+    highlight: c.object {title: 'Highlight', description: 'Highlight the target DOM selector string with a big arrow.'},
+      target: {'TODO'}
+      delay: {'TODO'}
+      offset: {'TODO'}
+      rotation: {'TODO'}
+      sides: {'TODO'}
+    lock: {'TODO'}
+    letterbox: {'TODO'}
+
   goals: {'TODO'}
   playback: {'TODO'}
   script: {'TODO'}
