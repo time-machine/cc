@@ -48,9 +48,33 @@ GoalSchema = c.object {title: 'Goal', description: 'A goal that the player can a
     who: c.array {title: 'Who', description: 'The Thangs which must collect the target items.', minItems: 1}, thang
     targets: c.array {title: 'Targets', description: 'The target items which the Thangs must collect.', minItems: 1}, thang
 
+ResponseSchema = c.object {title: 'Dialogue Button', description: 'A button to be shown to the user with the dialogue.', required: ['text']},
+  text: {title: 'Title', description: 'The text the will be on the button', 'default': 'Okay', type: 'string', maxLength: 30}
+  channel: c.shortString(title: 'Channel', format: 'event-channel', description: 'Channel that this event will be broadcast over, like "level-set-playing".')
+  event: {type: 'object', title: 'Event', description: 'Event that will be broadcast when this button is pressed, like {playing: true}.'}
+  buttonClass: c.shortString(title: 'Button Class', description: 'CSS class that will be added to the button, like "btn-primary".')
+  i18n: {type: 'object', format: 'i18n', props: ['text'], description: 'Help translate this button'}
+
 PointSchema = c.object {title: 'Point', description: 'An {x, y} coordinate point.', format: 'point2d', required: ['x', 'y']},
   x: {title: 'x', description: 'The x coordinate.', type: 'number', 'default': 15}
   y: {title: 'y', description: 'The y coordinate.', type: 'number', 'default': 20}
+
+SpriteCommandSchema = c.object {title: 'Thang Command', description: 'Make a target Thang move or say something, or select/deselect it.', required: ['id'], default: {id: 'Captain Anya'}},
+  id: thang
+  select: {title: 'Select', description: 'Select or deselect this Thang.', type: 'boolean'}
+  say: c.object {title: 'Say', description: 'Make this Thang say a message.', required: ['text']},
+    blurb: c.shortString(title: 'Blurb', description: "A very short message to display above this Thang's head. Plain text.", maxLength: 50)
+    mood: c.shortString(title: 'Mood', description: 'The mood with which the Thang speaks.', 'enum': ['explain', 'debrief', 'congrats', 'attack', 'joke', 'tip', 'alarm'], 'default': 'explain')
+    text: {title: 'Text', description: 'A short message to display in the dialogue area. Markdown okay.', type: 'string', maxLength: 400}
+    sound: c.object {title: 'Sound', description: 'A dialogue sound file to accompany the message.', required: ['mp3', 'ogg']},
+      mp3: c.shortString(title: 'MP3', format: 'sound-file')
+      ogg: c.shortString(title: 'OGG', format: 'sound-file')
+      preload: {title: 'Preload', description: 'Whether to load this sound file before the level can begin (typically for the first dialogue of a level).', type: 'boolean', 'default': false}
+    responses: c.array {title: 'Buttons', description: 'An array of buttons to include with the dialogue, with which the user can respond.'}, ResponseSchema
+    i18n: {type: 'object', format: 'i18n', props: ['blurb', 'text'], description: 'Help translate this message'}
+  move: c.object {title: 'Move', description: 'Tell the Thang to move.', required: ['target'], default: {target: {x: 20, y: 20}, duration: 500}},
+    target: _.extend _.cloneDeep(PointSchema), {title: 'Target', description: 'Target point to which the Thang will move.'}
+    duration: {title: 'Duration', description: 'Number of milliseconds over which to move, or 0 for an instant move.', type: 'integer', minimum: 0, default: 500, format: 'milliseconds'}
 
 NoteGroupSchema = c.object {title: 'Note Group', description: 'A group of notes that should be sent out as a result of this script triggering.', displayProperty: 'name'},
   name: {title: 'Name', description: 'Short name describing the script, like \"Anya greets the player\", for your convenience.', type: 'string'}
@@ -83,8 +107,13 @@ NoteGroupSchema = c.object {title: 'Note Group', description: 'A group of notes 
       toTime: {type: 'number', title: 'To Time', description: 'Set playback time to a target playback point, in seconds.', minimum: 0}
       toGoal: c.shortString(title: 'To Goal', description: 'Set playback time to when this goal was achieved. (TODO: not implemented.)')
 
-  script: {'TODO'}
-  sprites: {'TODO'}
+  script: c.object {title: 'Script', description: 'Extra configuration for this action group.'},
+    duration: {type: 'integer', minimum: 0, title: 'Duration', description: 'How long this script should last in milliseconds. 0 for indefinite.', format: 'milliseconds'}
+    skippable: {type: 'boolean', title: 'Skippable', description: "Whether this script shouldn't bother firing when the player skips past all current scripts."}
+    beforeLoad: {type: 'boolean', title: 'Before Load', description: 'Whether this script should fire before the level is finished loading.'}
+
+  sprites: c.array {title: 'Sprites', description: 'Commands to issue to Sprites on the Surface.'}, SpriteCommandSchema
+
   surface: {'TODO'}
   sound: {'TODO'}
 
