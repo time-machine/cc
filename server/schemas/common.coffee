@@ -13,7 +13,7 @@ combine = (base, ext) ->
 me.object = (ext, props) -> combine {type: 'object', additionalProperties: false, properties: props or {}}, ext
 me.array = (ext, items) -> combine {type: 'array', items: items or {}}, ext
 me.shortString = (ext) -> combine {type: 'string', maxLength: 100}, ext
-me.pct = (ext) -> combine {type: 'number', maximum: 1.0, minumum: 0.0}, ext
+me.pct = (ext) -> combine {type: 'number', maximum: 1.0, minimum: 0.0}, ext
 me.date = (ext) -> combine {type: 'string', format: 'date-time'}, ext
 me.objectId = (ext) -> schema = combine {type: ['object', 'string']}, ext # should just be string (Mongo ID), but sometimes mongoose turns them into objects representing those, so we are lenient
 
@@ -103,7 +103,7 @@ me.extendPermissionsProperties = (schema) ->
   schema.properties = {} unless schema.properties?
   _.extend(schema.properties, permissionsProps())
 
-# TRANSLATEABLE
+# TRANSLATABLE
 
 me.generateLanguageCodeArrayRegex = -> console.log 'TD: generateLanguageCodeArrayRegex'
 

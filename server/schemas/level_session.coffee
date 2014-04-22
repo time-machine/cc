@@ -7,7 +7,7 @@ LevelSessionLevelSchema = c.object {required: ['original', 'majorVersion']}, {
 
 LevelSessionSchema = c.object {
   title: 'Session'
-  description: 'A single session for a give level.'
+  description: 'A single session for a given level.'
 }
 
 _.extend LevelSessionSchema.properties,
