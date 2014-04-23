@@ -1,5 +1,6 @@
 Level = require 'models/Level'
 CocoClass = require 'lib/CocoClass'
+AudioPlayer = require 'lib/AudioPlayer'
 LevelSession =  require 'models/LevelSession'
 
 # This is an initial stab at unifying loading and setup into a single place which can
@@ -21,6 +22,7 @@ module.exports = class LevelLoader extends CocoClass
     super()
     @loadSession()
     @loadLevelModels()
+    @loadAudio()
     console.log 'TD: constructor', @levelID, @supermodel, @sessionID
 
   # Session Loading
@@ -50,6 +52,10 @@ module.exports = class LevelLoader extends CocoClass
   onSupermodelLoadedOne: (e) => console.log 'TD: onSupermodelLoadedOne'
 
   onSupermodelLoadedAll: => console.log 'TD: onSupermodelLoadedAll'
+
+  # Initial Sound Loading
+  loadAudio: ->
+    AudioPlayer.preloadInterfaceSounds ['victory']
 
   # Dynamic sound loading
 
