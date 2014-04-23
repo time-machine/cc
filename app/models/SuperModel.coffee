@@ -5,6 +5,8 @@ class SuperModel
     _.extend(@, Backbone.Events)
 
   populateModel: (model) ->
+    @mustPopulate = model
+    model.fetch() unless model.loaded or model.loading
     console.log 'TD: populateModel', model
 
   getModel: (ModelClass_or_url, id) ->
