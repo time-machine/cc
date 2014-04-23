@@ -1,4 +1,5 @@
 c = require './common'
+ThangComponentSchema = require './thang_component'
 
 SpecificArticleSchema = c.object()
 c.extendNamedProperties SpecificArticleSchema # name first
@@ -120,11 +121,17 @@ NoteGroupSchema = c.object {title: 'Note Group', description: 'A group of notes 
       zoom: {type: 'number', minimum: 0, exclusiveMinimum: true, maximum: 64, title: 'Zoom', description: 'What zoom level to use.'}
       duration: {type: 'number', minimum: 0, title: 'Duration', description: 'in ms'}
       bounds: c.array {title: 'Boundary', maxItems: 2, minItems: 2, default: [{x: 0, y: 0}, {x: 46, y: 39}], format: 'bounds'}, PointSchema
-      isNewDefault:
-    highlight:
-    lockSelect:
+      isNewDefault: {type: 'boolean', format: 'hidden', title: 'New Default', description: 'Set this as new default zoom once scripts end.'} # deprecated
+    highlight: c.object {title: 'Highlight', description: 'Highlight specific Sprites on the Surface.'},
+      targets: c.array {title: 'Targets', description: 'Thang IDs of target Sprites to highlight.'}, thang
+      delay: {type: 'integer', minimum: 0, title: 'Delay', description: 'Delay in milliseconds before the highlight appears.'}
+    lockSelect: {type: 'boolean', title: 'Lock Select', description: "Whether to lock Sprite selection so that the player can't select/deselect anything."}
 
-  sound: {'TODO'}
+  sound: c.object {title: 'Sound', description: 'Commands to control sound playback.'},
+    suppressSelectionSounds: {type: 'boolean', title: 'Suppress Selection Sounds', description: 'Whether to suppress selection sounds made from clicking on Thangs.'}
+    music: c.object { title: 'Music', description: 'Control music playing'},
+      play: { title: 'Play', type: 'boolean'}
+      file: c.shortString(title: 'File', enum: ['/music/music_level_1','/music/music_level_2','/music/music_level_3','/music/music_level_4','/music/music_level_5'])
 
 ScriptSchema = c.object {
   title: 'Script'
@@ -139,6 +146,35 @@ ScriptSchema = c.object {
   scriptPrereqs: c.array {title: 'Happens After', description: 'Scripts that need to fire first.'},
     c.shortString(title: 'ID', description: 'A unique ID of a script that must have triggered before the parent script can trigger.')
   noteChain: c.array {title: 'Actions', description: 'A list of things that happen when this script triggers.'}, NoteGroupSchema
+
+LevelThangSchema = c.object {
+  title: 'Thang'
+  description: 'Thangs are any units, doodads, or abstract things that you use to build the level. (\"Thing\" was too confusing to say.)'
+  format: 'thang'
+  required: ['id', 'thangType', 'components']
+  'default':
+    id: 'Boris'
+    thangType: 'Soldier'
+    components: []
+},
+  id: thang # TODO: figure out if we can make this unique and how to set dynamic defaults
+  # TODO: split thangType into 'original' and 'majorVersion' like the rest for consistency
+  thangType: c.objectId(links: [{rel: 'db', href: '/db/thang_type/{($)}/version'}], title: 'Thang Type', description: 'A reference to the original Thang template being configured.', format: 'thang-type')
+  components: c.array {title: 'Components', description: 'Thangs are configured by changing the Components attached to them.', uniqueItems: true, format: 'thang-components-array'}, ThangComponentSchema # TODO: uniqueness should be based on 'original', not whole thing
+
+LevelSystemSchema = c.object {
+  title: 'System'
+  description: 'Configuration for a System that this Level uses.'
+  format: 'level-system'
+  required: ['original', 'majorVersion']
+  'default':
+    majorVersion: 0
+    config: {}
+  links: [{rel: 'db', href: '/db/level.system/{(original)}/version/{(majorVersion)}'}]
+},
+  original: c.objectId(title: 'Original', description: 'A reference to the original System being configured.', format: 'hidden')
+  config: c.object {title: 'Configuration', description: 'System-specific configuration properties.', additionalProperties: true, format: 'level-system-configuration'}
+  majorVersion: {title: 'Major Version', description: 'Which major version of the System is being used.', type: 'integer', minimum: 0, default: 0, format: 'hidden'}
 
 GeneralArticleSchema = c.object {
   title: 'Article'
@@ -173,11 +209,11 @@ _.extend LevelSchema.properties,
   background: c.objectId({format: 'hidden'})
   nextLevel: c.objectId(links: [{rel: 'extra', href: '/db/level/{($)}'}, {rel: 'db', href: '/db/level/{original}/version/{(majorVersion)}'}], format: 'latest-version-reference', title: 'Next Level', description: 'Reference to the next level players will play after beating this one.')
   scripts: c.array {title: 'Scripts', description: 'An array of scripts that trigger based on what the player does and affect things outside of the core level simulation.', 'default': []}, ScriptSchema
-  thangs: {'TODO'}
-  systems: {'TODO'}
-  victory: {'TODO'}
-  i18n: {'TODO'}
-  icon: {'TODO'}
+  thangs: c.array {title: 'Thangs', description: 'An array of Thangs that make up the level.', 'default': []}, LevelThangSchema
+  systems: c.array {title: 'Systems', description: 'Levels are configured by changing the Systems attached to them.', uniqueItems: true, default: []}, LevelSystemSchema # TODO: uniqueness should be based on 'original', not whole thing
+  victory: c.object {title: 'Victory Screen', default: {}, properties: {'body': {type: 'string', format: 'markdown', title: 'Body Text', description: 'Inserted into the Victory Modal once this level is complete. Tell the player they did a good job and what they accomplished!'}, i18n: {type: 'object', format: 'i18n', props: ['body'], description: 'Help translate this victory message'}}}
+  i18n: {type: 'object', format: 'i18n', props: ['name', 'description'], description: 'Help translate this level'}
+  icon: {type: 'string', format: 'image-file', title: 'Icon'}
 
 c.extendBasicProperties LevelSchema, 'level'
 c.extendSearchableProperties LevelSchema
