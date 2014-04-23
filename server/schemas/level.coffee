@@ -14,12 +14,12 @@ EventPrereqSchema = c.object {title: 'Event Prerequisite', format: 'event-prereq
   eventProps: c.array {'default': ['thang'], format: 'event-value-chain', maxItems: 10, title: 'Event Property', description: 'A chain of keys in the event, like "thang.pos.x" to access event.thang.pos.x.'}, c.shortString(title: 'Property', description: 'A key in the event property key chain.')
   equalTo: c.object {type: eventPrereqValueTypes, title: '==', description: "Script requires the event's property chain value to be equal to this value."}
   notEqualTo: c.object {type: eventPrereqValueTypes, title: '!=', description: "Script requires the event's property chain value to *not* be equal to this value."}
-  greaterThan: c.object {type: 'number', title: '>', description: "Script requires the event's property chain value to be greater than to this value."}
-  greaterThanOrEqualTo: {type: 'number', title: '>=', description: "Script requires the event's property chain value to be greater than or equal to this value."}
+  greaterThan: {type: 'number', title: '>', description: "Script requires the event's property chain value to be greater than this value."}
+  greaterThanOrEqualTo: {type: 'number', title: '>=', description: "Script requires the event's property chain value to be greater or equal to this value."}
   lessThan: {type: 'number', title: '<', description: "Script requires the event's property chain value to be less than this value."}
   lessThanOrEqualTo: {type: 'number', title: '<=', description: "Script requires the event's property chain value to be less than or equal to this value."}
   containingString: c.shortString(title: 'Contains', description: "Script requires the event's property chain value to be a string containing this string.")
-  notContainingString: c.shortString(title: 'Does not contains', description: "Script requires the event's property chain value to *not* be a string containing this string.")
+  notContainingString: c.shortString(title: 'Does not contain', description: "Script requires the event's property chain value to *not* be a string containing this string.")
 
 GoalSchema = c.object {title: 'Goal', description: 'A goal that the player can accomplish.', required: ['name', 'id']},
   name: c.shortString(title: 'Name', description: 'Name of the goal that the player will see, like \"Defeat eighteen dragons\".')
@@ -50,7 +50,7 @@ GoalSchema = c.object {title: 'Goal', description: 'A goal that the player can a
     targets: c.array {title: 'Targets', description: 'The target items which the Thangs must collect.', minItems: 1}, thang
 
 ResponseSchema = c.object {title: 'Dialogue Button', description: 'A button to be shown to the user with the dialogue.', required: ['text']},
-  text: {title: 'Title', description: 'The text the will be on the button', 'default': 'Okay', type: 'string', maxLength: 30}
+  text: {title: 'Title', description: 'The text that will be on the button', 'default': 'Okay', type: 'string', maxLength: 30}
   channel: c.shortString(title: 'Channel', format: 'event-channel', description: 'Channel that this event will be broadcast over, like "level-set-playing".')
   event: {type: 'object', title: 'Event', description: 'Event that will be broadcast when this button is pressed, like {playing: true}.'}
   buttonClass: c.shortString(title: 'Button Class', description: 'CSS class that will be added to the button, like "btn-primary".')
@@ -80,7 +80,7 @@ SpriteCommandSchema = c.object {title: 'Thang Command', description: 'Make a tar
 NoteGroupSchema = c.object {title: 'Note Group', description: 'A group of notes that should be sent out as a result of this script triggering.', displayProperty: 'name'},
   name: {title: 'Name', description: 'Short name describing the script, like \"Anya greets the player\", for your convenience.', type: 'string'}
   dom: c.object {title: 'DOM', description: 'Manipulate things in the play area DOM, outside of the level area canvas.'},
-    focus: c.shortString(title: 'Target', description: 'Target highlight element DOM selector string.')
+    focus: c.shortString(title: 'Focus', description: 'Set the window focus to this DOM selector string.')
     showVictory: {
       title: 'Show Victory'
       description: 'Show the done button and maybe also the victory modal.'
@@ -92,7 +92,7 @@ NoteGroupSchema = c.object {title: 'Note Group', description: 'A group of notes 
       offset: _.extend _.cloneDeep(PointSchema), {title: 'Offset', description: 'Pointing arrow tip offset in pixels from the default target.', format: null}
       rotation: {type: 'number', minimum: 0, title: 'Rotation', description: 'Rotation of the pointing arrow, in radians. PI / 2 points left, PI points up, etc.'}
       sides: c.array {title: 'Sides', description: 'Which sides of the target element to point at.'}, {type: 'string', 'enum': ['left', 'right', 'top', 'bottom'], title: 'Side', description: 'A side of the target element to point at.'}
-    lock: {title: 'Lock', description: "Whether the interface should be locked so that the player's focus is on the script, or specific areas to lock.", type: ['boolean', 'array'], items: {type: 'string', enum: ['surface', 'editor', 'palette', 'hud', 'playback', 'playback-back', 'level']}}
+    lock: {title: 'Lock', description: "Whether the interface should be locked so that the player's focus is on the script, or specific areas to lock.", type: ['boolean', 'array'], items: {type: 'string', enum: ['surface', 'editor', 'palette', 'hud', 'playback', 'playback-hover', 'level']}}
     letterbox: {type: 'boolean', title: 'Letterbox', description: 'Turn letterbox mode on or off. Disables surface and playback controls.'}
 
   goals: c.object {title: 'Goals', description: 'Add or remove goals for the player to complete in the level.'},
