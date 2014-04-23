@@ -24,7 +24,13 @@ module.exports = class Handler
   # generic handlers
   get: (req, res) -> console.log 'TD: Handler get'
 
-  getById: (req, res, id) -> console.log 'TD: getById'
+  getById: (req, res, id) ->
+    console.log 'TD: getById, no access' unless @hasAccess(req)
+
+    @getDocumentForIdOrSlug id, (err, document) =>
+      console.log 'TD: getById, err', err if err
+      return @sendNotFoundError(res) unless document?
+      console.log 'TD: getDocumentForIdOrSlug', id
 
   getByRelationship: (req, res, args...) ->
     # this handler should be overwritten by subclasses
