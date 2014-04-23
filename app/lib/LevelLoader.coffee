@@ -40,7 +40,10 @@ module.exports = class LevelLoader extends CocoClass
     @supermodel.on 'loaded-one', @onSupermodelLoadedOne
     @supermodel.once 'error', @onSupermodelError
     @level = @supermodel.getModel(Level, @levelID) or new Level _id: @levelID
-    console.log 'TD: loadLevelModels', @level.constructor.schema
+
+    @supermodel.shouldPopulate = (model) => console.log 'TD: shouldPopulate'
+
+    @supermodel.populateModel @level
 
   onSupermodelError: => console.log 'TD: onSupermodelError'
 

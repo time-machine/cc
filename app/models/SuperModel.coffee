@@ -4,7 +4,8 @@ class SuperModel
     @collections = {}
     _.extend(@, Backbone.Events)
 
-  populateModel: (model) -> console.log 'TD: populateModel'
+  populateModel: (model) ->
+    console.log 'TD: populateModel', model
 
   getModel: (ModelClass_or_url, id) ->
     console.log 'TD: getModel isString' if _.isString(ModelClass_or_url)
