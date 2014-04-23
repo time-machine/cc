@@ -35,7 +35,8 @@ module.exports.setupRoutes = (app) ->
       console.log 'TD: setupRoutes files' if parts[2] is 'files'
       console.log 'TD: setupRoutes search' if req.route.method is 'get' and parts[1] is 'search'
       return module.getByRelationship(req, res, parts[1..]...) if parts.length > 2
-      console.log 'TD: db setupRoutes', module
+      return module.getById(req, res, parts[1]) if req.route.method is 'get' and parts[1]?
+      console.log 'TD: db setupRoutes', name, parts
     catch error
       winston.error("Error trying db method #{req.route.method} route #{parts} from #{name}: #{error}")
       winston.error(error)
