@@ -7,7 +7,15 @@ class SuperModel
   populateModel: (model) ->
     @mustPopulate = model
     model.fetch() unless model.loaded or model.loading
-    console.log 'TD: populateModel', model
+    model.on('sync', @modelLoaded) unless model.loaded
+    model.once('error', @modelErrored) unless model.loaded
+    url = model.url()
+    @models[url] = model unless @models[url]?
+    console.log 'TD: populateModel' if model.loaded
+
+  modelErrored: (model) => console.log 'TD: modelErrored'
+
+  modelLoaded: (model) => console.log 'TD: modelLoaded'
 
   getModel: (ModelClass_or_url, id) ->
     console.log 'TD: getModel isString' if _.isString(ModelClass_or_url)
