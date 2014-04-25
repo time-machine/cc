@@ -11,6 +11,15 @@ class Manifest
   addSecondarySound: (filename) -> console.log 'TD: addSecondarySound'
   getData: -> console.log 'TD: getData'
 
+class Media
+  constructor: (name) -> @name = name if name
+
+  loaded: false
+  data: null
+  progress: 0.0
+  error: null
+  name: ''
+
 class AudioPlayer extends CocoClass
   subscriptions:
     'play-sound': (e) -> console.log 'TD: play-sound'
@@ -44,7 +53,13 @@ class AudioPlayer extends CocoClass
 
   preloadSoundReference: (sound) -> console.log 'TD: preloadSoundReference'
 
-  preloadSound: (filename, name) -> console.log 'TD: preloadSound', filename, name
+  preloadSound: (filename, name) ->
+    return unless filename
+    return if filename of cache
+    name ?= filename
+    # SoundJS flips out if you try to register the same file twice
+    createjs.Sound.registerSound(filename, name, 1, true) # 1: 1 channel, true: should preload
+    cache[filename] = new Media(name)
 
   onSoundLoaded: (e) => console.log 'TD: onSoundLoaded'
 
