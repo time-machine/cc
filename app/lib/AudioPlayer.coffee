@@ -35,11 +35,16 @@ class AudioPlayer extends CocoClass
 
   soundForDialogue: (message, soundTriggers) -> console.log 'TD: soundForDialogue'
 
-  preloadInterfaceSounds: (names) -> console.log 'TD: preloadInterfaceSounds', names
+  preloadInterfaceSounds: (names) ->
+    for name in names
+      filename = "/file/interface/#{name}#{@ext}"
+      @preloadSound filename, name
 
   # TODO: load Interface sounds somehow, somewhere, somewhen
 
   preloadSoundReference: (sound) -> console.log 'TD: preloadSoundReference'
+
+  preloadSound: (filename, name) -> console.log 'TD: preloadSound', filename, name
 
   onSoundLoaded: (e) => console.log 'TD: onSoundLoaded'
 
