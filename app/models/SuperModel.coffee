@@ -13,7 +13,8 @@ class SuperModel
     @models[url] = model unless @models[url]?
     console.log 'TD: populateModel' if model.loaded
 
-  modelErrored: (model) => console.log 'TD: modelErrored'
+  modelErrored: (model) =>
+    @trigger 'error'
 
   modelLoaded: (model) => console.log 'TD: modelLoaded'
 
