@@ -15,7 +15,8 @@ module.exports = class LoadingScreen extends CocoClass
   show: ->
     console.log 'TD: show screen' if @screen
     @screen = @makeScreen()
-    console.log 'show', @screen
+    @stage.addChild(@screen)
+    @updateProgressBar()
 
   hide: -> console.log 'hide'
 
@@ -36,7 +37,10 @@ module.exports = class LoadingScreen extends CocoClass
     s.x = 0
     s
 
-  makeLoadLogo: (container) -> console.log 'TD: makeLoadLogo', container
+  makeLoadLogo: (container) ->
+    logoImage = new Image()
+    $(logoImage).load => console.log 'TD: makeLoadLogo'
+    logoImage.src = '/images/loading_image.png'
 
   makeLoadText: ->
     size = @height / 10
@@ -73,5 +77,13 @@ module.exports = class LoadingScreen extends CocoClass
     c
 
   onLevelLoaderProgressChanged: (e) -> console.log 'TD: onLevelLoaderProgressChanged'
+
+  updateProgressBar: ->
+    newProg = parseInt((@progress or 0)) * 100
+    console.log 'TD: updateProgressBar length' while newProg.length < 4
+    @lastProg = newProg
+    console.log 'TD: updateProgressBar progress' if @progress is 1
+    @progressBar.scaleX = @progress
+    @stage.update()
 
   destroy: -> console.log 'TD: destroy'
