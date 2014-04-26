@@ -49,7 +49,9 @@ module.exports = class PlayLevelView extends View
     @levelLoader.once 'ready-to-init-world', @onReadyToInitWorld
 
     $(window).on('resize', @onWindowResize)
-    @supermodel.once 'error', => console.log 'supermodel error'
+    @supermodel.once 'error', =>
+      msg = $.i18n.t('play_level.level_load_error', defaultValue: "Level could not be loaded.")
+      @$el.html('<div class="alert">' + msg + '</div>')
     @saveScreenshot = _.throttle @saveScreenshot, 30000
 
   getRenderData: ->
