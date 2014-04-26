@@ -42,6 +42,7 @@ module.exports = class LevelLoader extends CocoClass
   onSessionLoaded: => console.log 'TD: onSessionLoaded'
 
   # Supermodel (Level) Loading
+
   loadLevelModels: ->
     @supermodel.once 'loaded-all', @onSupermodelLoadedAll
     @supermodel.on 'loaded-one', @onSupermodelLoadedOne
@@ -52,7 +53,12 @@ module.exports = class LevelLoader extends CocoClass
 
     @supermodel.populateModel @level
 
-  onSupermodelError: => console.log 'TD: onSupermodelError'
+  onSupermodelError: =>
+    msg = $.i18n.t('play_level.level_load_error',
+      defaultValue: "Level could not be loaded.")
+    # TOFIX: supermodel doesn't have el attribute, only view have it?
+    console.log 'TD: onSupermodelError el' if @$el
+    # @$el.html('<div class="alert">' + msg + '</div>')
 
   onSupermodelLoadedOne: (e) => console.log 'TD: onSupermodelLoadedOne'
 
