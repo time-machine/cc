@@ -45,8 +45,7 @@ module.exports = class CocoView extends Backbone.View
     return @template if _.isString(@template)
     @$el.html @template(@getRenderData())
     @afterRender()
-    if @startsLoading
-      console.log 'TD: render'
+    @showLoading() if @startsLoading
     @$el.i18n()
     @
 
@@ -79,6 +78,14 @@ module.exports = class CocoView extends Backbone.View
       console.log 'TD: registerModalsWithin', modal
 
   # Loading RootViews
+
+  showLoading: ($el=@$el) ->
+    console.log 'TD: showLoading' if $el.length
+    $el.find('>').addClass('hide')
+    $el.append($('<div class="loading-screen"></div>')
+    .append('<h2>Loading</h2>')
+    .append('<div class="progress progress-striped active loading"><div class="bar"></div></div>'))
+    @_lastLoading = $el
 
   hideLoading: -> console.log 'TD: hideLoading'
 
