@@ -23,7 +23,12 @@ module.exports = class LevelLoader extends CocoClass
     @loadSession()
     @loadLevelModels()
     @loadAudio()
+    @playJingle()
     console.log 'TD: constructor', @levelID, @supermodel, @sessionID
+
+  playJingle: ->
+    jingles = ['ident_1', 'ident_2']
+    AudioPlayer.playInterfaceSound jingles[Math.floor Math.random() * jingles.length]
 
   # Session Loading
 
