@@ -67,7 +67,8 @@ module.exports = class PlayLevelView extends View
 
   onSupermodelLoadedOne: => console.log 'TD: onSupermodelLoadedOne'
 
-  afterInsert: -> console.log 'TD: afterInsert'
+  afterInsert: ->
+    super()
 
   onLevelReloadFromData: (e) -> console.log 'TD: onLevelReloadFromData'
 
