@@ -49,6 +49,14 @@ class AudioPlayer extends CocoClass
       filename = "/file/interface/#{name}#{@ext}"
       @preloadSound filename, name
 
+  playInterfaceSound: (name) ->
+    filename = "/file/interface/#{name}#{@ext}"
+    if filename of cache and createjs.Sound.loadComplete filename
+      console.log 'TD: playInterfaceSound loadComplete'
+    else
+      @preloadInterfaceSounds [name] unless filename of cache
+      @soundsToPlayWhenLoaded[name] = true
+
   # TODO: load Interface sounds somehow, somewhere, somewhen
 
   preloadSoundReference: (sound) -> console.log 'TD: preloadSoundReference'
