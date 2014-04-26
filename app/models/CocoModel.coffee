@@ -73,11 +73,17 @@ class CocoModel extends Backbone.Model
 
   publish: -> console.log 'TD: publish'
 
+  # this is triggered twice due to `Level` model is initialized twice by
+  # `LevelLoader.coffee` > `loadLevelModels` >
+  #     `@supermodel.getModel(xx, xx) or new Level _id: xx`
+  #
+  # TOFIX?
   addSchemaDefaults: ->
     return if @addedSchemaDefaults or not @constructor.hasSchema()
     @addedSchemaDefaults = true
     for prop, defaultValue of @constructor.schema.attributes.default or {}
-      console.log 'TD: addSchemaDefaults', prop
+      continue if @get(prop)?
+      @set prop, defaultValue
     for prop, sch of @constructor.schema.attributes.properties or {}
       continue if @get(prop)?
       @set prop, sch.default if sch.default?
