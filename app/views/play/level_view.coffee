@@ -2,6 +2,8 @@ View = require 'views/kinds/RootView'
 template = require 'templates/play/level'
 {me} = require 'lib/auth'
 
+LoadingScreen = require 'lib/LoadingScreen'
+
 # tools
 LevelLoader = require 'lib/LevelLoader'
 
@@ -55,7 +57,11 @@ module.exports = class PlayLevelView extends View
     c.world = @world
     c
 
-  afterRender: -> console.log 'TD: afterRender'
+  afterRender: ->
+    window.onPlayLevelViewLoaded? @ # still a hack
+    @loadingScreen = new LoadingScreen(@$el.find('canvas')[0])
+    @loadingScreen.show()
+    super()
 
   onReadyToInitWorld: => console.log 'TD: onReadyToInitWorld'
 
