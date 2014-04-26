@@ -44,17 +44,25 @@ module.exports = class PlayLevelView extends View
     @isEditorPreview = @getQueryVariable 'dev'
     sessionID = @getQueryVariable 'session'
     @levelLoader = new LevelLoader(@levelId, @supermodel, sessionID)
-    console.log 'TD: constructor'
+    @levelLoader.once 'ready-to-init-world', @onReadyToInitWorld
+
+    $(window).on('resize', @onWindowResize)
+    @supermodel.once 'error', => console.log 'supermodel error'
+    @saveScreenshot = _.throttle @saveScreenshot, 30000
 
   getRenderData: -> console.log 'TD: getRenderData'
 
   afterRender: -> console.log 'TD: afterRender'
+
+  onReadyToInitWorld: => console.log 'TD: onReadyToInitWorld'
 
   onSupermodelLoadedOne: => console.log 'TD: onSupermodelLoadedOne'
 
   afterInsert: -> console.log 'TD: afterInsert'
 
   onLevelReloadFromData: (e) -> console.log 'TD: onLevelReloadFromData'
+
+  onWindowResize: (s...) -> console.log 'TD: onWindowResize'
 
   onDisableControls: (e) => console.log 'TD: onDisableControls'
 
@@ -81,5 +89,8 @@ module.exports = class PlayLevelView extends View
   onBusConnected: -> console.log 'TD: onBusConnected'
 
   onSessionWillSave: (e) -> console.log 'TD: onSessionWillSave'
+
+  # Throttles
+  saveScreenshot: (session) => console.log 'TD: saveScreenshot', session
 
   destroy: -> console.log 'TD: destroy'
