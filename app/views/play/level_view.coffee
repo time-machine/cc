@@ -50,7 +50,10 @@ module.exports = class PlayLevelView extends View
     @supermodel.once 'error', => console.log 'supermodel error'
     @saveScreenshot = _.throttle @saveScreenshot, 30000
 
-  getRenderData: -> console.log 'TD: getRenderData'
+  getRenderData: ->
+    c = super()
+    c.world = @world
+    c
 
   afterRender: -> console.log 'TD: afterRender'
 
