@@ -24,7 +24,9 @@ module.exports = class RootView extends CocoView
 
   showWizardSettingsModal: -> console.log 'TD: showWizardSettingsModal'
 
-  showLoading: ($el) -> console.log 'TD: showLoading'
+  showLoading: ($el) ->
+    $el ?= @$el.find('.main-content-area')
+    super($el)
 
   afterInsert: ->
     # force the browser to scroll to the hash
