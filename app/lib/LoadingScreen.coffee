@@ -22,7 +22,10 @@ module.exports = class LoadingScreen extends CocoClass
   makeScreen: ->
     c = new createjs.Container()
     c.addChild(@makeLoadBackground())
-    console.log 'TD: makeScreen', c
+    c.addChild(@makeLoadText())
+    c.addChild(@makeProgressBar())
+    @makeLoadLogo(c)
+    c
 
   makeLoadBackground: ->
     g = new createjs.Graphics()
@@ -32,6 +35,42 @@ module.exports = class LoadingScreen extends CocoClass
     s.y = 0
     s.x = 0
     s
+
+  makeLoadLogo: (container) -> console.log 'TD: makeLoadLogo', container
+
+  makeLoadText: ->
+    size = @height / 10
+    text = new createjs.Text('LOADING', "#{size}px Monospace", '#ff7700')
+    text.regX = text.getMeasuredWidth() / 2
+    text.regY = text.getMeasuredHeight() / 2
+    text.x = @width / 2
+    text.y = @height / 2
+    @text = text
+    return text
+
+  makeProgressBar: ->
+    BAR_PIXEL_HEIGHT = 20
+    BAR_PCT_WIDTH = .75
+    pixelWidth = parseInt(@width * BAR_PCT_WIDTH)
+    pixelMargin = (@width - (@width * BAR_PCT_WIDTH)) / 2
+    barY = 2 * (@height / 3)
+
+    c = new createjs.Container()
+    c.x = pixelMargin
+    c.y = barY
+
+    g = new createjs.Graphics()
+    g.beginFill(createjs.Graphics.getRGB(255,0,0))
+    g.drawRoundRect(0, 0, pixelWidth, BAR_PIXEL_HEIGHT, 5)
+    @progressBar = new createjs.Shape(g)
+    c.addChild(@progressBar)
+
+    g = new createjs.Graphics()
+    g.setStrokeStyle(2)
+    g.beginStroke(createjs.Graphics.getRGB(230,230,230))
+    g.drawRoundRect(0, 0, pixelWidth, BAR_PIXEL_HEIGHT, 5)
+    c.addChild(new createjs.Shape(g))
+    c
 
   onLevelLoaderProgressChanged: (e) -> console.log 'TD: onLevelLoaderProgressChanged'
 
