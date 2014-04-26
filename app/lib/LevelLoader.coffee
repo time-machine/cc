@@ -24,7 +24,7 @@ module.exports = class LevelLoader extends CocoClass
     @loadLevelModels()
     @loadAudio()
     @playJingle()
-    console.log 'TD: constructor', @levelID, @supermodel, @sessionID
+    setTimeout (=> @update()), 1 # lets everything else resove first
 
   playJingle: ->
     jingles = ['ident_1', 'ident_2']
@@ -58,6 +58,12 @@ module.exports = class LevelLoader extends CocoClass
 
   onSupermodelLoadedAll: => console.log 'TD: onSupermodelLoadedAll'
 
+  # Things to do when either the Session of Supermodel load
+
+  update: ->
+    # @notifyProgress()
+    console.log 'TD: LevelLoader update'
+
   # Initial Sound Loading
   loadAudio: ->
     AudioPlayer.preloadInterfaceSounds ['victory']
@@ -65,5 +71,11 @@ module.exports = class LevelLoader extends CocoClass
   # Dynamic sound loading
 
   loadSoundsForWorld: (e) -> console.log 'TD: loadSoundsForWorld'
+
+  progress: -> console.log 'TD: progress'
+
+  notifyProgress: ->
+    Backbone.Mediator.publish 'level-loader:progress-changed', progress: @progress()
+    console.log 'TD: notifyProgress'
 
   destroy: -> console.log 'TD: destroy'
