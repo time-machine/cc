@@ -76,7 +76,9 @@ module.exports = class LoadingScreen extends CocoClass
     c.addChild(new createjs.Shape(g))
     c
 
-  onLevelLoaderProgressChanged: (e) -> console.log 'TD: onLevelLoaderProgressChanged'
+  onLevelLoaderProgressChanged: (e) ->
+    @progress = e.progress
+    @updateProgressBar()
 
   updateProgressBar: ->
     newProg = parseInt((@progress or 0)) * 100
