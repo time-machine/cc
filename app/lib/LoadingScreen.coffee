@@ -39,7 +39,11 @@ module.exports = class LoadingScreen extends CocoClass
 
   makeLoadLogo: (container) ->
     logoImage = new Image()
-    $(logoImage).load => console.log 'TD: makeLoadLogo'
+    $(logoImage).load =>
+      @logo = new createjs.Bitmap logoImage
+      @logo.x = @width / 2 - logoImage.width / 2
+      @logo.y = 40
+      container.addChild @logo
     logoImage.src = '/images/loading_image.png'
 
   makeLoadText: ->
