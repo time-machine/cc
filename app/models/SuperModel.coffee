@@ -35,4 +35,19 @@ class SuperModel
 
   addCollection: (collection) -> console.log 'TD: addCollection'
 
+  progress: ->
+    total = 0
+    loaded = 0
+
+    for key, model of @models
+      total += 1
+      loaded += 1 if model.loaded
+
+    return 1.0 unless total
+    return loaded / total
+
+  # TOFIX: remove redundant return as coffescript will auto return last statement
+  finished: ->
+    return @progress() == 1.0
+
 module.exports = SuperModel
