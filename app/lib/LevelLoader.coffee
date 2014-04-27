@@ -67,7 +67,10 @@ module.exports = class LevelLoader extends CocoClass
   # Things to do when either the Session of Supermodel load
 
   update: ->
-    # @notifyProgress()
+    @notifyProgress()
+
+    return if @updateCompleted
+    return unless @supermodel.finished() and @session.loaded
     console.log 'TD: LevelLoader update'
 
   # Initial Sound Loading
@@ -78,10 +81,17 @@ module.exports = class LevelLoader extends CocoClass
 
   loadSoundsForWorld: (e) -> console.log 'TD: loadSoundsForWorld'
 
-  progress: -> console.log 'TD: progress'
+  # everything else sound wise is loaded as needed as worlds are generated
+
+  allDone: ->
+    return @supermodel.finished() and @session.loaded and @spriteSheetsBuilt is @spriteSheetsToBuild
+
+  progress: ->
+    return 0 unless @level.loaded
+    console.log 'TD: progress'
 
   notifyProgress: ->
     Backbone.Mediator.publish 'level-loader:progress-changed', progress: @progress()
-    console.log 'TD: notifyProgress'
+    @trigger 'ready-to-init-world' if @allDone()
 
   destroy: -> console.log 'TD: destroy'
