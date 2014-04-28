@@ -1,4 +1,5 @@
 Level = require '../models/Level'
+Session = require '../models/LevelSession'
 Handler = require './Handler'
 
 LevelHandler = class LevelHandler extends Handler
@@ -26,7 +27,22 @@ LevelHandler = class LevelHandler extends Handler
       console.log 'TD: getSession error' if err
       return @sendNotFoundError(res) unless level?
       console.log 'TD: getSession hasAccessToDocument' unless @hasAccessToDocument(req, level)
-      console.log 'TD: getSession'
+
+      sessionQuery = {
+        level: {original: level.original.toString(), majorVersion: level.version.major}
+        creator: req.user.id
+      }
+      Session.findOne(sessionQuery).exec (err, doc) =>
+        console.log 'getSession findOne err' if err
+        if doc
+          console.log 'getSession findOne doc'
+
+        initVals = sessionQuery
+        initVals.state = {complete:false, scripts:{currentScript:null}} # will not save empty objects
+        initVals.permissions = [{target:req.user.id, access:'owner'}, {target:'public', access:'write'}]
+        session = new Session(initVals)
+        session.save (err) =>
+          console.log 'getSession findOne', err
 
   postEditableProperties: ['name']
 

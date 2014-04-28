@@ -1,6 +1,6 @@
 # TODO: not updated since rename from level_instance, or since we redid how all models are done; probably busted
 
-mongooserequire = require 'mongoose'
+mongoose = require 'mongoose'
 plugins = require './plugins'
 
 LevelSessionSchema = new mongoose.Schema({
@@ -10,8 +10,8 @@ LevelSessionSchema = new mongoose.Schema({
 }, {strict: false})
 LevelSessionSchema.plugin(plugins.PermissionsPlugin)
 
-LevelSessionSchema.pre 'init', (next) -> console.log 'TD: pre init'
+LevelSessionSchema.pre 'init', (next) -> console.log 'TD: LevelSession pre init'
 
-LevelSessionSchema.pre 'save', (next) -> console.log 'TD: pre save'
+LevelSessionSchema.pre 'save', (next) -> console.log 'TD: LevelSession pre save'
 
 module.exports = LevelSession = mongoose.model('level.session', LevelSessionSchema)
