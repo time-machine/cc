@@ -10,6 +10,10 @@ module.exports = class Handler
 
   # subclasses should overried these methods
   hasAccess: (req) -> true
+  hasAccessToDocument: (req, document, method=null) ->
+    return true if req.user.isAdmin()
+    console.log 'TD: hasAccessToDocument' if @modelClass.schema.uses_coco_permissions
+    return true
 
   # sending functions
   sendNotFoundError: (res) -> @sendError(res, 404, 'Resource not found.')
@@ -50,7 +54,9 @@ module.exports = class Handler
     sort = { 'version.major': -1, 'version.minor': -1 } # -1 means sort in descending order
     @modelClass.findOne(query).sort(sort).exec (err, doc) =>
       return @sendNotFoundError(res) unless doc?
-      console.log 'TD: getLatestVersion', doc
+      console.log 'TD: getLatestVersion' unless @hasAccessToDocument(req, doc)
+      res.send(doc)
+      res.end()
 
   patch: -> console.log 'TD: Handler patch'
 
