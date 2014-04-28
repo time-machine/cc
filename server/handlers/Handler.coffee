@@ -12,7 +12,8 @@ module.exports = class Handler
   hasAccess: (req) -> true
   hasAccessToDocument: (req, document, method=null) ->
     return true if req.user.isAdmin()
-    console.log 'TD: hasAccessToDocument' if @modelClass.schema.uses_coco_permissions
+    if @modelClass.schema.uses_coco_permissions
+      return document.hasPermissionsForMethod(req.user, method or req.method)
     return true
 
   # sending functions

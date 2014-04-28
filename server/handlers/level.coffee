@@ -25,7 +25,8 @@ LevelHandler = class LevelHandler extends Handler
     @getDocumentForIdOrSlug id, (err, level) =>
       console.log 'TD: getSession error' if err
       return @sendNotFoundError(res) unless level?
-      console.log 'TD: getSession', id
+      console.log 'TD: getSession hasAccessToDocument' unless @hasAccessToDocument(req, level)
+      console.log 'TD: getSession'
 
   postEditableProperties: ['name']
 

@@ -22,7 +22,25 @@ module.exports.PermissionsPlugin = (schema) ->
   schema.pre 'save', (next) -> console.log 'PermissionsPlugin pre save'
 
   schema.methods.hasPermissionsForMethod = (actor, method) ->
-    console.log 'TD: hasPermissionsForMethod'
+    method = method.toLowerCase()
+    # method is 'get', 'put', 'patch', 'post', or 'delete'
+    # actor is a user object
+
+    allowed =
+      get: ['read', 'write', 'owner']
+      put: ['write', 'owner']
+      patch: ['write', 'owner']
+      post: ['write', 'owner'] # used to post new versions of something
+      delete: [] # nothing may go!
+
+    allowed = allowed[method] or []
+
+    for permission in @permissions
+      # allow permission if target is public or is the actor itself
+      if permission.target is 'public' or actor._id.equals(permission.target)
+        return true if permission.access in allowed
+
+    return false
 
   schema.methods.getOwner = -> console.log 'TD: getOwner'
 
