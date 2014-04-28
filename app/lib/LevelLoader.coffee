@@ -21,10 +21,11 @@ module.exports = class LevelLoader extends CocoClass
   constructor: (@levelID, @supermodel, @sessionID) ->
     super()
     @loadSession()
-    @loadLevelModels()
-    @loadAudio()
-    @playJingle()
-    setTimeout (=> @update()), 1 # lets everything else resove first
+    console.log 'TD: constructor'
+    # @loadLevelModels()
+    # @loadAudio()
+    # @playJingle()
+    # setTimeout (=> @update()), 1 # lets everything else resove first
 
   playJingle: ->
     jingles = ['ident_1', 'ident_2']
@@ -36,7 +37,7 @@ module.exports = class LevelLoader extends CocoClass
     url = if @sessionID then "/db/level_session/#{@sessionID}" else "/db/level/#{@levelID}/session"
     @session = new LevelSession()
     @session.url = -> url
-    @session.fetch()
+    @session.fetch() # fetch will init server Level model
     @session.once 'sync', @onSessionLoaded
 
   onSessionLoaded: => console.log 'TD: onSessionLoaded'
