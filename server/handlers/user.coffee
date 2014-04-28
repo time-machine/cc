@@ -45,7 +45,7 @@ UserHandler = class UserHandler extends Handler
 
   post: (req, res) -> console.log 'TD: post'
 
-  hasAccessToDocument: (req, document) -> console.log 'TD: hasAccessToDocument'
+  hasAccessToDocument: (req, document) -> console.log 'TD: user hasAccessToDocument'
 
   getByRelationship: (req, res, args...) -> console.log 'TD: getByRelationship'
 
