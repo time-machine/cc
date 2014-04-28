@@ -10,8 +10,8 @@ LevelSchema.plugin(plugins.PermissionsPlugin)
 LevelSchema.plugin(plugins.VersionedPlugin)
 LevelSchema.plugin(plugins.SearchablePlugin, {searchable: ['name', 'description']})
 
-LevelSchema.pre 'init', (next) -> console.log 'TD: pre init'
+LevelSchema.pre 'init', (next) -> console.log 'TD: LevelSchema pre init'
 
-LevelSchema.post 'init', (doc) -> console.log 'TD: post init'
+LevelSchema.post 'init', (doc) -> console.log 'TD: LevelSchema post init'
 
 module.exports = Level = mongoose.model('level', LevelSchema)
