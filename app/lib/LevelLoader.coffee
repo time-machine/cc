@@ -21,9 +21,9 @@ module.exports = class LevelLoader extends CocoClass
   constructor: (@levelID, @supermodel, @sessionID) ->
     super()
     @loadSession()
+    @loadLevelModels()
+    @loadAudio()
     console.log 'TD: constructor'
-    # @loadLevelModels()
-    # @loadAudio()
     # @playJingle()
     # setTimeout (=> @update()), 1 # lets everything else resove first
 
