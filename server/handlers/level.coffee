@@ -35,7 +35,9 @@ LevelHandler = class LevelHandler extends Handler
       Session.findOne(sessionQuery).exec (err, doc) =>
         console.log 'getSession findOne err' if err
         if doc
-          console.log 'getSession findOne doc'
+          res.send(doc)
+          res.end()
+          return
 
         initVals = sessionQuery
         initVals.state = {complete:false, scripts:{currentScript:null}} # will not save empty objects
