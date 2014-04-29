@@ -16,6 +16,8 @@ module.exports = class Handler
       return document.hasPermissionsForMethod(req.user, method or req.method)
     return true
 
+  formatEntity: (req, document) -> document?.toObject()
+
   # sending functions
   sendNotFoundError: (res) -> @sendError(res, 404, 'Resource not found.')
   sendMethodNotAllowed: (res) -> console.log 'TD: sendMethodNotAllowed'
@@ -23,6 +25,10 @@ module.exports = class Handler
   sendError: (res, code, message) ->
     console.warn 'Sending an error code', code, message
     res.status(code)
+    res.send(message)
+    res.end()
+
+  sendSuccess: (res, message) ->
     res.send(message)
     res.end()
 
