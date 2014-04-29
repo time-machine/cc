@@ -25,10 +25,31 @@ fileGet = (req, res) ->
   else
     Grid.gfs.collection('media').findOne query, (err, filedata) ->
       return returnNotFound(req, res) if not filedata
-      console.log 'TD: fileGet media'
+      readstream = Grid.gfs.createReadStream({_id: filedata._id, root: 'media'})
+      if req.headers['if-modified-since'] is filedata.uploadDate
+        console.log 'TD: fileGet if-modified-since'
+
+      res.setHeader('Content-Type', filedata.contentType)
+      res.setHeader('Last-Modified', filedata.uploadDate)
+      res.setHeader('Cache-Control', 'public')
+      readstream.pipe(res)
+      handleStreamEnd(res, res)
+
+handleStreamEnd = (res, stream) ->
+  stream.on 'close', (f) ->
+    res.send(f)
+    res.end()
+
+  stream.on 'error', ->
+    return returnServerError(res)
 
 returnNotFound = (req, res, message) ->
   res.status(404)
   message = "Route #{req.path} not found." unless message
   res.write(message)
+  res.end()
+
+returnServerError = (res) ->
+  res.status(500)
+  res.send('Server error.')
   res.end()
