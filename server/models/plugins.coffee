@@ -19,7 +19,9 @@ module.exports.PermissionsPlugin = (schema) ->
 
   schema.add(permissions: [PermissionSchema])
 
-  schema.pre 'save', (next) -> console.log 'PermissionsPlugin pre save'
+  schema.pre 'save', (next) ->
+    return next() if @getOwner()
+    console.log 'TD: PermissionsPlugin pre save'
 
   schema.methods.hasPermissionsForMethod = (actor, method) ->
     method = method.toLowerCase()
@@ -42,7 +44,10 @@ module.exports.PermissionsPlugin = (schema) ->
 
     return false
 
-  schema.methods.getOwner = -> console.log 'TD: getOwner'
+  schema.methods.getOwner = ->
+    for permission in @permissions
+      if permission.access is 'owner'
+        return permission.target
 
   schema.methods.getPublicAccess = -> console.log 'TD: getPublicAccess'
 
