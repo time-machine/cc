@@ -42,7 +42,11 @@ LevelHandler = class LevelHandler extends Handler
         initVals.permissions = [{target:req.user.id, access:'owner'}, {target:'public', access:'write'}]
         session = new Session(initVals)
         session.save (err) =>
-          console.log 'getSession findOne', err
+          console.log 'TD: getSession save err' if err
+          @sendSuccess(res, @formatEntity(req, session))
+          # TODO: tying things like @formatEntity and saveChangesToDocument don't make sense
+          # associated with the handler, because the handler might return a different type
+          # of model, like in this case. Refactor to move that logic to the model instead.
 
   postEditableProperties: ['name']
 
