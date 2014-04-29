@@ -29,11 +29,11 @@ class CocoModel extends Backbone.Model
       console.log 'TD: initialize'
     else
       @loadSchema()
-    @once 'sync', @onLoaded
+    @once 'sync', @onLoaded # sync is triggered when Backbone fetch model from server
 
   type: -> console.log 'TD: type'
 
-  onLoaded: => console.log 'TD: onLoaded'
+  onLoaded: => console.log 'TD: onLoaded', @constructor.className, @urlRoot
 
   loadSchema: ->
     unless @constructor.schema
