@@ -29,7 +29,10 @@ class CocoModel extends Backbone.Model
       console.log 'TD: initialize'
     else
       @loadSchema()
-    @once 'sync', @onLoaded # sync is triggered when Backbone fetch model from server
+
+    # sync is triggered when Backbone fetch child model from server.
+    # e.g. `@wizardType.fetch()`
+    @once 'sync', @onLoaded
 
   type: -> console.log 'TD: type'
 
@@ -42,7 +45,7 @@ class CocoModel extends Backbone.Model
       # they are accessable with `@x (e.g. @urlRoot)`
       # if the prop is not found in child class then search it in parent class
       @constructor.schema = new CocoSchema(@urlRoot)
-      @constructor.schema.fetch()
+      @constructor.schema.fetch() # trigger sync event which is listened by `@constructor.schema` below
 
     @constructor.schema.on 'sync', =>
       @constructor.schema.loaded = true

@@ -8,7 +8,8 @@ module.exports = class ThangType extends CocoModel
   initialize: ->
     super()
     @setDefaults()
-    @on 'sync', @setDefaults
+    # the sync event will be received by the parent first, then here
+    @on 'sync', -> @setDefaults
     @spriteSheets = {}
 
   setDefaults: ->

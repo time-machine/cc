@@ -27,6 +27,7 @@ module.exports = class HomeView extends View
     @wizardType = new ThangType()
     @wizardType.url = -> url
     @wizardType.fetch()
+    # the sync event is actioned at here after parent(CoCoModel, then ThangType) has acted with it
     @wizardType.once 'sync', @initCanvas
 
   initCanvas: => console.log 'TD: initCanvas'
