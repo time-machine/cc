@@ -41,7 +41,8 @@ module.exports = class Handler
     @getDocumentForIdOrSlug id, (err, document) =>
       console.log 'TD: getById, err', err if err
       return @sendNotFoundError(res) unless document?
-      console.log 'TD: getDocumentForIdOrSlug', id
+      console.log 'TD: getDocumentForIdOrSlug hasAccessToDocument' unless @hasAccessToDocument(req, document)
+      @sendSuccess(res, @formatEntity(req, document))
 
   getByRelationship: (req, res, args...) ->
     # this handler should be overwritten by subclasses
