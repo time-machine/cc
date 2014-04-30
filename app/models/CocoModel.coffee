@@ -36,7 +36,10 @@ class CocoModel extends Backbone.Model
 
   type: -> console.log 'TD: type'
 
-  onLoaded: => console.log 'TD: onLoaded', @constructor.className, @urlRoot
+  onLoaded: =>
+    @onloaded = true
+    @loading = false
+    @markToRevert()
 
   loadSchema: ->
     unless @constructor.schema
