@@ -1,4 +1,5 @@
 CocoClass = require 'lib/CocoClass'
+SpriteBuilder = require 'lib/sprites/SpriteBuilder' # TOFIX: unused?
 
 # Sprite: EaselJS-based view/controller for Thang model
 module.exports = CocoSprite = class CocoSprite extends CocoClass
