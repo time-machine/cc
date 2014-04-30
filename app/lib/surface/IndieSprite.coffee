@@ -1,4 +1,6 @@
+{me} = require 'lib/auth' # TOFIX: unused?
 CocoSprite = require 'lib/surface/CocoSprite'
+Camera = require './Camera' # TOFIX: unused?
 
 module.exports = IndieSprite = class IndieSprite extends CocoSprite
   notOfThisWorld: true
