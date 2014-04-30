@@ -1,5 +1,6 @@
 View = require 'views/kinds/RootView'
 template = require 'templates/home'
+WizardSprite = require 'lib/surface/WizardSprite'
 ThangType = require 'models/ThangType'
 
 module.exports = class HomeView extends View
@@ -30,7 +31,15 @@ module.exports = class HomeView extends View
     # the sync event is actioned at here after parent(CoCoModel, then ThangType) has acted with it
     @wizardType.once 'sync', @initCanvas
 
-  initCanvas: => console.log 'TD: initCanvas'
+  initCanvas: =>
+    @stage = new createjs.Stage($('#beginner-campaign canvas', @$el)[0])
+    @createWizard -10, 2, 2.6
+    console.log 'TD: initCanvas'
+
+  createWizard: (x=0, y=0, scale=1.0) ->
+    spriteOptions = thangID: 'Beginner Wizard', resolutionFactor: scale
+    @wizardSprite = new WizardSprite @wizardType, spriteOptions
+    console.log 'TD: createWizard', @wizardSprite
 
   onHover: (e) -> console.log 'TD: onHover', e
 
