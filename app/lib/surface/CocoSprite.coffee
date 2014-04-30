@@ -45,8 +45,32 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     super()
     console.log 'TD: constructor', @thangType, options
 
+  destroy: ->
+    super()
+    console.log 'TD: destroy'
+
+  spriteSheetKey: -> console.log 'TD: spriteSheetKey'
+
+  update: -> console.log 'TD: update'
+
+  cache: -> console.log 'TD: cache'
+
   onSetLetterbox: (e) -> console.log 'TD: onSetLetterbox'
+
+  setHighlight: (to, delay) -> console.log 'TD: setHighlight'
+
+  setDimmed: (@dimmed) -> console.log 'TD: setDimmed'
+
+  setDebug: (debug) -> console.log 'TD: setDebug'
+
+  getAverageDimension: -> console.log 'TD: getAverageDimension'
+
+  isTalking: -> console.log 'TD: isTalking'
 
   onDialogue: (e) -> console.log 'TD: onDialogue'
 
   onClearDialogue: (e) -> console.log 'TD: onClearDialogue'
+
+  setNameLabel: (name) -> console.log 'TD: setNameLabel'
+
+  playSounds: (withDelay=true, volume=1.0) -> console.log 'TD: playSounds'
