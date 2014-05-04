@@ -1,7 +1,11 @@
+{thangNames} = require './names'
+
 module.exports = class Thang
   @className: 'Thang'
   @nextID: (spriteName) ->
-    console.log 'TD: nextID'
+    Thang.lastIDNums ?= {}
+    names = thangNames[spriteName]
+    console.log 'TD: nextID', names
 
   @resetThangIDs: -> console.log 'TD: resetThangIDs'
 
