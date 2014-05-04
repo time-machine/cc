@@ -1,3 +1,4 @@
+ThangState = require './thang_state'
 {thangNames} = require './names'
 
 module.exports = class Thang
@@ -5,17 +6,31 @@ module.exports = class Thang
   @nextID: (spriteName) ->
     Thang.lastIDNums ?= {}
     names = thangNames[spriteName]
-    console.log 'TD: nextID', names
+    if names
+      console.log 'TD: nextID names'
+    else
+      Thang.lastIDNums[spriteName] = if Thang.lastIDNums[spriteName]? then Thang.lastIDNums[spriteName] + 1 else 0
+      id = spriteName + (Thang.lastIDNums[spriteName] or '')
+    id
 
   @resetThangIDs: -> console.log 'TD: resetThangIDs'
 
   constructor: (@world, @spriteName, @id) ->
     @spriteName ?= @constructor.className
-    console.log 'TD: constructor', @constructor.nextID @spriteName
+    @id ?= @constructor.nextID @spriteName
+    @addTrackedProperties ['exists', 'boolean'] # TODO: move into System/Components, too?
 
   updateRegistration: -> console.log 'TD: updateRegistration'
 
   publishNote: (channel, event) -> console.log 'TD: publishNote'
+
+  # [prop, type]s of properties which have values tracked across WorldFrames. Also call keepTrackedProperty some non-expensive time when you change it or it will be skipped.
+  addTrackedProperties: (props...) ->
+    @trackedPropertiesKeys ?= []
+    @trackedPropertiesTypes ?= []
+    @trackedPropertiesUsed ?= []
+    for [prop, type] in props
+      console.log 'TD: addTrackedProperties', prop, type, ThangState.trackedPropertiesTypes
 
   keepTrackedProperty: (prop) -> console.log 'TD: keepTrackedProperty'
 
