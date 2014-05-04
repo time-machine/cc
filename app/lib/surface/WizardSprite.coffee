@@ -25,9 +25,13 @@ module.exports = class WizardSprite extends IndieSprite
     'echo-self-wizard-sprite': 'onEchoSelfWizardSprite'
     'echo-all-wizard-sprites': 'onEchoAllWizardSprites'
 
-  constructor: (thangType, options) -> console.log 'TD: constructor', thangType, options
+  constructor: (thangType, options) ->
+    super thangType, options
+    console.log 'TD: constructor', thangType, options
 
-  makeIndieThang: (thangType, thangID, pos) -> console.log 'TD: makeIndieThang'
+  makeIndieThang: (thangType, thangID, pos) ->
+    thang = super thangType, thangID, pos
+    console.log 'TD: makeIndieThang'
 
   onPlayerStatesChanged: (e) -> console.log 'TD: onPlayerStatesChanged'
 
