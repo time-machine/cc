@@ -44,7 +44,8 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
 
   constructor: (@thangType, options) ->
     super()
-    console.log 'TD: constructor', @thangType, options
+    # @options = _.extend(_.cloneDeep(@options), options)
+    console.log 'TD: constructor cloneDeep not working'
 
   destroy: ->
     super()
