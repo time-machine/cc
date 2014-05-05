@@ -10,7 +10,7 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
 
   healthBar: null
   marks: null
-  lables: null
+  labels: null
 
   options:
     resolutionFactor: 4
@@ -45,11 +45,19 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
   constructor: (@thangType, options) ->
     super()
     @options = _.extend(_.cloneDeep(@options), options)
-    console.log 'TD: constructor', @options
+    @setThang @options.thang
+    console.error @toString(), 'has no ThangType!' unless @thangType
+    @actionQueue = []
+    @marks = {}
+    @labels = {}
+    @actions = @thangType.getActions()
+    console.log 'TD: constructor', @actions
 
   destroy: ->
     super()
     console.log 'TD: destroy'
+
+  toString: -> "<CocoSprite: #{@thang?.id}>"
 
   spriteSheetKey: -> console.log 'TD: spriteSheetKey'
 
@@ -62,6 +70,9 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
   setHighlight: (to, delay) -> console.log 'TD: setHighlight'
 
   setDimmed: (@dimmed) -> console.log 'TD: setDimmed'
+
+  setThang: (@thang) ->
+    @options.thang = @thang
 
   setDebug: (debug) -> console.log 'TD: setDebug'
 
