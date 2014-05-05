@@ -30,7 +30,16 @@ module.exports = class Thang
     @trackedPropertiesTypes ?= []
     @trackedPropertiesUsed ?= []
     for [prop, type] in props
-      console.log 'TD: addTrackedProperties', prop, type, ThangState.trackedPropertiesTypes
+      unless type in ThangState.trackedPropertyTypes
+        # How should errors for busted Components work? We can't recover from this and run the world.
+        console.log 'TD: addTrackedProperties throw'
+      oldPropIndex = @trackedPropertiesKeys.indexOf prop
+      if oldPropIndex is -1
+        @trackedPropertiesKeys.push prop
+        @trackedPropertiesTypes.push type
+        @trackedPropertiesUsed.push false
+      else
+        console.log 'TD: addTrackedProperties'
 
   keepTrackedProperty: (prop) -> console.log 'TD: keepTrackedProperty'
 
