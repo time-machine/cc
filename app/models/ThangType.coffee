@@ -20,7 +20,11 @@ module.exports = class ThangType extends CocoModel
 
   resetSpriteSheetCache: -> console.log 'TD: resetSpriteSheetCache'
 
-  getActions: -> console.log 'TD: getActions'
+  getActions: ->
+    console.log 'TD: getActions', @buildActions()
+
+  buildActions: ->
+    console.log 'TD: buildActions', @get('actions')
 
   getSpriteSheet: (options) -> console.log 'TD: getSpriteSheet'
 
