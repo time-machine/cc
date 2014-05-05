@@ -12,14 +12,26 @@ module.exports = IndieSprite = class IndieSprite extends CocoSprite
 
   constructor: (thangType, options) ->
     options.thang = @makeIndieThang thangType, options.thangID, options.pos
-    console.log 'TD: constructor', options.thang
+    super thangType, options
 
   makeIndieThang: (thangType, thangID, pos) ->
     @thang = thang = new Thang null, thangType.get('name'), thangID
-    console.log 'TD: makeIndieThang', @thang
+    # Build needed results of what used to be Exists, Physical, Acts, and Selectable Components
+    thang.exists = true
+    thang.width = thang.height = thang.depth = 4
+    thang.pos = pos ? @defaultPos()
+    thang.pos.z ?= @defaultPos().z
+    thang.rotation = 0
+    thang.action = 'idle'
+    thang.setAction = (action) -> thang.action = action
+    thang.getActionName = -> thang.action
+    thang.acts = true
+    thang.isSelectable = true
+    thang
 
   onNoteGroupStarted: => console.log 'TD: onNoteGroupStarted'
   onNoteGroupEnded: => console.log 'TD: onNoteGroupEnded'
   onMouseEvent: (e, ourEventName) -> console.log 'TD: onMouseEvent'
+  defaultPos: -> x: -20, y: 20, z: @thang.depth / 2
 
   onMove: (e) -> console.log 'TD: onMove'

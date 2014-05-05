@@ -31,7 +31,8 @@ module.exports = class WizardSprite extends IndieSprite
 
   makeIndieThang: (thangType, thangID, pos) ->
     thang = super thangType, thangID, pos
-    console.log 'TD: makeIndieThang'
+    thang.isSelectable = false
+    thang
 
   onPlayerStatesChanged: (e) -> console.log 'TD: onPlayerStatesChanged'
 
