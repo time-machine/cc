@@ -51,7 +51,7 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     @marks = {}
     @labels = {}
     @actions = @thangType.getActions()
-    console.log 'TD: constructor', @actions
+    @buildFromSpriteSheet @buildSpriteSheet()
 
   destroy: ->
     super()
@@ -60,6 +60,11 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
   toString: -> "<CocoSprite: #{@thang?.id}>"
 
   spriteSheetKey: -> console.log 'TD: spriteSheetKey'
+
+  buildSpriteSheet: -> @thangType.getSpriteSheet @options
+
+  buildFromSpriteSheet: (spriteSheet) ->
+    console.log 'TD: buildFromSpriteSheet', spriteSheet
 
   update: -> console.log 'TD: update'
 
