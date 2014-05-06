@@ -21,11 +21,32 @@ module.exports = class ThangType extends CocoModel
   resetSpriteSheetCache: -> console.log 'TD: resetSpriteSheetCache'
 
   getActions: ->
-    console.log 'TD: getActions', @buildActions()
+    return @actions or @buildActions()
 
   buildActions: ->
-    console.log 'TD: buildActions', @get('actions')
+    @actions = _.cloneDeep(@get('actions'))
+    for name, action of @actions
+      action.name = name
+      for relatedName, relatedAction of action.relatedActions ? {}
+        relatedAction.name = action.name + '_' + relatedName
+        @actions[relatedAction.name] = relatedAction
+    @actions
 
-  getSpriteSheet: (options) -> console.log 'TD: getSpriteSheet'
+  getSpriteSheet: (options) ->
+    options = @fillOptions options
+    key = @spriteSheetKey(options)
+    return @spriteSheets[key] or @buildSpriteSheet(options)
+
+  fillOptions: (options) ->
+    options ?= {}
+    options = _.clone options
+    options.resolutionFactor ?= 4
+    options.async ?= false
+    options
+
+  buildSpriteSheet: (options) -> console.log 'TD: buildSpriteSheet'
+
+  spriteSheetKey: (options) ->
+    "#{@get('name')} - #{options.resolutionFactor}"
 
   getPortrait: (spriteOptionsOrKey, size=100) -> console.log 'TD: getPortrait'
