@@ -18,6 +18,18 @@ module.exports = class ThangType extends CocoModel
   resetRawData: ->
     @set('raw', {shapes:{}, containers:{}, animations:{}})
 
+  requiredRawAnimations: ->
+    required = []
+    for name, action of @get('actions')
+      allActions = [action].concat(_.values (action.relatedActions ? {}))
+      for a in allActions when a.animation
+        scale = if name is 'portrait' then a.scale or 1 else a.scale or @get('scale') or 1
+        animation = {animation: a.animation, scale: scale}
+        animation.portrait = name is 'portrait'
+        unless _.find(required, (r) -> _.isEqual r, animation)
+          required.push animation
+    required
+
   resetSpriteSheetCache: -> console.log 'TD: resetSpriteSheetCache'
 
   getActions: ->
@@ -44,7 +56,12 @@ module.exports = class ThangType extends CocoModel
     options.async ?= false
     options
 
-  buildSpriteSheet: (options) -> console.log 'TD: buildSpriteSheet'
+  buildSpriteSheet: (options) ->
+    options = @fillOptions options
+    @buildActions() if not @actions
+    unless @requiredRawAnimations().length or _.find @actions, 'container'
+      console.log 'TD: buildSpriteSheet no animation'
+    console.log 'TD: buildSpriteSheet'
 
   spriteSheetKey: (options) ->
     "#{@get('name')} - #{options.resolutionFactor}"
