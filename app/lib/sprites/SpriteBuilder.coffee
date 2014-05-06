@@ -25,10 +25,39 @@ module.exports = class SpriteBuilder
     map = {}
     for localContainer in localContainers
       container = @buildContainerFromStore(localContainer.gn)
-      console.log 'TD: buildMovieClipContainers'
+      container.setTransform(localContainer.t...)
+      console.log 'TD: buildMovieClipContainers o' if localContainer.o?
+      console.log 'TD: buildMovieClipContainers al' if localContainer.al?
+      map[localContainer.bn] = container
     map
+
+  buildShapeFromStore: (shapeKey, debug=false) ->
+    shapeData = @shapeStore[shapeKey]
+    shape = new createjs.Shape()
+    if shapeData.lf?
+      console.log 'TD: buildShapeFromStore lf'
+    else if shapeData.fc?
+      shape.graphics.f shapeData.fc
+    if shapeData.ls?
+      console.log 'TD: buildShapeFromStore ls'
+    else if shapeData.sc?
+      shape.graphics.s shapeData.sc
+    shape.graphics.ss shapeData.ss... if shapeData.ss?
+    console.log 'TD: buildShapeFromStore de' if shapeData.de?
+    shape.graphics.p shapeData.p if shapeData.p?
+    shape.setTransform shapeData.t...
+    shape
 
   buildContainerFromStore: (containerKey) ->
     console.error "Yo we don't have no", containerKey unless containerKey
     contData = @containerStore[containerKey]
-    console.log 'TD: buildContainerFromStore', containerKey, @containerStore
+    cont = new createjs.Container
+    cont.initialize()
+    for childData in contData.c
+      if _.isString(childData)
+        child = @buildShapeFromStore(childData)
+      else
+        console.log 'TD: buildContainerFromStore'
+      cont.addChild(child)
+    cont.bounds = new createjs.Rectangle(contData.b...)
+    cont
