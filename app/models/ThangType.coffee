@@ -1,4 +1,5 @@
 CocoModel = require './CocoModel'
+SpriteBuilder = require 'lib/sprites/SpriteBuilder'
 
 module.exports = class ThangType extends CocoModel
   @className: 'ThangType'
@@ -60,8 +61,19 @@ module.exports = class ThangType extends CocoModel
     options = @fillOptions options
     @buildActions() if not @actions
     unless @requiredRawAnimations().length or _.find @actions, 'container'
-      console.log 'TD: buildSpriteSheet no animation'
-    console.log 'TD: buildSpriteSheet'
+      return null if @.get('name') is 'Invisible'
+      console.warn "Can't build a CocoSprite with no animations or containers!", @
+
+    vectorParser = new SpriteBuilder(@)
+    builder = new createjs.SpriteSheetBuilder()
+    builder.padding = 2
+
+    # First we add the frames from the raw animations to the sprite sheet builder
+    framesMap = {}
+    for animation in @requiredRawAnimations()
+      name = animation.animation
+      movieClip = vectorParser.buildMovieClip name
+      console.log 'TD: buildSpriteSheet'
 
   spriteSheetKey: (options) ->
     "#{@get('name')} - #{options.resolutionFactor}"
