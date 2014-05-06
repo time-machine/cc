@@ -13,12 +13,52 @@ module.exports = class SpriteBuilder
     locals = {}
     _.extend locals, @buildMovieClipShapes(animData.shapes)
     _.extend locals, @buildMovieClipContainers(animData.containers)
-    console.log 'TD: buildMovieClip'
+    _.extend locals, @buildMovieClipAnimations(animData.animations)
+    _.extend locals, @buildMovieClipGraphics(animData.graphics)
+    anim = new createjs.MovieClip()
+    movieClipArgs ?= []
+    labels = {}
+    labels[animationName] = 0
+    anim.initialize(
+      movieClipArgs[0] ? createjs.MovieClip.INDEPENDENT, # mode
+      movieClipArgs[1] ? 0, # start position
+      movieClipArgs[2] ? true, # loops
+      labels)
+    for tweenData in animData.tweens
+      tween = createjs.Tween
+      for func in tweenData
+        args = _.cloneDeep(func.a)
+        @dereferenceArgs(args, locals)
+        tween = tween[func.n](args...)
+      anim.timeline.addTween(tween)
+
+    anim.nominalBounds = new createjs.Rectangle(animData.bounds...)
+    if animData.frameBounds
+      anim.frameBounds = (new createjs.Rectangle(bounds...) for bounds in animData.frameBounds)
+    anim
+
+  dereferenceArgs: (args, locals) ->
+    for key, val of args
+      if locals[val]
+        args[key] = locals[val]
+      else if val is null
+        args[key] = {}
+      else if _.isString(val) and val.indexOf('createjs.') is 0
+        console.log 'TD: dereferenceArgs isString' # TODO: Security risk
+      else if _.isObject(val) or _.isArray(val)
+        @dereferenceArgs(val, locals)
+    args
 
   buildMovieClipShapes: (localShapes) ->
     map = {}
     for localShape in localShapes
-      console.log 'TD: buildMovieClipShapes', localShape
+      if localShape.im
+        console.log 'TD: buildMovieClipShapes'
+      else
+        shape = @buildShapeFromStore(localShape.gn)
+        if localShape.m
+          console.log 'TD: buildMovieClipShapes m'
+      map[localShape.bn] = shape
     map
 
   buildMovieClipContainers: (localContainers) ->
@@ -29,6 +69,20 @@ module.exports = class SpriteBuilder
       console.log 'TD: buildMovieClipContainers o' if localContainer.o?
       console.log 'TD: buildMovieClipContainers al' if localContainer.al?
       map[localContainer.bn] = container
+    map
+
+  buildMovieClipAnimations: (localAnimations) ->
+    map = {}
+    for localAnimation in localAnimations
+      animation = @buildMovieClip(localAnimation.gn, localAnimation.a)
+      animation.setTransform(localAnimation.t...)
+      map[localAnimation.bn] = animation
+    map
+
+  buildMovieClipGraphics: (localGraphics) ->
+    map = {}
+    for localGraphic in localGraphics
+      console.log 'TD: buildMovieClipGraphics', localGraphic
     map
 
   buildShapeFromStore: (shapeKey, debug=false) ->
