@@ -73,7 +73,33 @@ module.exports = class ThangType extends CocoModel
     for animation in @requiredRawAnimations()
       name = animation.animation
       movieClip = vectorParser.buildMovieClip name
-      console.log 'TD: buildSpriteSheet'
+      if animation.portrait
+        console.log 'TD: buildSpriteSheet animation portrait'
+      else
+        builder.addMovieClip movieClip, null, animation.scale * options.resolutionFactor
+      framesMap[animation.scale + '_' + name] = builder._animations[name].frames
+
+    # Then we add real animations for our actions with our desired configuration
+    for name, action of @actions when action.animation
+      if name is 'portrait'
+        console.log 'TD: buildSpriteSheet action portrait'
+      else
+        scale = action.scale ? @get('scale') ? 1
+      keptFrames = framesMap[scale + '_' + action.animation]
+      if action.frames
+        frames = action.frames
+        frames - frames.split(',') if _.isString(frames)
+        newFrames = (parseInt(f, 10) for f in frames)
+        keptFrames = (f + keptFrames[0] for f in newFrames)
+      action.frames = keptFrames # Keep generated frame numbers around
+      next = true
+      if action.goesTo
+        console.log 'TD: buildSpriteSheet goesTo'
+      else if action.loops is false
+        next = false
+      builder.addAnimation name, keptFrames, next
+
+    console.log 'TD: buildSpriteSheet', builder
 
   spriteSheetKey: (options) ->
     "#{@get('name')} - #{options.resolutionFactor}"
