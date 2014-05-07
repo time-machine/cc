@@ -99,7 +99,17 @@ module.exports = class ThangType extends CocoModel
         next = false
       builder.addAnimation name, keptFrames, next
 
-    console.log 'TD: buildSpriteSheet', builder
+    for name, action of @actions when action.container and not action.animation
+      console.log 'TD: buildSpriteSheet container'
+
+    spriteSheet = null
+    if options.async
+      console.log 'TD: buildSpriteSheet async'
+    else
+      console.warn 'Building', @get('name'), 'and blocking the main thread. LevelLoader should have it built asynchronously instead.'
+      spriteSheet = builder.build()
+    @spriteSheets[@spriteSheetKey(options)] = spriteSheet
+    spriteSheet
 
   spriteSheetKey: (options) ->
     "#{@get('name')} - #{options.resolutionFactor}"
