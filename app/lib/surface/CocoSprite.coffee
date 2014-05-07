@@ -64,7 +64,12 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
   buildSpriteSheet: -> @thangType.getSpriteSheet @options
 
   buildFromSpriteSheet: (spriteSheet) ->
-    console.log 'TD: buildFromSpriteSheet', spriteSheet
+    if spriteSheet
+      sprite = new createjs.Sprite(spriteSheet)
+    else
+      console.log 'TD: buildFromSpriteSheet x'
+    sprite.scaleX = sprite.scaleY = 1 / @options.resolutionFactor
+    console.log 'TD: buildFromSpriteSheet', sprite
 
   update: -> console.log 'TD: update'
 
