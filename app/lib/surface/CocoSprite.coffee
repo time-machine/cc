@@ -69,13 +69,39 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     else
       console.log 'TD: buildFromSpriteSheet x'
     sprite.scaleX = sprite.scaleY = 1 / @options.resolutionFactor
-    console.log 'TD: buildFromSpriteSheet', sprite
+    if @thangType.get('name') in ['Dungeon Floor', 'Grass', 'Goal Trigger', 'Obstacle'] # temp, until these are re-exported with perspective
+      console.log 'TD: buildFromSpriteSheet thangType'
+    @displayObject = new createjs.Container()
+    @imageObject = sprite
+    @displayObject.addChild(sprite)
+    @addHealthBar()
+    @configureMouse()
+    # TODO: generalize this later?
+    @originalScaleX = sprite.scaleX
+    @originalScaleY = sprite.scaleY
+    @displayObject.sprite = @
+    @displayObject.layerPriority = @thangType.get 'layerPriority'
+    @displayObject.name = @thang?.spriteName or @thangType.get 'name'
+    @imageObject.on 'animationend', @onActionEnd
+
+  onActionEnd: (e) => console.log 'TD: onActionEnd'
 
   update: -> console.log 'TD: update'
 
   cache: -> console.log 'TD: cache'
 
+  configureMouse: ->
+    console.log 'TD: configureMouse isSelectable' if @thang?.isSelectable
+    @displayObject.mouseEnabled = @displayObject.mouseChildren = false unless @thang?.isSelectable or @thang?.isLand
+    if @displayObject.mouseEnabled
+      console.log 'TD: configureMouse mouseEnabled'
+
   onSetLetterbox: (e) -> console.log 'TD: onSetLetterbox'
+
+  addHealthBar: ->
+    console.log 'TD: addHealthBar parent' if @healthBar?.parent
+    return unless @thang?.health? and 'health' in (@thang?.hudProperties ? [])
+    console.log 'TD: addHealthBar'
 
   setHighlight: (to, delay) -> console.log 'TD: setHighlight'
 
