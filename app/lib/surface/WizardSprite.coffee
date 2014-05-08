@@ -27,7 +27,10 @@ module.exports = class WizardSprite extends IndieSprite
 
   constructor: (thangType, options) ->
     super thangType, options
-    console.log 'TD: constructor', thangType, options
+    @isSelf = options.isSelf
+    @targetPos = @thang.pos
+    if @isSelf
+      console.log 'TD: constructor'
 
   makeIndieThang: (thangType, thangID, pos) ->
     thang = super thangType, thangID, pos
