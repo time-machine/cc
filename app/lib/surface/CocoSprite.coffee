@@ -86,9 +86,26 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
 
   onActionEnd: (e) => console.log 'TD: onActionEnd'
 
-  update: -> console.log 'TD: update'
+  update: ->
+    # Gets the sprite to reflect what the current state of the thangs and surface are
+    @updatePosition()
+    @updateScale()
+    console.log 'TD: update'
 
   cache: -> console.log 'TD: cache'
+
+  updatePosition: ->
+    return unless @thang?.pos and @options.camera?
+    console.log 'TD: updatePosition'
+
+  updateScale: ->
+    if @thangType.get('matchWorldDimensions') and @thang
+      console.log 'TD: updateScale'
+    scaleX = if @getActionProp 'flipX' then -1 else 1
+    scaleY = if @getActionProp 'flipY' then -1 else 1
+    scaleFactor = @thang.scaleFactor ? 1
+    @imageObject.scaleX = @originalScaleX * scaleX * scaleFactor
+    @imageObject.scaleY = @originalScaleY * scaleY * scaleFactor
 
   configureMouse: ->
     console.log 'TD: configureMouse isSelectable' if @thang?.isSelectable
@@ -102,6 +119,13 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     console.log 'TD: addHealthBar parent' if @healthBar?.parent
     return unless @thang?.health? and 'health' in (@thang?.hudProperties ? [])
     console.log 'TD: addHealthBar'
+
+  getActionProp: (prop, subProp, def=null) ->
+    # Get a property or sub-property from an action, falling back to ThangType
+    for val in [@currentAction?[prop], @thangType.get(prop)]
+      val = val[subProp] if val? and subProp
+      return val if val?
+    def
 
   setHighlight: (to, delay) -> console.log 'TD: setHighlight'
 
