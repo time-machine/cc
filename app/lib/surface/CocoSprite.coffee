@@ -84,12 +84,21 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     @displayObject.name = @thang?.spriteName or @thangType.get 'name'
     @imageObject.on 'animationend', @onActionEnd
 
+  ##################################################
+  # QUEUEING AND PLAYING ACTIONS
+
+  queueAction: (action) ->
+    console.log 'TD: queueAction'
+
   onActionEnd: (e) => console.log 'TD: onActionEnd'
 
   update: ->
     # Gets the sprite to reflect what the current state of the thangs and surface are
     @updatePosition()
     @updateScale()
+    @updateAlpha()
+    @updateRotation()
+    @updateAction()
     console.log 'TD: update'
 
   cache: -> console.log 'TD: cache'
@@ -106,6 +115,45 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     scaleFactor = @thang.scaleFactor ? 1
     @imageObject.scaleX = @originalScaleX * scaleX * scaleFactor
     @imageObject.scaleY = @originalScaleY * scaleY * scaleFactor
+
+  updateAlpha: ->
+    return unless @thang?.alpha?
+    console.log 'TD: updateAlpha'
+
+  updateRotation: (imageObject) ->
+    rotationType = @thangType.get('rotationType')
+    return if rotationType is 'fixed'
+    rotation = @getRotation()
+    imageObject ?= @imageObject
+    return imageObject.rotation = rotation if not rotationType
+    @updateIsometricRotation(rotation, imageObject)
+
+  getRotation: ->
+    return @rotation if not @thang?.rotation
+    console.log 'TD: getRotation'
+
+  updateIsometricRotation: (rotation, imageObject) ->
+    action = @currentRootAction
+    return unless action
+    console.log 'TD: updateIsometricRotation'
+
+  updateAction: ->
+    action = @determineAction()
+    isDifferent = action isnt @currentRootAction
+    console.error 'action is', action, 'for', @thang?.id, 'from', @currentRootAction, @thang.action, @thang.getActionName?() if not action and @thang?.actionActivated and @thang.id is 'Artillery'
+    @queueAction(action) if isDifferent or (@thang?.actionActivated and action.name isnt 'move')
+    console.log 'TD: updateAction'
+
+  determineAction: ->
+    action = null
+    action = @thang.getActionName() if @thang?.acts
+    action ?= @currentRootAction.name if @currentRootAction?
+    action ?= 'idle'
+    action = null unless @actions[action]?
+    return null unless action
+    action = 'break' if @actions.break? and @thang?.erroredOut
+    action = 'die' if @actions.die? and @thang?.health? and @thang.health <= 0
+    @actions[action]
 
   configureMouse: ->
     console.log 'TD: configureMouse isSelectable' if @thang?.isSelectable

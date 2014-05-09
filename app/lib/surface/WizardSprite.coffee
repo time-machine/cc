@@ -53,6 +53,9 @@ module.exports = class WizardSprite extends IndieSprite
   onSurfaceTicked: -> console.log 'TD: onSurfaceTicked'
   move: (pos, duration) -> console.log 'TD: move'
 
-  updateIsometricRotation: (rotation, imageObject) -> console.log 'TD: updateIsometricRotation'
+  updateIsometricRotation: (rotation, imageObject) ->
+    super rotation, imageObject
+    imageObject ?= @imageObject
+    imageObject.scaleX *= -1 if Math.abs(rotation) <= 45 or Math.abs(rotation) >= 135 # reverse it
 
   updateMarks: -> console.log 'TD: updateMarks'
