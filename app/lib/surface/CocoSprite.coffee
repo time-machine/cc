@@ -88,9 +88,27 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
   # QUEUEING AND PLAYING ACTIONS
 
   queueAction: (action) ->
-    console.log 'TD: queueAction'
+    # The normal way to have an action play
+    action = @actions[action] if _.isString(action)
+    action ?= @actions.idle
+    @actionQueue = []
+    @actionQueue.push @currentRootAction.relatedActions.end if @currentRootAction?.relatedActions?.end
+    @actionQueue.push action.relatedActions.begin if action.relatedActions?.begin
+    @actionQueue.push action
+    @currentRootAction = action
+    @playNextAction()
 
   onActionEnd: (e) => console.log 'TD: onActionEnd'
+
+  playNextAction: ->
+    @playAction(@actionQueue.splice(0,1)[0]) if @actionQueue.length
+
+  playAction: (action) ->
+    @currentAction = action
+    console.log 'TD: playAction updateActionDirection' unless action.animation or action.container
+    m = if action.container then 'gotoAndStop' else 'gotoAndPlay'
+    @imageObject[m] action.name
+    console.log 'TD: playAction'
 
   update: ->
     # Gets the sprite to reflect what the current state of the thangs and surface are
