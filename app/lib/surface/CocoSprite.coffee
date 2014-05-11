@@ -124,7 +124,7 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     @updateAction()
     @updateStats()
     @updateMarks()
-    console.log 'TD: update'
+    @updateLabels()
 
   cache: -> console.log 'TD: cache'
 
@@ -256,5 +256,13 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
   onClearDialogue: (e) -> console.log 'TD: onClearDialogue'
 
   setNameLabel: (name) -> console.log 'TD: setNameLabel'
+
+  updateLabels: ->
+    return unless @thang
+    blurb = if @thang.health <= 0 then null else @thang.sayMessage # Dead men tell no tales
+    console.log 'TD: updateLabels blurb' if blurb
+    if @labels.say?.setText blurb
+      console.log 'TD: updateLabels say'
+    console.log 'TD: updateLabels labels' for name, label of @labels
 
   playSounds: (withDelay=true, volume=1.0) -> console.log 'TD: playSounds'
