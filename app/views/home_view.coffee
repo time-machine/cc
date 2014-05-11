@@ -40,7 +40,12 @@ module.exports = class HomeView extends View
     spriteOptions = thangID: 'Beginner Wizard', resolutionFactor: scale
     @wizardSprite = new WizardSprite @wizardType, spriteOptions
     @wizardSprite.update()
-    console.log 'TD: createWizard', @wizardSprite
+    wizardDisplayObject = @wizardSprite.displayObject
+    wizardDisplayObject.x = 50
+    wizardDisplayObject.y = 85
+    wizardDisplayObject.scaleX = wizardDisplayObject.scaleY = scale
+    @stage.addChild wizardDisplayObject
+    @stage.update()
 
   onHover: (e) -> console.log 'TD: onHover', e
 
