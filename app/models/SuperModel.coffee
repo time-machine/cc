@@ -16,7 +16,8 @@ class SuperModel
   modelErrored: (model) =>
     @trigger 'error'
 
-  modelLoaded: (model) => console.log 'TD: modelLoaded'
+  modelLoaded: (model) =>
+    console.log 'TD: modelLoaded', model
 
   getModel: (ModelClass_or_url, id) ->
     console.log 'TD: getModel isString' if _.isString(ModelClass_or_url)
