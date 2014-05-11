@@ -122,6 +122,7 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     @updateAlpha()
     @updateRotation()
     @updateAction()
+    @updateStats()
     console.log 'TD: update'
 
   cache: -> console.log 'TD: cache'
@@ -196,6 +197,10 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     direction = 'fore' if 135 > rotation > 45
     direction = 'back' if -135 < rotation < -45
     relatedActions[direction]
+
+  updateStats: ->
+    if bar = @healthBar
+      console.log 'TD: updateStats'
 
   configureMouse: ->
     console.log 'TD: configureMouse isSelectable' if @thang?.isSelectable
