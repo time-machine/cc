@@ -108,7 +108,12 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     console.log 'TD: playAction updateActionDirection' unless action.animation or action.container
     m = if action.container then 'gotoAndStop' else 'gotoAndPlay'
     @imageObject[m] action.name
-    console.log 'TD: playAction'
+    @imageObject.framerate = action.framerate or 20
+    reg = @getOffset 'registration'
+    @imageObject.regX = -reg.x
+    @imageObject.regY = -reg.y
+    if @currentRootAction.name is 'move'
+      console.log 'TD: playAction'
 
   update: ->
     # Gets the sprite to reflect what the current state of the thangs and surface are
@@ -160,7 +165,7 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     isDifferent = action isnt @currentRootAction
     console.error 'action is', action, 'for', @thang?.id, 'from', @currentRootAction, @thang.action, @thang.getActionName?() if not action and @thang?.actionActivated and @thang.id is 'Artillery'
     @queueAction(action) if isDifferent or (@thang?.actionActivated and action.name isnt 'move')
-    console.log 'TD: updateAction'
+    @updateActionDirection()
 
   determineAction: ->
     action = null
@@ -172,6 +177,25 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     action = 'break' if @actions.break? and @thang?.erroredOut
     action = 'die' if @actions.die? and @thang?.health? and @thang.health <= 0
     @actions[action]
+
+  updateActionDirection: (@wallGrid=null) ->
+    # wallGrid is only needed for wall grid face updates; should refactor if this works
+    return unless action = @getActionDirection()
+    console.log 'TD: updateActionDirection'
+
+  getActionDirection: (rootAction=null) ->
+    rootAction ?= @currentRootAction
+    # TOFIX: will never return null as empty object is always truthy
+    return null unless relatedActions = rootAction?.relatedActions ? {}
+    rotation = @getRotation()
+    if relatedActions['111111111111'] # has grid-surrounding-wall based actions
+      console.log 'TD: getActionDirection relatedActions'
+    value = Math.abs(rotation)
+    direction = null
+    direction = 'side' if value <=45 or value >= 135
+    direction = 'fore' if 135 > rotation > 45
+    direction = 'back' if -135 < rotation < -45
+    relatedActions[direction]
 
   configureMouse: ->
     console.log 'TD: configureMouse isSelectable' if @thang?.isSelectable
@@ -192,6 +216,17 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
       val = val[subProp] if val? and subProp
       return val if val?
     def
+
+  getOffset: (prop) ->
+    # Get the proper offset from either the current action or the ThangType
+    def = x: 0, y: {registration: 0, torso: -50, mouth: -60, aboveHead: -100}[prop]
+    pos = @getActionProp 'positions', prop, def
+    pos = x: pos.x, y: pos.y
+    scale = @getActionProp 'scale', null, 1
+    scale *= @options.resolutionFactor if prop is 'registration'
+    pos.x *= scale
+    pos.y *= scale
+    pos
 
   setHighlight: (to, delay) -> console.log 'TD: setHighlight'
 
