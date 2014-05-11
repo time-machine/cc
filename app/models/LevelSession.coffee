@@ -6,7 +6,10 @@ module.exports = class LevelSession extends CocoModel
 
   initialize: ->
     super()
-    @on 'sync', (e) => console.log 'TD: initialize'
+    @on 'sync', (e) =>
+      state = @get('state') or {}
+      state.scripts ?= {}
+      @set('state', state)
 
   updatePermissions: -> console.log 'TD: updatePermissions'
 
