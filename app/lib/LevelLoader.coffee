@@ -23,9 +23,8 @@ module.exports = class LevelLoader extends CocoClass
     @loadSession()
     @loadLevelModels()
     @loadAudio()
-    console.log 'TD: constructor'
-    # @playJingle()
-    # setTimeout (=> @update()), 1 # lets everything else resove first
+    @playJingle()
+    setTimeout (=> @update()), 1 # lets everything else resolve first
 
   playJingle: ->
     jingles = ['ident_1', 'ident_2']
