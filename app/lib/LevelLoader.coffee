@@ -39,7 +39,10 @@ module.exports = class LevelLoader extends CocoClass
     @session.fetch() # fetch will init server Level model
     @session.once 'sync', @onSessionLoaded
 
-  onSessionLoaded: => console.log 'TD: onSessionLoaded'
+  onSessionLoaded: =>
+    # TODO: maybe have all non versioned models do this? Or make it work to PUT/PATCH to relative urls
+    @session.url = -> '/db/level.session/' + @id
+    @update()
 
   # Supermodel (Level) Loading
 
