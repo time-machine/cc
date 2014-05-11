@@ -123,6 +123,7 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     @updateRotation()
     @updateAction()
     @updateStats()
+    @updateMarks()
     console.log 'TD: update'
 
   cache: -> console.log 'TD: cache'
@@ -232,6 +233,10 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     pos.x *= scale
     pos.y *= scale
     pos
+
+  updateMarks: ->
+    return unless @options.camera
+    console.log 'TD: updateMarks'
 
   setHighlight: (to, delay) -> console.log 'TD: setHighlight'
 

@@ -58,4 +58,5 @@ module.exports = class WizardSprite extends IndieSprite
     imageObject ?= @imageObject
     imageObject.scaleX *= -1 if Math.abs(rotation) <= 45 or Math.abs(rotation) >= 135 # reverse it
 
-  updateMarks: -> console.log 'TD: updateMarks'
+  updateMarks: ->
+    super() if @displayObject.visible # not if we hid the wiz
