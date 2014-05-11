@@ -98,7 +98,7 @@ module.exports = CocoSprite = class CocoSprite extends CocoClass
     @currentRootAction = action
     @playNextAction()
 
-  onActionEnd: (e) => console.log 'TD: onActionEnd'
+  onActionEnd: (e) => @playNextAction()
 
   playNextAction: ->
     @playAction(@actionQueue.splice(0,1)[0]) if @actionQueue.length
