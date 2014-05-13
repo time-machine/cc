@@ -58,7 +58,7 @@ class CocoModel extends Backbone.Model
 
   # @method (direct method) can access @attr (direct attr) of class
   @hasSchema: -> return @schema?.loaded
-  schema: -> console.log 'TD: schema'
+  schema: -> return @constructor.schema
 
   validate: -> console.log 'TD: validate'
 
@@ -94,6 +94,28 @@ class CocoModel extends Backbone.Model
       continue if @get(prop)?
       @set prop, sch.default if sch.default?
 
-  getReferenceModels: (data, schema, path='/') -> console.log 'TD: getReferenceModels'
+  getReferencedModels: (data, schema, path='/') ->
+    # returns unfetched model shells for every referenced doc in this model
+    # OPTIMIZE so that when loading models, it doesn't cause the site to stutter
+    data ?= @attributes
+    schema ?= @schema().attributes
+    models = []
+
+    if $.isArray(data) and schema.items?
+      console.log 'TD: getReferencedModels array'
+
+    if $.isPlainObject(data) and schema.properties?
+      for key, subData of data
+        continue unless schema.properties[key]
+        models = models.concat(@getReferencedModels(subData, schema.properties[key], path+key+'/'))
+
+    model = CocoModel.getReferencedModel data, schema
+    console.log 'TD: getReferencedModels'
+    return models
+
+  @getReferencedModel: (data, schema) ->
+    return null unless schema.links?
+    linkObject = _.find schema.links, rel: 'db'
+    console.log 'TD: getReferencedModel', linkObject
 
 module.exports = CocoModel

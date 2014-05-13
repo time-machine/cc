@@ -8,4 +8,6 @@ module.exports = class Level extends CocoModel
 
   dimensions: -> console.log 'TD: dimensions'
 
-  getReferencedModels: (data, schema, path='/') -> console.log 'TD: getReferencedModels'
+  getReferencedModels: (data, schema, path='/') ->
+    models = super data, schema, path
+    console.log 'TD: getReferencedModels'

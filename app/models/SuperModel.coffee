@@ -17,7 +17,10 @@ class SuperModel
     @trigger 'error'
 
   modelLoaded: (model) =>
-    console.log 'TD: modelLoaded', model
+    schema = model.schema()
+    console.log 'TD: modelLoaded loaded' unless schema.loaded
+    refs = model.getReferencedModels(model.attributes, schema.attributes)
+    console.log 'TD: modelLoaded', refs
 
   getModel: (ModelClass_or_url, id) ->
     console.log 'TD: getModel isString' if _.isString(ModelClass_or_url)
