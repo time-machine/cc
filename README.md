@@ -1,8 +1,7 @@
-CodeCombat
-==========
+# CodeCombat
 
 Multiplayer live coding for learning to program.
 
-Note
----
-- remove `bower_components/underscore/underscore.js` for `lodash` to work properly as `_`
+## Setup
+1. Follow https://github.com/codecombat/codecombat/wiki/Developer-environment#setup
+1. Remove `bower_components/underscore/underscore.js` for `lodash` to work properly as `_`
