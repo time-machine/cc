@@ -74,7 +74,11 @@ module.exports = class ThangType extends CocoModel
       name = animation.animation
       movieClip = vectorParser.buildMovieClip name
       if animation.portrait
-        console.log 'TD: buildSpriteSheet animation portrait'
+        movieClip.nominalBounds = null
+        movieClip.frameBounds = null
+        pt = @actions.portrait.positions?.registration
+        rect = new createjs.Rectangle(pt?.x/animation.scale or 0, pt?.y/animation.scale or 0, 100/animation.scale, 100/animation.scale)
+        builder.addMovieClip(movieClip, rect, animation.scale)
       else
         builder.addMovieClip movieClip, null, animation.scale * options.resolutionFactor
       framesMap[animation.scale + '_' + name] = builder._animations[name].frames
@@ -82,7 +86,7 @@ module.exports = class ThangType extends CocoModel
     # Then we add real animations for our actions with our desired configuration
     for name, action of @actions when action.animation
       if name is 'portrait'
-        console.log 'TD: buildSpriteSheet action portrait'
+        scale = action.scale ? 1
       else
         scale = action.scale ? @get('scale') ? 1
       keptFrames = framesMap[scale + '_' + action.animation]
