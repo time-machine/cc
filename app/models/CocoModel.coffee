@@ -110,12 +110,13 @@ class CocoModel extends Backbone.Model
         models = models.concat(@getReferencedModels(subData, schema.properties[key], path+key+'/'))
 
     model = CocoModel.getReferencedModel data, schema
-    console.log 'TD: getReferencedModels'
+    models.push model if model
     return models
 
   @getReferencedModel: (data, schema) ->
     return null unless schema.links?
     linkObject = _.find schema.links, rel: 'db'
-    console.log 'TD: getReferencedModel', linkObject
+    return null unless linkObject
+    console.log 'TD: getReferencedModel'
 
 module.exports = CocoModel
