@@ -10,4 +10,8 @@ module.exports = class Level extends CocoModel
 
   getReferencedModels: (data, schema, path='/') ->
     models = super data, schema, path
-    console.log 'TD: getReferencedModels'
+    if path.match(/\/system\/\d+\/config\//) and data?.indieSprites?.length
+      console.log 'TD: getReferencedModels system'
+    else if path is '/'
+      console.log 'TD: getReferencedModels /'
+    models
