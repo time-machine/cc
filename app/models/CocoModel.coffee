@@ -102,7 +102,8 @@ class CocoModel extends Backbone.Model
     models = []
 
     if $.isArray(data) and schema.items?
-      console.log 'TD: getReferencedModels array'
+      for subData, i in data
+        models = models.concat(@getReferencedModels(subData, schema.items, path+i+'/'))
 
     if $.isPlainObject(data) and schema.properties?
       for key, subData of data
