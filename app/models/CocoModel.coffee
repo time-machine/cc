@@ -118,6 +118,19 @@ class CocoModel extends Backbone.Model
     return null unless schema.links?
     linkObject = _.find schema.links, rel: 'db'
     return null unless linkObject
-    console.log 'TD: getReferencedModel'
+    return null if linkObject.href.match('thang_type') and not @isObjectID(data) # Skip loading hardcoded Thang Types for now (TODO)
+
+    # not fully extensible, but we can worry about that later
+    link = linkObject.href
+    link = link.replace('{(original)}', data.original)
+    link = link.replace('{(majorVersion)}', '' + (data.majorVersion ? 0))
+    link = link.replace('{($)}', data)
+    @getOrMakeModelFromLink(link)
+
+  @getOrMakeModelFromLink: (link) ->
+    console.log 'TD: getOrMakeModelFromLink', link
+
+  @isObjectID: (s) ->
+    s.length is 24 and s.match(/[a-z0-9]/gi)?.length is 24
 
 module.exports = CocoModel
