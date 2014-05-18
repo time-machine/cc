@@ -128,7 +128,22 @@ class CocoModel extends Backbone.Model
     @getOrMakeModelFromLink(link)
 
   @getOrMakeModelFromLink: (link) ->
-    console.log 'TD: getOrMakeModelFromLink', link
+    makeUrlFunc = (url) -> -> url
+    modelUrl = link.split('/')[2]
+    modelModule = _.string.classify(modelUrl)
+    modulePath = "models/#{modelModule}"
+    window.loadedModels ?= {}
+
+    try
+      Model = require modulePath
+      window.loadedModels[modulePath] = Model
+    catch e
+      console.error 'could not laod model from link path', link, 'using path', modulePath
+      return
+
+    model = new Model()
+    model.url = makeUrlFunc(link)
+    return model
 
   @isObjectID: (s) ->
     s.length is 24 and s.match(/[a-z0-9]/gi)?.length is 24
