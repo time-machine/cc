@@ -57,6 +57,9 @@ class AudioPlayer extends CocoClass
       @preloadInterfaceSounds [name] unless filename of cache
       @soundsToPlayWhenLoaded[name] = true
 
+  playSound: (name) ->
+    createjs.Sound.play name, {volume: me.get('volume')}
+
   # TODO: load Interface sounds somehow, somewhere, somewhen
 
   preloadSoundReference: (sound) -> console.log 'TD: preloadSoundReference'
@@ -69,9 +72,20 @@ class AudioPlayer extends CocoClass
     createjs.Sound.registerSound(filename, name, 1, true) # 1: 1 channel, true: should preload
     cache[filename] = new Media(name)
 
-  onSoundLoaded: (e) => console.log 'TD: onSoundLoaded'
+  onSoundLoaded: (e) =>
+    media = cache[e.src]
+    return if not media
+    media.loaded = true
+    media.progress = 1.0
+    if @soundsToPlayWhenLoaded[media.name]
+      @playSound media.name
+      @soundsToPlayWhenLoaded[media.name] = false
+    @notifyProgressChanged()
 
   onSoundLoadError: (e) => console.log 'TD: onSoundLoadError'
+
+  notifyProgressChanged: ->
+    Backbone.Mediator.publish('audio-player:loaded', {sender:@})
 
   getStatus: (src) -> console.log 'TD: getStatus'
 
