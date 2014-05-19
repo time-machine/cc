@@ -52,7 +52,11 @@ module.exports = class LevelLoader extends CocoClass
     @supermodel.once 'error', @onSupermodelError
     @level = @supermodel.getModel(Level, @levelID) or new Level _id: @levelID
 
-    @supermodel.shouldPopulate = (model) => console.log 'TD: shouldPopulate'
+    @supermodel.shouldPopulate = (model) =>
+      # if left unchecked, the supermodel would load this level
+      # and every level next on the chain. This limits the population
+      handles = [model.id, model.get 'slug']
+      return model.constructor.className isnt 'Level' or @levelID in handles
 
     @supermodel.populateModel @level
 
