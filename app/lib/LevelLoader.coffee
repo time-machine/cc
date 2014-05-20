@@ -67,7 +67,12 @@ module.exports = class LevelLoader extends CocoClass
     console.log 'TD: onSupermodelError el' if @$el
     # @$el.html('<div class="alert">' + msg + '</div>')
 
-  onSupermodelLoadedOne: (e) => console.log 'TD: onSupermodelLoadedOne'
+  onSupermodelLoadedOne: (e) =>
+    @notifyProgress()
+    if e.model.type() is 'ThangType'
+      thangType = e.model
+      building = thangType.buildSpriteSheet {async: true}
+      console.log 'TD: onSupermodelLoadedOne'
 
   onSupermodelLoadedAll: => console.log 'TD: onSupermodelLoadedAll'
 
