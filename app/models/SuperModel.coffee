@@ -21,6 +21,14 @@ class SuperModel
     console.log 'TD: modelLoaded loaded' unless schema.loaded
     refs = model.getReferencedModels(model.attributes, schema.attributes)
     refs = [] unless @mustPopulate is model or @shouldPopulate(model)
+    for ref, i in refs
+      refURL = ref.url()
+      continue if @models[refURL]
+      @models[refURL] = ref
+      ref.fetch()
+      ref.on 'sync', @modelLoaded
+
+    @trigger 'loaded-one', model: model
     console.log 'TD: modelLoaded'
 
   getModel: (ModelClass_or_url, id) ->
