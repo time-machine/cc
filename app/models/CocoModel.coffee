@@ -34,7 +34,8 @@ class CocoModel extends Backbone.Model
     # e.g. `@wizardType.fetch()`
     @once 'sync', @onLoaded
 
-  type: -> console.log 'TD: type'
+  type: ->
+    @constructor.className
 
   onLoaded: =>
     @onloaded = true
