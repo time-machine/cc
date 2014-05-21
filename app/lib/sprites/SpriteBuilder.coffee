@@ -111,7 +111,8 @@ module.exports = class SpriteBuilder
       if _.isString(childData)
         child = @buildShapeFromStore(childData)
       else
-        console.log 'TD: buildContainerFromStore'
+        child = @buildContainerFromStore(childData.gn)
+        child.setTransform(childData.t...)
       cont.addChild(child)
     cont.bounds = new createjs.Rectangle(contData.b...)
     cont
