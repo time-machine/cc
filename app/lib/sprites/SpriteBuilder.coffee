@@ -44,7 +44,7 @@ module.exports = class SpriteBuilder
       else if val is null
         args[key] = {}
       else if _.isString(val) and val.indexOf('createjs.') is 0
-        console.log 'TD: dereferenceArgs isString' # TODO: Security risk
+        args[key] = eval(val) # TODO: Security risk
       else if _.isObject(val) or _.isArray(val)
         @dereferenceArgs(val, locals)
     args
