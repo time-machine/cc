@@ -103,18 +103,26 @@ module.exports = class ThangType extends CocoModel
         next = false
       builder.addAnimation name, keptFrames, next
 
-    # idle: Object
-    # container: "Floor"
-    # name: "idle"
-    #
-    # portrait: Object
-    # container: "Floor"
-    # name: "portrait"
-    # scale: 0.2
+    # action
+    #   container: "House_04"
+    #   name: "portrait"
+    #   positions: Object
+    #     registration: Object
+    #       x: 20
+    #       y: 40
+    #   scale: 0.6
     for name, action of @actions when action.container and not action.animation
       scale = options.resolutionFactor * (action.scale or @get('scale') or 1)
       s = vectorParser.buildContainerFromStore(action.container)
-      console.log 'TD: buildSpriteSheet container', s
+      if action.name is 'portrait'
+        scale = action.scale or 1
+        pt = action?.positions?.registration
+        rect = new createjs.Rectangle(pt?.x/scale or 0, pt?.y/scale or 0, 100/scale, 100/scale)
+        # frame = builder.addFrame(s, rect, scale)
+        console.log 'TD: buildSpriteSheet frame'
+      else
+        console.log 'TD: buildSpriteSheet x portrait'
+      console.log 'TD: buildSpriteSheet container'
 
     spriteSheet = null
     if options.async
