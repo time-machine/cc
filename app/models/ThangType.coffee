@@ -118,20 +118,25 @@ module.exports = class ThangType extends CocoModel
         scale = action.scale or 1
         pt = action?.positions?.registration
         rect = new createjs.Rectangle(pt?.x/scale or 0, pt?.y/scale or 0, 100/scale, 100/scale)
-        # frame = builder.addFrame(s, rect, scale)
-        console.log 'TD: buildSpriteSheet frame'
+        frame = builder.addFrame(s, rect, scale)
       else
-        console.log 'TD: buildSpriteSheet x portrait'
-      console.log 'TD: buildSpriteSheet container'
+        frame = builder.addFrame(s, s.bounds, scale)
+      builder.addAnimation name, [frame], false
 
     spriteSheet = null
     if options.async
-      console.log 'TD: buildSpriteSheet async'
+      builder.buildAsync()
+      console.log 'TD: buildSpriteSheet buildAsync'
+      builder.on 'complete', @onBuildSpriteSheetComplete, @, true, @spriteSheetKey(options)
+      return true
     else
       console.warn 'Building', @get('name'), 'and blocking the main thread. LevelLoader should have it built asynchronously instead.'
       spriteSheet = builder.build()
     @spriteSheets[@spriteSheetKey(options)] = spriteSheet
     spriteSheet
+
+  onBuildSpriteSheetComplete: (e, key) ->
+    console.log 'TD: onBuildSpriteSheetComplete', e, key
 
   spriteSheetKey: (options) ->
     "#{@get('name')} - #{options.resolutionFactor}"
