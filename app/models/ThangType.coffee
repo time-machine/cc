@@ -126,7 +126,6 @@ module.exports = class ThangType extends CocoModel
     spriteSheet = null
     if options.async
       builder.buildAsync()
-      console.log 'TD: buildSpriteSheet buildAsync'
       builder.on 'complete', @onBuildSpriteSheetComplete, @, true, @spriteSheetKey(options)
       return true
     else
