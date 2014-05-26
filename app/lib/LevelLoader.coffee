@@ -72,7 +72,10 @@ module.exports = class LevelLoader extends CocoClass
     if e.model.type() is 'ThangType'
       thangType = e.model
       building = thangType.buildSpriteSheet {async: true}
-      console.log 'TD: onSupermodelLoadedOne'
+      if building
+        @spriteSheetsToBuild += 1
+        thangType.on 'build-complete', =>
+          console.log 'TD: onSupermodelLoadedOne build-complete'
 
   onSupermodelLoadedAll: => console.log 'TD: onSupermodelLoadedAll'
 
