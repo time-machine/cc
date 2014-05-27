@@ -18,7 +18,7 @@ class SuperModel
 
   modelLoaded: (model) =>
     schema = model.schema()
-    console.log 'TD: modelLoaded loaded' unless schema.loaded
+    return schema.on('sync', => @modelLoaded(model)) unless schema.loaded
     refs = model.getReferencedModels(model.attributes, schema.attributes)
     refs = [] unless @mustPopulate is model or @shouldPopulate(model)
     for ref, i in refs
