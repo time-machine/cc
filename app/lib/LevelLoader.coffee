@@ -75,7 +75,8 @@ module.exports = class LevelLoader extends CocoClass
       if building
         @spriteSheetsToBuild += 1
         thangType.on 'build-complete', =>
-          console.log 'TD: onSupermodelLoadedOne build-complete'
+          @spriteSheetsToBuild += 1
+          @notifyProgress
 
   onSupermodelLoadedAll: => console.log 'TD: onSupermodelLoadedAll'
 
