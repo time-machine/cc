@@ -89,7 +89,7 @@ module.exports = class SpriteBuilder
     shapeData = @shapeStore[shapeKey]
     shape = new createjs.Shape()
     if shapeData.lf?
-      console.log 'TD: buildShapeFromStore lf'
+      shape.graphics.lf shapeData.lf...
     else if shapeData.fc?
       shape.graphics.f shapeData.fc
     if shapeData.ls?
