@@ -135,7 +135,8 @@ module.exports = class ThangType extends CocoModel
     spriteSheet
 
   onBuildSpriteSheetComplete: (e, key) ->
-    console.log 'TD: onBuildSpriteSheetComplete', e, key
+    @spriteSheets[key] = e.target.spriteSheet
+    @trigger 'build-complete'
 
   spriteSheetKey: (options) ->
     "#{@get('name')} - #{options.resolutionFactor}"
