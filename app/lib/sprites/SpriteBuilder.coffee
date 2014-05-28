@@ -57,7 +57,7 @@ module.exports = class SpriteBuilder
       else
         shape = @buildShapeFromStore(localShape.gn)
         if localShape.m
-          console.log 'TD: buildMovieClipShapes m'
+          shape.mask = map[localShape.m]
       map[localShape.bn] = shape
     map
 
