@@ -53,7 +53,8 @@ module.exports = class SpriteBuilder
     map = {}
     for localShape in localShapes
       if localShape.im
-        console.log 'TD: buildMovieClipShapes'
+        shape = new createjs.Shape()
+        shape._off = true
       else
         shape = @buildShapeFromStore(localShape.gn)
         if localShape.m
