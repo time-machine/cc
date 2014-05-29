@@ -98,7 +98,7 @@ module.exports = class SpriteBuilder
     else if shapeData.sc?
       shape.graphics.s shapeData.sc
     shape.graphics.ss shapeData.ss... if shapeData.ss?
-    console.log 'TD: buildShapeFromStore de' if shapeData.de?
+    shape.graphics.de shapeData.de... if shapeData.de?
     shape.graphics.p shapeData.p if shapeData.p?
     shape.setTransform shapeData.t...
     shape
