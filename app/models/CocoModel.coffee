@@ -139,7 +139,7 @@ class CocoModel extends Backbone.Model
       Model = require modulePath
       window.loadedModels[modulePath] = Model
     catch e
-      console.error 'could not laod model from link path', link, 'using path', modulePath
+      console.error 'could not load model from link path', link, 'using path', modulePath
       return
 
     model = new Model()
