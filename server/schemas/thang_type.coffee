@@ -30,7 +30,7 @@ RawAnimationObjectSchema = c.object {},
   shapes: c.array {},
     bn: { type: 'string', title: 'Block Name' }
     gn: { type: 'string', title: 'Global Name' }
-    im : { type: 'boolean', title: 'Is Mask' }
+    im: { type: 'boolean', title: 'Is Mask' }
     m: { type: 'string', title: 'Uses Mask' }
   containers: c.array {},
     bn: { type: 'string', title: 'Block Name' }
