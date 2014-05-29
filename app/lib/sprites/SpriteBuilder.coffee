@@ -67,7 +67,7 @@ module.exports = class SpriteBuilder
       container = @buildContainerFromStore(localContainer.gn)
       container.setTransform(localContainer.t...)
       console.log 'TD: buildMovieClipContainers o' if localContainer.o?
-      console.log 'TD: buildMovieClipContainers al' if localContainer.al?
+      container.alpha = localContainer.al if localContainer.al?
       map[localContainer.bn] = container
     map
 
