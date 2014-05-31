@@ -44,4 +44,90 @@ module.exports =
     description:
       type: "string"
     "default": {}
-    # TODO
+    multipleOf:
+      type: "number"
+      minimum: 0
+      exclusiveMinumum: true
+    maximum:
+      type: "number"
+    exclusiveMaximum:
+      type: "boolean"
+      "default": false
+    minimum:
+      type: "number"
+    exclusiveMinimum:
+      type: "boolean"
+      "default": false
+    maxLength: { $ref: "#/definitions/positiveInteger" }
+    minLength: { $ref: "#/definitions/positiveIntegerDefault0" }
+    pattern:
+      type: "string"
+      format: "regex"
+    additionalItems:
+      anyOf: [
+        { type: "boolean", "default": false }
+        { $ref: "#" }
+      ]
+    items:
+      anyOf: [
+        { $ref: "#" }
+        { $ref: "#/definitions/schemaArray" }
+      ]
+      "default": {}
+    maxItems: { $ref: "#/definitions/positiveInteger" }
+    minItems: { $ref: "#/definitions/positiveIntegerDefault0" }
+    uniqueItems:
+      type: "boolean"
+      "default": false
+    maxProperties: { $ref: "#/definitions/positiveInteger" }
+    minProperties: { $ref: "#/definitions/positiveIntegerDefault0" }
+    required: { $ref: "#/definitions/stringArray" }
+    additionalProperties:
+      anyOf: [
+        { type: "boolean", "default": true }
+        { $ref: "#" }
+      ]
+      "default": {}
+    definitions:
+      type: "object"
+      additionalProperties: { $ref: "#" }
+      "default": {}
+    properties:
+      type: "object"
+      additionalProperties: { $ref: "#" }
+      "default": {}
+    patternProperties:
+      type: "object"
+      additionalProperties: { $ref: "#" }
+      "default": {}
+    dependencies:
+      type: "object"
+      additionalProperties:
+        anyOf: [
+          { $ref: "#" }
+          { $ref: "#/definitions/stringArray" }
+        ]
+    "enum":
+      type: "array"
+      minItems: 1
+      uniqueItems: true
+      "default": ['']
+    type:
+      anyOf: [
+        { $ref: "#/definitions/simpleTypes" }
+        {
+          type: "array"
+          items: { $ref: "#/definitions/simpleTypes" }
+          minItems: 1
+          uniqueItems: true
+          title: "Array of Types"
+          "default": ['string']
+        }]
+    allOf: { $ref: "#/definitions/schemaArray" }
+    anyOf: { $ref: "#/definitions/schemaArray" }
+    oneOf: { $ref: "#/definitions/schemaArray" }
+    not: { $ref: "#" }
+  dependencies:
+    exclusiveMaximum: [ "maximum" ]
+    exclusiveMinumum: [ "minimum" ]
+  "default": {}
