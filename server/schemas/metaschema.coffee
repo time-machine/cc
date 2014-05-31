@@ -47,7 +47,7 @@ module.exports =
     multipleOf:
       type: "number"
       minimum: 0
-      exclusiveMinumum: true
+      exclusiveminimum: true
     maximum:
       type: "number"
     exclusiveMaximum:
@@ -129,5 +129,5 @@ module.exports =
     not: { $ref: "#" }
   dependencies:
     exclusiveMaximum: [ "maximum" ]
-    exclusiveMinumum: [ "minimum" ]
+    exclusiveminimum: [ "minimum" ]
   "default": {}
