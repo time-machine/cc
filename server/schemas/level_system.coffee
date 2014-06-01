@@ -32,6 +32,12 @@ PropertyDocumentationSchema = c.object {
   description: {type: 'string', description: "Description of the property.", maxLength: 1000}
   args: c.array {title: "Arguments", description: "If this property has type 'function', then provide documentation for any function arguments."}, c.FunctionArgumentSchema
 
+DependencySchema = c.object {
+  # TODO
+},
+  original: c.objectId(title: "Original", description: "A reference to another System upon which this System depends.")
+  majorVersion: {title: "Major Version", description: "Which major version of the System this System needs.", type: 'integer', minimum: 0}
+
 LevelSystemSchema = c.object {
   # TODO
 }
