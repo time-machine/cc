@@ -58,7 +58,11 @@ module.exports = class Handler
     # can get latest overall version, latest of a major version, or a specific version
     query = { 'original': mongoose.Types.ObjectId(original) }
     if version?
-      console.log 'TD: getLatestVersion version', version
+      version = version.split('.')
+      majorVersion = parseInt(version[0])
+      minorVersion = parseInt(version[1])
+      query['version.major'] = majorVersion unless _.isNaN(majorVersion)
+      query['version.minor'] = minorVersion unless _.isNaN(minorVersion)
     sort = { 'version.major': -1, 'version.minor': -1 } # -1 means sort in descending order
     @modelClass.findOne(query).sort(sort).exec (err, doc) =>
       return @sendNotFoundError(res) unless doc?
