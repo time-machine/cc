@@ -104,7 +104,14 @@ module.exports = class LevelLoader extends CocoClass
 
   progress: ->
     return 0 unless @level.loaded
-    console.log 'TD: progress'
+    overallProgress = 0
+    supermodelProgress = @supermodel.progress()
+    overallProgress += supermodelProgress * 0.7
+    overallProgress += 0.1 if @session.loaded
+    spriteMapProgress = if supermodelProgress is 1 then 0.2 else 0
+    spriteMapProgress *= @spriteSheetsBuilt / @spriteSheetsToBuild if @spriteSheetsToBuild
+    overallProgress += spriteMapProgress
+    return overallProgress
 
   notifyProgress: ->
     Backbone.Mediator.publish 'level-loader:progress-changed', progress: @progress()
