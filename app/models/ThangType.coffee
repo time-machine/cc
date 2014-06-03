@@ -98,7 +98,8 @@ module.exports = class ThangType extends CocoModel
       action.frames = keptFrames # Keep generated frame numbers around
       next = true
       if action.goesTo
-        console.log 'TD: buildSpriteSheet goesTo'
+        console.warn "Have't figured out what action.goesTo should do yet"
+        next = action.goesTo # TODO: what should this be? action? animation?
       else if action.loops is false
         next = false
       builder.addAnimation name, keptFrames, next
