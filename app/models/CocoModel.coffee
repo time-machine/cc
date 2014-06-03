@@ -38,7 +38,7 @@ class CocoModel extends Backbone.Model
     @constructor.className
 
   onLoaded: =>
-    @onloaded = true
+    @loaded = true
     @loading = false
     @markToRevert()
 
@@ -54,7 +54,7 @@ class CocoModel extends Backbone.Model
     @constructor.schema.on 'sync', =>
       @constructor.schema.loaded = true
       @addSchemaDefaults()
-      @markToRevert
+      @markToRevert()
       @trigger 'schema-loaded'
 
   # @method (direct method) can access @attr (direct attr) of class
