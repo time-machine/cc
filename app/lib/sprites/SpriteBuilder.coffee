@@ -83,7 +83,8 @@ module.exports = class SpriteBuilder
   buildMovieClipGraphics: (localGraphics) ->
     map = {}
     for localGraphic in localGraphics
-      console.log 'TD: buildMovieClipGraphics', localGraphic
+      graphic = new createjs.Graphics().p(localGraphic.p)
+      map[localGraphic.bn] = graphic
     map
 
   buildShapeFromStore: (shapeKey, debug=false) ->
