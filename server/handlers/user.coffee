@@ -1,8 +1,11 @@
-crypto = require 'crypto'
+winston = require 'winston'
 schema = require '../schemas/user'
+crypto = require 'crypto'
+request = require 'request'
 User = require '../models/User'
 Handler = require './Handler'
 languages = require '../languages'
+mongoose = require 'mongoose'
 
 serverProperties = ['passwordHash', 'emailLower', 'nameLower', 'passwordReset']
 privateProperties = ['permissions', 'email', 'firstName', 'lastName', 'gender', 'facebookID', 'music', 'volume']

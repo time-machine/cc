@@ -1,4 +1,5 @@
 mongoose = require 'mongoose'
+User = require './User'
 textSearch = require 'mongoose-text-search'
 
 module.exports.NamedPlugin = (schema) ->
@@ -51,7 +52,7 @@ module.exports.PermissionsPlugin = (schema) ->
 
   schema.methods.getPublicAccess = -> console.log 'TD: getPublicAccess'
 
-  schema.methods.getAccessForUserObjectId = (ObjectId) -> console.log 'TD: getAccessForUserObjectId'
+  schema.methods.getAccessForUserObjectId = (objectId) -> console.log 'TD: getAccessForUserObjectId'
 
 module.exports.VersionedPlugin = (schema) ->
   schema.uses_coco_versions = true
@@ -73,6 +74,10 @@ module.exports.VersionedPlugin = (schema) ->
   # Prevent multiple documents with the same version
   # Also used for looking up latest version, or specific versions.
   schema.index({'original': 1, 'version.major': -1, 'version.minor': -1}, {unique: true, name: 'version index'})
+
+  schema.methods.makeNewMajorVersion = (newObject, done) -> console.log 'TD: makeNewMajorVersion'
+
+  schema.methods.makeNewMinorVersion = (newObject, majorVersion, done) -> console.log 'TD: makeNewMinorVersion'
 
 module.exports.SearchablePlugin = (schema, options) ->
   # this plugin must be added only after the others (specifically Versioned and Permissions)

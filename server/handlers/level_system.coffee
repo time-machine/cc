@@ -6,12 +6,12 @@ Handler = require('./Handler')
 LevelSystemHandler = class LevelSystemHandler extends Handler
   modelClass: LevelSystem
   editableProperties: [
-    'description',
-    'code',
-    'js',
-    'language',
-    'dependencies',
-    'propertyDocumentation',
+    'description'
+    'code'
+    'js'
+    'language'
+    'dependencies'
+    'propertyDocuentation'
     'configSchema'
   ]
   postEditableProperties: ['name']

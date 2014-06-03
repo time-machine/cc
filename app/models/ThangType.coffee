@@ -10,7 +10,7 @@ module.exports = class ThangType extends CocoModel
     super()
     @setDefaults()
     # the sync event will be received by the parent first, then here
-    @on 'sync', -> @setDefaults
+    @on 'sync', @setDefaults
     @spriteSheets = {}
 
   setDefaults: ->
@@ -92,7 +92,7 @@ module.exports = class ThangType extends CocoModel
       keptFrames = framesMap[scale + '_' + action.animation]
       if action.frames
         frames = action.frames
-        frames - frames.split(',') if _.isString(frames)
+        frames = frames.split(',') if _.isString(frames)
         newFrames = (parseInt(f, 10) for f in frames)
         keptFrames = (f + keptFrames[0] for f in newFrames)
       action.frames = keptFrames # Keep generated frame numbers around

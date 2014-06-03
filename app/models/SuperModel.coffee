@@ -29,7 +29,7 @@ class SuperModel
       ref.on 'sync', @modelLoaded
 
     @trigger 'loaded-one', model: model
-    console.log 'TD: modelLoaded loaded-all' if @finished()
+    @trigger 'loaded-all' if @finished()
 
   getModel: (ModelClass_or_url, id) ->
     console.log 'TD: getModel isString' if _.isString(ModelClass_or_url)

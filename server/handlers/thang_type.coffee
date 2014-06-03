@@ -1,3 +1,5 @@
+winston = require 'winston'
+request = require 'request'
 ThangType = require '../models/ThangType'
 Handler = require './Handler'
 
