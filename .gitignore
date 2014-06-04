@@ -29,6 +29,9 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
+# IntelliJ/WebStorm
+*.iml
+
 # NPM packages folder
 node_modules/
 bower_components/
@@ -69,6 +72,20 @@ coverage/
 # Floo
 .floo
 FLOOBITS_README.md
+
+# mongodb
+db/
+bin/node/
+bin/mongo/
+
+# windows
+/SCOCODE.bat
+
+# local settings
+login.coffee
+
+# debugging
+*.heapsnapshot
 
 ### If you add something here, copy it to the end of .npmignore, too. ###
 
