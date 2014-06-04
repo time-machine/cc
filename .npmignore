@@ -18,15 +18,14 @@ app/assets
 app/styles
 app/templates
 app/views
-#!app/models      # keep
+#!app/models  # keep
 #!app/validators  # keep
-#!app/lib/world   # keep
-#!app/lib/surface # keep
+#!app/lib/world  # keep
+#!app/lib/surface  # keep
 
 ### Stuff from .gitignore ###
-### If you add something here, copy it to the end of .npmignore, too. ###
 
-# Python
+# # Python
 *.pyc
 *.pyo
 
@@ -57,9 +56,8 @@ Thumbs.db
 # IntelliJ/WebStorm
 *.iml
 
-# NPM packages folder
+# NPM packages folder.
 node_modules/
-bower_components/
 
 # Some other random stuff
 always-ignore extensions
@@ -77,14 +75,14 @@ always-ignore extensions
 .settings
 .tmproj
 .idea
-.nbproject
+nbproject
 
-# Brunch folder for temporary files
+# Brunch folder for temporary files.
 tmp/
 
-# # Brunch output
-# public/
-## Do include Brunch output
+### Brunch output
+##public/
+## Do include Brunch output.
 
 # Redis?
 dump.rdb
