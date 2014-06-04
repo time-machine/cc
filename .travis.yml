@@ -12,3 +12,4 @@ before_script:
 
 script:
   - "./node_modules/.bin/karma start --browsers Firefox --single-run"
+
