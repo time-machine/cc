@@ -103,5 +103,6 @@ login.coffee
 # debugging
 *.heapsnapshot
 
-# db dump
+# local stuffs
 dump.tar.gz
+server.js

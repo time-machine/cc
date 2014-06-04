@@ -87,8 +87,9 @@ login.coffee
 # debugging
 *.heapsnapshot
 
-# db dump
+# local stuffs
 dump.tar.gz
+server.js
 
 ### If you add something here, copy it to the end of .npmignore, too. ###
 
