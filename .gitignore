@@ -32,7 +32,7 @@ Thumbs.db
 # IntelliJ/WebStorm
 *.iml
 
-# NPM packages folder
+# NPM packages folder.
 node_modules/
 bower_components/
 
@@ -52,9 +52,9 @@ always-ignore extensions
 .settings
 .tmproj
 .idea
-.nbproject
+nbproject
 
-# Brunch folder for temporary files
+# Brunch folder for temporary files.
 tmp/
 
 # Brunch output
@@ -92,4 +92,3 @@ dump.tar.gz
 server.js
 
 ### If you add something here, copy it to the end of .npmignore, too. ###
-
