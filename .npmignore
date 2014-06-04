@@ -54,6 +54,9 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
+# IntelliJ/WebStorm
+*.iml
+
 # NPM packages folder
 node_modules/
 bower_components/
@@ -88,6 +91,17 @@ dump.rdb
 
 # Mongo
 mongo/
+bin/node/
+bin/mongo/
 
 # Karma coverage
 coverage/
+
+# local settings
+login.coffee
+
+# debugging
+*.heapsnapshot
+
+# db dump
+dump.tar.gz
