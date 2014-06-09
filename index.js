@@ -1,3 +1,4 @@
 require('coffee-script');
-var app = require('./server');
-app.startServer();
+require('coffee-script/register')
+var server = require('./server');
+server.startServer();
