@@ -71,8 +71,7 @@ UserHandler = class UserHandler extends Handler
   getMySimulatorLeaderboardRank: (req, res) ->
     console.log 'TD: getMySimulatorLeaderboardRank'
 
-  # TOFIX: fix indentation
-   getSimulatorLeaderboardQueryParameters: (req) ->
+  getSimulatorLeaderboardQueryParameters: (req) ->
     console.log 'TD: getSimulatorLeaderboardQueryParameters'
 
   validateSimulateLeaderboardRequestParameters: (req) ->

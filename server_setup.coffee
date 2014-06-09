@@ -48,7 +48,7 @@ setupPassportMiddleware = (app) ->
   app.use(authentication.initialize())
   app.use(authentication.session())
 
-setupOneSecondDelayMiddlware = (app) -> # TOFIX: typo Middleware
+setupOneSecondDelayMiddleware = (app) ->
   if(config.slow_down)
     app.use((req, res, next) -> setTimeout((-> next()), 1000))
 
@@ -74,7 +74,7 @@ exports.setupMiddleware = (app) ->
   setupMiddlewareToSendOldBrowserWarningWhenPlayersViewLevelDirectly app
   setupExpressMiddleware app
   setupPassportMiddleware app
-  setupOneSecondDelayMiddlware app
+  setupOneSecondDelayMiddleware app
 
 ###Routing function implementations###
 
