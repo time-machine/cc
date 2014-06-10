@@ -69,6 +69,38 @@ UserSchema = c.object {},
   simulatedBy: {type: 'integer', minimum: 0, default: 0}
   simulatedFor: {type: 'integer', minimum: 0, default: 0}
 
+  jobProfile: c.object {title: 'Job Profile', required: ['lookingFor', 'jobTitle', 'active', 'name', 'city', 'country', 'skills', 'experience', 'shortDescription', 'longDescription', 'visa', 'work', 'education', 'projects', 'links']},
+    lookingFor: {}
+    jobTitle: {}
+    active: {}
+    updated: {}
+    name: {}
+    city: {}
+    country: {}
+    skills: {}
+    experience: {}
+    shortDescription: {}
+    longDescription: {}
+    visa: {}
+    work: {}
+    education: {}
+    projects: {}
+    links: {}
+    photoURL: {}
+
+  jobProfileApproved: {}
+  jobProfileNotes: {}
+  employerAt: {}
+  signedEmployerAgreement: {}
+  points: {}
+
+
 c.extendBasicProperties UserSchema, 'user'
+
+c.definitions =
+  emailSubscription =
+    enabled: {type: 'boolean'}
+    lastSent: c.date()
+    count: {type: 'integer'}
 
 module.exports = UserSchema
