@@ -70,11 +70,11 @@ UserSchema = c.object {},
   simulatedFor: {type: 'integer', minimum: 0, default: 0}
 
   jobProfile: c.object {title: 'Job Profile', required: ['lookingFor', 'jobTitle', 'active', 'name', 'city', 'country', 'skills', 'experience', 'shortDescription', 'longDescription', 'visa', 'work', 'education', 'projects', 'links']},
-    lookingFor: {}
-    jobTitle: {}
-    active: {}
-    updated: {}
-    name: {}
+    lookingFor: {title: 'Looking For', type: 'string', enum: ['Full-time', 'Part-time', 'Remote', 'Contracting', 'Internship'], default: 'Full-time', description: 'What kind of developer position do you want?'}
+    jobTitle: {type: 'string', maxLength: 50, title: 'Desired Job Title', description: 'What role are you looking for? Ex.: "Full Stack Engineer", "Front-End Developer", "iOS Developer"', default: 'Software Developer'}
+    active: {title: 'Open to Offers', type: 'boolean', description: 'Want interview offers right now?'}
+    updated: c.date {title: 'Last Updated', description: 'How fresh your profile appears to employers. Profiles go inactive after 4 weeks.'}
+    name: c.shortString {title: 'Name', description: 'Name you want employers to see, like "Nick Winter".'}
     city: {}
     country: {}
     skills: {}
@@ -86,7 +86,7 @@ UserSchema = c.object {},
     education: {}
     projects: {}
     links: {}
-    photoURL: {}
+    photoURL: {type: 'string', format: 'image-file', title: 'Profile Picture', description: 'Upload a 256x256px or larger image if you want to show a different profile picture to employers than your normal avatar.'}
 
   jobProfileApproved: {title: 'Job Profile Approved', type: 'boolean', description: 'Whether your profile has been approved by CodeCombat.'}
   jobProfileNotes: {type: 'string', maxLength: 1000, title: 'Our Notes', description: "CodeCombat's notes on the candidate.", format: 'markdown', default: ''}
