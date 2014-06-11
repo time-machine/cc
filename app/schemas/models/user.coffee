@@ -88,9 +88,9 @@ UserSchema = c.object {},
     links: {}
     photoURL: {}
 
-  jobProfileApproved: {}
-  jobProfileNotes: {}
-  employerAt: {}
+  jobProfileApproved: {title: 'Job Profile Approved', type: 'boolean', description: 'Whether your profile has been approved by CodeCombat.'}
+  jobProfileNotes: {type: 'string', maxLength: 1000, title: 'Our Notes', description: "CodeCombat's notes on the candidate.", format: 'markdown', default: ''}
+  employerAt: c.shortString {description: "If given employer permissions to view job candidates, for which employer?"}
   signedEmployerAgreement: c.object {},
     linkedinID: c.shortString {title:"LinkedInID", description: "The user's LinkedIn ID when they signed the contract."}
     date: c.date {title: "Date signed employer agreement"}
