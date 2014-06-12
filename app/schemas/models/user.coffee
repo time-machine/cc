@@ -89,7 +89,12 @@ UserSchema = c.object {},
         role: c.shortString {title: 'Job Title', description: 'What was your job title or role?'}
         duration: c.shortString {title: 'Duration', description: 'When did you hold this gig? Ex.: "Feb 2013 - present".'}
         description: {type: 'string', title: 'Description', description: 'What did you do there? (140 chars; optional)', maxLength: 140}
-    education: {}
+    education: c.array {title: 'Education', description: 'List your academic ordeals.'},
+      c.object {title: 'Ordeal', description: 'Some education that befell you.', required: ['school', 'degree', 'duration']},
+        school: c.shortString {title: 'School', description: 'Name of your school.'}
+        degree: c.shortString {title: 'Degree', description: 'What was your degree and field of study? Ex. Ph.D. Human-Computer Interaction (incomplete)'}
+        duration: c.shortString {title: 'Dates', description: 'When? Ex.: "Aug 2004 - May 2008".'}
+        description: {type: 'string', title: 'Description', description: 'Highlight anything about this educational experience. (140 chars; optional)', maxLength: 140}
     projects: {}
     links: {}
     photoURL: {type: 'string', format: 'image-file', title: 'Profile Picture', description: 'Upload a 256x256px or larger image if you want to show a different profile picture to employers than your normal avatar.'}
