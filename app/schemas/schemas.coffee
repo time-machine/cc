@@ -13,14 +13,16 @@ urlPattern = '^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)
 # Common schema properties
 me.object = (ext, props) -> combine {type: 'object', additionalProperties: false, properties: props or {}}, ext
 me.array = (ext, items) -> combine {type: 'array', items: items or {}}, ext
-me.shortString = (ext) -> combine {type: 'string', maxLength: 100}, ext
-me.pct = (ext) -> combine {type: 'number', maximum: 1.0, minimum: 0.0}, ext
-me.date = (ext) -> combine {type: 'string', format: 'date-time'}, ext
-me.objectId = (ext) -> schema = combine {type: ['object', 'string']}, ext # should just be string (Mongo ID), but sometimes mongoose turns them into objects representing those, so we are lenient
+me.shortString = (ext) -> combine({type: 'string', maxLength: 100}, ext)
+me.pct = (ext) -> combine({type: 'number', maximum: 1.0, minimum: 0.0}, ext)
+me.date = (ext) -> combine({type: ['object', 'string'], format: 'date-time'}, ext)
+# should just be string (Mongo ID), but sometimes mongoose turns them into objects representing those, so we are lenient
+me.objectId = (ext) -> schema = combine(['object', 'string'], ext)
+me.url = (ext) -> combine({type: 'string', format: 'url', pattern: urlPattern}, ext)
 
-PointSchema = me.object {title: 'Point', description: 'An {x, y} coordinate point.', format: 'point2d', required: ['x', 'y']},
-  x: {title: 'x', description: 'The x coordinate.', type: 'number', 'default': 15}
-  y: {title: 'y', description: 'The y coordinate.', type: 'number', 'default': 20}
+PointSchema = me.object {title: "Point", description: "An {x, y} coordinate point.", format: "point2d", required: ["x", "y"]},
+  x: {title: "x", description: "The x coordinate.", type: "number", "default": 15}
+  y: {title: "y", description: "The y coordinate.", type: "number", "default": 20}
 
 me.point2d = (ext) -> combine(_.cloneDeep(PointSchema), ext)
 
@@ -30,8 +32,7 @@ SoundSchema = me.object { format: 'sound' },
 
 me.sound = (props) ->
   obj = _.cloneDeep(SoundSchema)
-  for prop of props
-    obj.properties[prop] = props[prop]
+  obj.properties[prop] = props[prop] for prop of props
   obj
 
 # BASICS
