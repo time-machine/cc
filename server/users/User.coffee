@@ -1,27 +1,36 @@
-mongoose = require 'mongoose'
-jsonschema = require '../schemas/user'
+mongoose = require('mongoose')
+jsonschema = require('../../app/schemas/models/user')
+crypto = require('crypto')
+{salt, isProduction} = require('../../server_config')
+mail = require '../commons/mail'
+log = require 'winston'
+
+sendwithus = require '../sendwithus'
 
 UserSchema = new mongoose.Schema({
   dateCreated:
     type: Date
     'default': Date.now
-}, { strict: false })
+}, {strict: false})
 
 UserSchema.pre('init', (next) ->
   return next() unless jsonschema.properties?
   for prop, sch of jsonschema.properties
+    continue if prop is 'emails' # defaults may change, so don't carry them over just yet
     @set(prop, sch.default) if sch.default?
   next()
 )
 
 UserSchema.post('init', ->
   @set('anonymous', false) if @get('email')
-  @currentSubscriptions = JSON.stringify(@get('emailSubscriptions'))
 )
 
 UserSchema.methods.isAdmin = ->
   p = @get('permissions')
   return p and 'admin' in p
+
+UserSchema.methods.trackActivity = (activityName, increment) ->
+  console.log 'TD: trackActivity'
 
 UserSchema.statics.updateMailChimp = (doc, callback) ->
   return callback?() if doc.updatedMailChimp
