@@ -1,11 +1,4 @@
-locale = require '../app/locale/locale' # requiring from app; will break if we stop serving from where app lives
-
-module.exports.setupRoutes = (app) ->
-  app.all '/languages/add/:lang/:namespace', (req, res) ->
-    console.log 'TD: languages setupRoutes1'
-
-  app.all '/languages', (req, res) ->
-    console.log 'TD: languages setupRoutes2'
+locale = require '../locale/locale'  # requiring from app; will break if we stop serving from where app lives
 
 languages = []
 for code, localeInfo of locale
@@ -15,7 +8,7 @@ module.exports.languages = languages
 module.exports.languageCodes = languageCodes = (language.code for language in languages)
 module.exports.languageCodesLower = languageCodesLower = (code.toLowerCase() for code in languageCodes)
 
-# keep keys lower-case for matching and values with second subtag uppercase like i18next expects
+# Keep keys lower-case for matching and values with second subtag uppercase like i18next expects
 languageAliases =
   'en': 'en-US'
 
