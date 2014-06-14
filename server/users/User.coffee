@@ -32,22 +32,48 @@ UserSchema.methods.isAdmin = ->
 UserSchema.methods.trackActivity = (activityName, increment) ->
   console.log 'TD: trackActivity'
 
+emailNameMap =
+  generalNews: 'announcement'
+  adventurerNews: 'tester'
+  artisanNews: 'level_creator'
+  archmageNews: 'developer'
+  scribeNews: 'article_editor'
+  diplomatNews: 'translator'
+  ambassadorNews: 'support'
+  anyNotes: 'notification'
+
+UserSchema.methods.setEmailSubscription = (newName, enabled) ->
+  console.log 'TD: setEmailSubscription'
+
+UserSchema.methods.isEmailSubscriptionEnabled = (newName) ->
+  console.log 'TD: isEmailSubscriptionEnabled'
+
 UserSchema.statics.updateMailChimp = (doc, callback) ->
+  return callback?() unless isProduction or GLOBAL.testing
   return callback?() if doc.updatedMailChimp
   return callback?() unless doc.get('email')
   console.log 'TD: updateMailChimp'
+
 
 UserSchema.pre('save', (next) ->
   @set('emailLower', @get('email')?.toLowerCase())
   @set('nameLower', @get('name')?.toLowerCase())
   pwd = @get('password')
   if @get('password')
-    console.log 'TD: pre save'
-  @set('anonymous', false) if @get('email')
+    console.log 'TD: pre save password'
+  if @get('email') and @get('anonymous')
+    @set('anonymous', false)
+    console.log 'TD: pre save anonymous'
   next()
 )
 
 UserSchema.post 'save', (doc) ->
   UserSchema.statics.updateMailChimp(doc)
 
+UserSchema.statics.hashPassword = (password) ->
+  console.log 'TD: hashPassword'
+
 module.exports = User = mongoose.model('User', UserSchema)
+
+AchievablePlugin = require '../plugins/achievements'
+UserSchema.plugin(AchievablePlugin)
