@@ -1,21 +1,44 @@
-mongoose = require 'mongoose'
-User = require './User'
-textSearch = require 'mongoose-text-search'
+mongoose = require('mongoose')
+textSearch = require('mongoose-text-search')
+
+module.exports.MigrationPlugin = (schema, migrations) ->
+  # Property name migrations made EZ
+  # This is for just when you want one property to be named differently
+
+  # 1. Change the schema and the client/server logic to use the new name
+  # 2. Add this plugin to the target models, passing in a dictionary of old/new names.
+  # 3. Check that tests still run, deploy to production.
+  # 4. Run db.<collection>.update({}, { $rename: {'<oldname>':'<newname>'} }, { multi: true }) on the server
+  # 5. Remove the names you added to the migrations dictionaries for the next deploy
+
+  schema.post 'init', ->
+    console.log 'TD: MigrationPlugin post init'
+
+module.exports.PatchablePlugin = (schema) ->
+  console.log 'TD: PatchablePlugin'
+
+RESERVED_NAMES = ['names']
 
 module.exports.NamedPlugin = (schema) ->
+  schema.uses_coco_names = true
   schema.add({name: String, slug: String})
   schema.index({'slug': 1}, {unique: true, sparse: true, name: 'slug index'})
 
   schema.pre('save', (next) ->
-    console.log 'TD: NamedPlugin save'
+    console.log 'TD: NamedPlugin pre save'
   )
+
+  schema.methods.checkSlugConflicts = (done) ->
+    console.log 'TD: checkSlugConflicts'
+
+
 
 module.exports.PermissionsPlugin = (schema) ->
   schema.uses_coco_permissions = true
 
   PermissionSchema = new mongoose.Schema
     target: mongoose.Schema.Types.Mixed
-    access: {type: String, 'enum': ['read', 'write', 'owner']}
+    access: {type: String, 'enum':['read', 'write', 'owner']}
   , {id: false, _id: false}
 
   schema.add(permissions: [PermissionSchema])
@@ -27,7 +50,7 @@ module.exports.PermissionsPlugin = (schema) ->
   schema.methods.hasPermissionsForMethod = (actor, method) ->
     method = method.toLowerCase()
     # method is 'get', 'put', 'patch', 'post', or 'delete'
-    # actor is a user object
+    # actor is a User object
 
     allowed =
       get: ['read', 'write', 'owner']
@@ -39,7 +62,6 @@ module.exports.PermissionsPlugin = (schema) ->
     allowed = allowed[method] or []
 
     for permission in @permissions
-      # allow permission if target is public or is the actor itself
       if permission.target is 'public' or actor._id.equals(permission.target)
         return true if permission.access in allowed
 
@@ -50,9 +72,11 @@ module.exports.PermissionsPlugin = (schema) ->
       if permission.access is 'owner'
         return permission.target
 
-  schema.methods.getPublicAccess = -> console.log 'TD: getPublicAccess'
+  schema.methods.getPublicAccess = ->
+    console.log 'TD: getPublicAccess'
 
-  schema.methods.getAccessForUserObjectId = (objectId) -> console.log 'TD: getAccessForUserObjectId'
+  schema.methods.getAccessForUserObjectId = (objectId) ->
+    console.log 'TD: getAccessForUserObjectId'
 
 module.exports.VersionedPlugin = (schema) ->
   schema.uses_coco_versions = true
@@ -63,11 +87,10 @@ module.exports.VersionedPlugin = (schema) ->
       minor: {type: Number, 'default': 0}
       isLatestMajor: {type: Boolean, 'default': true}
       isLatestMinor: {type: Boolean, 'default': true}
-    # FIXIT: should it be mongoose.Schema.Types.ObjectId instead?
     original: {type: mongoose.Schema.ObjectId, ref: @modelName}
     parent: {type: mongoose.Schema.ObjectId, ref: @modelName}
     creator: {type: mongoose.Schema.ObjectId, ref: 'User'}
-    created: {type: Date, 'default': Date.now}
+    created: { type: Date, 'default': Date.now }
     commitMessage: {type: String}
   )
 
@@ -75,9 +98,18 @@ module.exports.VersionedPlugin = (schema) ->
   # Also used for looking up latest version, or specific versions.
   schema.index({'original': 1, 'version.major': -1, 'version.minor': -1}, {unique: true, name: 'version index'})
 
-  schema.methods.makeNewMajorVersion = (newObject, done) -> console.log 'TD: makeNewMajorVersion'
+  schema.statics.getLatestMajorVersion = (original, options, done) ->
+    console.log 'TD: getLatestMajorVersion'
 
-  schema.methods.makeNewMinorVersion = (newObject, majorVersion, done) -> console.log 'TD: makeNewMinorVersion'
+  schema.statics.getLatestMinorVersion = (original, majorVersion, options, done) ->
+    console.log 'TD: getLatestMinorVersion'
+
+  schema.methods.makeNewMajorVersion = (newObject, done) ->
+    console.log 'TD: makeNewMajorVersion'
+
+  schema.methods.makeNewMinorVersion = (newObject, majorVersion, done) ->
+    console.log 'TD: makeNewMinorVersion'
+
 
 module.exports.SearchablePlugin = (schema, options) ->
   # this plugin must be added only after the others (specifically Versioned and Permissions)
@@ -96,8 +128,9 @@ module.exports.SearchablePlugin = (schema, options) ->
 
   index[prop] = 'text' for prop in searchable
 
-  # should now have something like {'index': 1, name: 'text', body: 'text'}
+  # should now have something like {'index': 1, name:'text', body:'text'}
   schema.plugin(textSearch)
   schema.index(index, { sparse: true, name: 'search index', language_override: 'searchLanguage' })
 
-  schema.pre 'save', (next) -> console.log 'TD: SearchablePlugin save'
+  schema.pre 'save', (next) ->
+    console.log 'TD: SearchablePlugin pre save'
