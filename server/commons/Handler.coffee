@@ -17,6 +17,7 @@ module.exports = class Handler
   postEditableProperties: []
   jsonSchema: {}
   waterfallFunctions: []
+  allowedMethods: ['GET', 'POST', 'PUT', 'PATCH']
 
   # subclasses should override these methods
   hasAccess: (req) -> true
@@ -77,11 +78,11 @@ module.exports = class Handler
   setWatching: (req, res, id) ->
     console.log 'TD: setWatching'
 
-  search: (req, res) -> console.log 'TD: search'
+  versions: (req, res, id) ->
+    console.log 'TD: versions'
 
-  versions: (req, res, id) -> console.log 'TD: versions'
-
-  files: (req, res, id) -> console.log 'TD: files'
+  files: (req, res, id) ->
+    console.log 'TD: files'
 
   getLatestVersion: (req, res, original, version) ->
     # can get latest overall version, latest of a major version, or a specific version
@@ -92,25 +93,71 @@ module.exports = class Handler
       minorVersion = parseInt(version[1])
       query['version.major'] = majorVersion unless _.isNaN(majorVersion)
       query['version.minor'] = minorVersion unless _.isNaN(minorVersion)
-    sort = { 'version.major': -1, 'version.minor': -1 } # -1 means sort in descending order
-    @modelClass.findOne(query).sort(sort).exec (err, doc) =>
+    sort = { 'version.major': -1, 'version.minor': -1 }
+    args = [query]
+    args.push PROJECT if req.query.project
+    @modelClass.findOne(args...).sort(sort).exec (err, doc) =>
       return @sendNotFoundError(res) unless doc?
-      console.log 'TD: getLatestVersion' unless @hasAccessToDocument(req, doc)
+      return @sendUnauthorizedError(res) unless @hasAccessToDocument(req, doc)
       res.send(doc)
       res.end()
 
-  patch: -> console.log 'TD: Handler patch'
+  patch: ->
+    @put(arguments...)
 
-  put: (req, res, id) -> console.log 'TD: Handler put', id
+  put: (req, res, id) ->
+    console.log 'TD: Handler put'
 
-  post: (req, res) -> console.log 'TD: Handler post'
+  post: (req, res) ->
+    console.log 'TD: Handler post'
+
+  onPostSuccess: (req, doc) ->
+
+  ###
+  TODO: think about pulling some common stuff out of postFirstVersion/postNewVersion
+  into a postVersion if we can figure out the breakpoints?
+  ..... actually, probably better would be to do the returns with throws instead
+  and have a handler which turns them into status codes and messages
+  ###
+  postFirstVersion: (req, res) ->
+    console.log 'TD: postFirstVersion'
+
+  postNewVersion: (req, res) ->
+    console.log 'TD: postNewVersion'
+
+  notifyWatchersOfChange: (editor, changedDocument, editPath) ->
+    console.log 'TD: notifyWatchersOfChange'
+
+  notifyWatcherOfChange: (editor, watcher, changedDocument, editPath) ->
+    console.log 'TD: notifyWatcherOfChange'
+
+  makeNewInstance: (req) ->
+    console.log 'TD: makeNewInstance'
+
+  validateDocumentInput: (input) ->
+    console.log 'TD: validateDocumentInput'
+
+  @isID: (id) -> _.isString(id) and id.length is 24 and id.match(/[a-f0-9]/gi)?.length is 24
 
   getDocumentForIdOrSlug: (idOrSlug, done) ->
-    idOrSlug = idOrSlug + ''
-    try
-      mongoose.Types.ObjectId.createFromHexString(idOrSlug) # throw error if not a valid ID (probably a slug)
+    idOrSlug = idOrSlug+''
+    if Handler.isID(idOrSlug)
       @modelClass.findById(idOrSlug).exec (err, document) ->
         done(err, document)
-    catch e
-      @modelClass.findOne {slug: idOrSlug}, (err, document) =>
+    else
+      @modelClass.findOne {slug: idOrSlug}, (err, document) ->
         done(err, document)
+
+
+  doWaterfallChecks: (req, document, done) ->
+    console.log 'TD: doWaterfallChecks'
+
+  saveChangesToDocument: (req, document, done) ->
+    console.log 'TD: saveChangesToDocument'
+
+  getPropertiesFromMultipleDocuments: (res, model, properties, ids) ->
+    console.log 'TD: getPropertiesFromMultipleDocuments'
+
+  delete: (req, res) -> @sendMethodNotAllowed res, @allowedMethods, "DELETE not allowed."
+
+  head: (req, res) -> @sendMethodNotAllowed res, @allowedMethods, "HEAD not allowed."
