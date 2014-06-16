@@ -1,52 +1,81 @@
-mongoose = require 'mongoose'
+async = require 'async'
+mongoose = require('mongoose')
+Grid = require 'gridfs-stream'
+errors = require './errors'
+log = require 'winston'
+Patch = require '../patches/Patch'
+User = require '../users/User'
+sendwithus = require '../sendwithus'
+
+PROJECT = {original:1, name:1, version:1, description: 1, slug:1, kind: 1}
+FETCH_LIMIT = 200
 
 module.exports = class Handler
-  # subclasses should overried these properties
+  # subclasses should override these properties
   modelClass: null
   editableProperties: []
   postEditableProperties: []
   jsonSchema: {}
   waterfallFunctions: []
 
-  # subclasses should overried these methods
+  # subclasses should override these methods
   hasAccess: (req) -> true
   hasAccessToDocument: (req, document, method=null) ->
-    return true if req.user.isAdmin()
+    return true if req.user?.isAdmin()
     if @modelClass.schema.uses_coco_permissions
-      return document.hasPermissionsForMethod(req.user, method or req.method)
+      return document.hasPermissionsForMethod?(req.user, method or req.method)
     return true
 
   formatEntity: (req, document) -> document?.toObject()
+  getEditableProperties: (req, document) ->
+    console.log 'TD: getEditableProperties'
 
   # sending functions
-  sendNotFoundError: (res) -> @sendError(res, 404, 'Resource not found.')
-  sendMethodNotAllowed: (res) -> console.log 'TD: sendMethodNotAllowed'
+  sendUnauthorizedError: (res) -> errors.forbidden(res) #TODO: rename sendUnauthorizedError to sendForbiddenError
+  sendNotFoundError: (res) -> errors.notFound(res)
+  sendMethodNotAllowed: (res) -> errors.badMethod(res)
+  sendBadInputError: (res, message) -> errors.badInput(res, message)
+  sendDatabaseError: (res, err) ->
+    console.log 'TD: sendDatabaseError'
 
   sendError: (res, code, message) ->
-    console.warn 'Sending an error code', code, message
-    res.status(code)
-    res.send(message)
-    res.end()
+    errors.custom(res, code, message)
 
   sendSuccess: (res, message) ->
     res.send(message)
     res.end()
 
   # generic handlers
-  get: (req, res) -> console.log 'TD: Handler get'
+  get: (req, res) ->
+    console.log 'TD: Handler get'
 
   getById: (req, res, id) ->
-    console.log 'TD: getById, no access' unless @hasAccess(req)
+    # return @sendNotFoundError(res) # for testing
+    return @sendUnauthorizedError(res) unless @hasAccess(req)
 
     @getDocumentForIdOrSlug id, (err, document) =>
-      console.log 'TD: getById, err', err if err
+      return @sendDatabaseError(res, err) if err
       return @sendNotFoundError(res) unless document?
-      console.log 'TD: getDocumentForIdOrSlug hasAccessToDocument' unless @hasAccessToDocument(req, document)
+      return @sendUnauthorizedError(res) unless @hasAccessToDocument(req, document)
       @sendSuccess(res, @formatEntity(req, document))
 
   getByRelationship: (req, res, args...) ->
     # this handler should be overwritten by subclasses
+    if @modelClass.schema.is_patchable
+      console.log 'TD: getByRelationship'
     return @sendNotFoundError(res)
+
+  getNamesByIDs: (req, res) ->
+    console.log 'TD: getNamesByIDs'
+
+  getNamesByOriginals: (req, res) ->
+    console.log 'TD: getNamesByOriginals'
+
+  getPatchesFor: (req, res, id) ->
+    console.log 'TD: getPatchesFor'
+
+  setWatching: (req, res, id) ->
+    console.log 'TD: setWatching'
 
   search: (req, res) -> console.log 'TD: search'
 
