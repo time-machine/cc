@@ -1,4 +1,13 @@
-locale = require '../locale/locale'  # requiring from app; will break if we stop serving from where app lives
+errors = require '../commons/errors'
+log = require 'winston'
+locale = require '../../app/locale/locale'  # requiring from app; will break if we stop serving from where app lives
+
+module.exports.setup = (app) ->
+  app.all '/languages/add/:lang/:namespace', (req, res) ->
+    console.log 'TD: setup namespace'
+
+  app.all '/languages', (req, res) ->
+    console.log 'TD: setup languages'
 
 languages = []
 for code, localeInfo of locale
