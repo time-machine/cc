@@ -1,25 +1,28 @@
-c = require './common'
+c = require './../schemas'
 ThangComponentSchema = require './thang_component'
 
 SpecificArticleSchema = c.object()
-c.extendNamedProperties SpecificArticleSchema # name first
-SpecificArticleSchema.properties.body = { type: 'string', title: 'Content', description: 'The body content of the article, in Markdown.', format: 'markdown' }
+c.extendNamedProperties SpecificArticleSchema  # name first
+SpecificArticleSchema.properties.body = { type: 'string', title: 'Content', description: "The body content of the article, in Markdown.", format: 'markdown' }
+SpecificArticleSchema.properties.i18n = {type: "object", format: 'i18n', props: ['name', 'body'], description: "Help translate this article"}
 SpecificArticleSchema.displayProperty = 'name'
 
-side = {title: 'Side', description: 'A side.', type: 'string', 'enum': ['left', 'right', 'top', 'bottom']}
-thang = {title: 'Thang', description: 'The name of a Thang.', type: 'string', maxLength: 30, format: 'thang'}
+side = {title: "Side", description: "A side.", type: 'string', 'enum': ['left', 'right', 'top', 'bottom']}
+thang = {title: "Thang", description: "The name of a Thang.", type: 'string', maxLength: 30, format:'thang'}
 
-eventPrereqValueTypes = ['boolean', 'integer', 'number', 'null', 'string'] # not 'object' or 'array'
-EventPrereqSchema = c.object {title: 'Event Prerequisite', format: 'event-prereq', description: 'Script requires that the value of some property on the event triggering it to meet some prerequisite.', 'default': {eventProps: []}, required: ['eventProps']},
-  eventProps: c.array {'default': ['thang'], format: 'event-value-chain', maxItems: 10, title: 'Event Property', description: 'A chain of keys in the event, like "thang.pos.x" to access event.thang.pos.x.'}, c.shortString(title: 'Property', description: 'A key in the event property key chain.')
-  equalTo: c.object {type: eventPrereqValueTypes, title: '==', description: "Script requires the event's property chain value to be equal to this value."}
-  notEqualTo: c.object {type: eventPrereqValueTypes, title: '!=', description: "Script requires the event's property chain value to *not* be equal to this value."}
-  greaterThan: {type: 'number', title: '>', description: "Script requires the event's property chain value to be greater than this value."}
-  greaterThanOrEqualTo: {type: 'number', title: '>=', description: "Script requires the event's property chain value to be greater or equal to this value."}
-  lessThan: {type: 'number', title: '<', description: "Script requires the event's property chain value to be less than this value."}
-  lessThanOrEqualTo: {type: 'number', title: '<=', description: "Script requires the event's property chain value to be less than or equal to this value."}
-  containingString: c.shortString(title: 'Contains', description: "Script requires the event's property chain value to be a string containing this string.")
-  notContainingString: c.shortString(title: 'Does not contain', description: "Script requires the event's property chain value to *not* be a string containing this string.")
+eventPrereqValueTypes = ["boolean", "integer", "number", "null", "string"] # not "object" or "array"
+EventPrereqSchema = c.object {title: "Event Prerequisite", format: 'event-prereq', description: "Script requires that the value of some property on the event triggering it to meet some prerequisite.", "default": {eventProps: []}, required: ["eventProps"]},
+  eventProps: c.array {'default': ["thang"], format:'event-value-chain', maxItems: 10, title: "Event Property", description: 'A chain of keys in the event, like "thang.pos.x" to access event.thang.pos.x.'}, c.shortString(title: "Property", description: "A key in the event property key chain.")
+  equalTo: c.object {type: eventPrereqValueTypes, title: "==", description: "Script requires the event's property chain value to be equal to this value."}
+  notEqualTo: c.object {type: eventPrereqValueTypes, title: "!=", description: "Script requires the event's property chain value to *not* be equal to this value."}
+  greaterThan: {type: 'number', title: ">", description: "Script requires the event's property chain value to be greater than this value."}
+  greaterThanOrEqualTo: {type: 'number', title: ">=", description: "Script requires the event's property chain value to be greater or equal to this value."}
+  lessThan: {type: 'number', title: "<", description: "Script requires the event's property chain value to be less than this value."}
+  lessThanOrEqualTo: {type: 'number', title: "<=", description: "Script requires the event's property chain value to be less than or equal to this value."}
+  containingString: c.shortString(title: "Contains", description: "Script requires the event's property chain value to be a string containing this string.")
+  notContainingString: c.shortString(title: "Does not contain", description: "Script requires the event's property chain value to *not* be a string containing this string.")
+  containingRegexp: c.shortString(title: "Contains Regexp", description: "Script requires the event's property chain value to be a string containing this regular expression.")
+  notContainingRegexp: c.shortString(title: "Does not contain regexp", description: "Script requires the event's property chain value to *not* be a string containing this regular expression.")
 
 GoalSchema = c.object {title: 'Goal', description: 'A goal that the player can accomplish.', required: ['name', 'id']},
   name: c.shortString(title: 'Name', description: 'Name of the goal that the player will see, like \"Defeat eighteen dragons\".')
