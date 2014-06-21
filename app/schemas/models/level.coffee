@@ -64,11 +64,11 @@ GoalSchema = c.object {title: "Goal", description: "A goal that the player can a
     targets: c.array {title: "Targets", description: "The target items which the Thangs must not collect.", minItems: 1}, thang
 
 ResponseSchema = c.object {title: "Dialogue Button", description: "A button to be shown to the user with the dialogue.", required: ["text"]},
-  text: {title: "Title", description: "The text that will be on the button", "default": "Okay", type: "string", maxLength: 30}
-  channel: c.shortString(title: "Channel", format: "event-channel", description: "Channel that this event will be broadcast over, like "level-set-playing".")
-  event: {type: "object", title: "Event", description: "Event that will be broadcast when this button is pressed, like {playing: true}."}
-  buttonClass: c.shortString(title: "Button Class", description: "CSS class that will be added to the button, like "btn-primary".")
-  i18n: {type: "object", format: "i18n", props: ["text"], description: "Help translate this button"}
+  text: {title: "Title", description: "The text that will be on the button", "default": "Okay", type: 'string', maxLength: 30}
+  channel: c.shortString(title: "Channel", format: 'event-channel', description: 'Channel that this event will be broadcast over, like "level-set-playing".')
+  event: {type: 'object', title: "Event", description: "Event that will be broadcast when this button is pressed, like {playing: true}."}
+  buttonClass: c.shortString(title: "Button Class", description: 'CSS class that will be added to the button, like "btn-primary".')
+  i18n: {type: "object", format: 'i18n', props: ['text'], description: "Help translate this button"}
 
 PointSchema = c.object {title: "Point", description: "An {x, y} coordinate point.", format: "point2d", required: ["x", "y"]},
   x: {title: "x", description: "The x coordinate.", type: "number", "default": 15}
@@ -76,76 +76,76 @@ PointSchema = c.object {title: "Point", description: "An {x, y} coordinate point
 
 SpriteCommandSchema = c.object {title: "Thang Command", description: "Make a target Thang move or say something, or select/deselect it.", required: ["id"], default: {id: "Captain Anya"}},
   id: thang
-  select: {title: "Select", description: "Select or deselect this Thang.", type: "boolean"}
+  select: {title: "Select", description: "Select or deselect this Thang.", type: 'boolean'}
   say: c.object {title: "Say", description: "Make this Thang say a message.", required: ["text"]},
-    blurb: c.shortString(title: "Blurb", description: "A very short message to display above this Thang"s head. Plain text.", maxLength: 50)
+    blurb: c.shortString(title: "Blurb", description: "A very short message to display above this Thang's head. Plain text.", maxLength: 50)
     mood: c.shortString(title: "Mood", description: "The mood with which the Thang speaks.", "enum": ["explain", "debrief", "congrats", "attack", "joke", "tip", "alarm"], "default": "explain")
     text: {title: "Text", description: "A short message to display in the dialogue area. Markdown okay.", type: "string", maxLength: 400}
     sound: c.object {title: "Sound", description: "A dialogue sound file to accompany the message.", required: ["mp3", "ogg"]},
-      mp3: c.shortString(title: "MP3", format: "sound-file")
-      ogg: c.shortString(title: "OGG", format: "sound-file")
-      preload: {title: "Preload", description: "Whether to load this sound file before the level can begin (typically for the first dialogue of a level).", type: "boolean", "default": false}
+      mp3: c.shortString(title: "MP3", format: 'sound-file')
+      ogg: c.shortString(title: "OGG", format: 'sound-file')
+      preload: {title: "Preload", description: "Whether to load this sound file before the level can begin (typically for the first dialogue of a level).", type: 'boolean', "default": false}
     responses: c.array {title: "Buttons", description: "An array of buttons to include with the dialogue, with which the user can respond."}, ResponseSchema
-    i18n: {type: "object", format: "i18n", props: ["blurb", "text"], description: "Help translate this message"}
-  move: c.object {title: "Move", description: "Tell the Thang to move.", required: ["target"], default: {target: {x: 20, y: 20}, duration: 500}},
-    target: _.extend _.cloneDeep(PointSchema), {title: "Target", description: "Target point to which the Thang will move."}
-    duration: {title: "Duration", description: "Number of milliseconds over which to move, or 0 for an instant move.", type: "integer", minimum: 0, default: 500, format: "milliseconds"}
+    i18n: {type: "object", format: 'i18n', props: ['blurb', 'text'], description: "Help translate this message"}
+  move: c.object {title: "Move", description: "Tell the Thang to move.", required: ['target'], default: {target: {x: 20, y: 20}, duration: 500}},
+    target: _.extend _.cloneDeep(PointSchema), {title: 'Target', description: 'Target point to which the Thang will move.'}
+    duration: {title: "Duration", description: "Number of milliseconds over which to move, or 0 for an instant move.", type: 'integer', minimum: 0, default: 500, format: 'milliseconds'}
 
 NoteGroupSchema = c.object {title: "Note Group", description: "A group of notes that should be sent out as a result of this script triggering.", displayProperty: "name"},
   name: {title: "Name", description: "Short name describing the script, like \"Anya greets the player\", for your convenience.", type: "string"}
   dom: c.object {title: "DOM", description: "Manipulate things in the play area DOM, outside of the level area canvas."},
     focus: c.shortString(title: "Focus", description: "Set the window focus to this DOM selector string.")
     showVictory: {
-      title: "Show Victory"
-      description: "Show the done button and maybe also the victory modal."
-      enum: [true, "Done Button", "Done Button And Modal"] # deprecate true, same as "done_button_and_modal"
+      title: "Show Victory",
+      description: "Show the done button and maybe also the victory modal.",
+      enum: [true, 'Done Button', 'Done Button And Modal'] # deprecate true, same as 'done_button_and_modal'
     }
     highlight: c.object {title: "Highlight", description: "Highlight the target DOM selector string with a big arrow."},
       target: c.shortString(title: "Target", description: "Target highlight element DOM selector string.")
-      delay: {type: "integer", minimum: 0, title: "Delay", description: "Show the highlight after this many milliseconds. Doesn"t affect the dim shade cutoout highlight method."}
-      offset: _.extend _.cloneDeep(PointSchema), {title: "Offset", description: "Pointing arrow tip offset in pixels from the default target.", format: null}
-      rotation: {type: "number", minimum: 0, title: "Rotation", description: "Rotation of the pointing arrow, in radians. PI / 2 points left, PI points up, etc."}
-      sides: c.array {title: "Sides", description: "Which sides of the target element to point at."}, {type: "string", "enum": ["left", "right", "top", "bottom"], title: "Side", description: "A side of the target element to point at."}
-    lock: {title: "Lock", description: "Whether the interface should be locked so that the player"s focus is on the script, or specific areas to lock.", type: ["boolean", "array"], items: {type: "string", enum: ["surface", "editor", "palette", "hud", "playback", "playback-hover", "level"]}}
-    letterbox: {type: "boolean", title: "Letterbox", description: "Turn letterbox mode on or off. Disables surface and playback controls."}
+      delay: {type: 'integer', minimum: 0, title: "Delay", description: "Show the highlight after this many milliseconds. Doesn't affect the dim shade cutout highlight method."}
+      offset:  _.extend _.cloneDeep(PointSchema), {title: 'Offset', description: 'Pointing arrow tip offset in pixels from the default target.', format: null}
+      rotation: {type: 'number', minimum: 0, title: "Rotation", description: "Rotation of the pointing arrow, in radians. PI / 2 points left, PI points up, etc."}
+      sides: c.array {title: "Sides", description: "Which sides of the target element to point at."}, {type: 'string', 'enum': ['left', 'right', 'top', 'bottom'], title: "Side", description: "A side of the target element to point at."}
+    lock: {title: "Lock", description: "Whether the interface should be locked so that the player's focus is on the script, or specific areas to lock.", type: ['boolean', 'array'], items: {type: 'string', enum: ['surface', 'editor', 'palette', 'hud', 'playback', 'playback-hover', 'level', ]}}
+    letterbox: {type: 'boolean', title: 'Letterbox', description:'Turn letterbox mode on or off. Disables surface and playback controls.'}
 
-  goals: c.object {title: "Goals", description: "Add or remove goals for the player to complete in the level."},
-    add: c.array {title: "Add", description: "Add these goals."}, GoalSchema
-    remove: c.array {title: "Remove", description: "Remove these goals."}, GoalSchema
+  goals: c.object {title: "Goals (Old)", description: "Deprecated. Goals added here have no effect. Add goals in the level settings instead."},
+    add: c.array {title: "Add", description: "Deprecated. Goals added here have no effect. Add goals in the level settings instead."}, GoalSchema
+    remove: c.array {title: "Remove", description: "Deprecated. Goals removed here have no effect. Adjust goals in the level settings instead."}, GoalSchema
 
   playback: c.object {title: "Playback", description: "Control the playback of the level."},
-    playing: {type: "boolean", title: "Set Playing", description: "Set whether playback is playing or paused."}
+    playing: {type: 'boolean', title: "Set Playing", description: "Set whether playback is playing or paused."}
     scrub: c.object {title: "Scrub", description: "Scrub the level playback time to a certain point.", default: {offset: 2, duration: 1000, toRatio: 0.5}},
-      offset: {type: "integer", title: "Offset", description: "Number of frames by which to adjust the scrub target time.", default: 2}
-      duration: {type: "integer", title: "Duration", description: "Number of milliseconds over which to scrub time.", minimum: 0, format: "milliseconds"}
-      toRatio: {type: "number", title: "To Progress Ratio", description: "Set playback time to a target playback progress ratio.", minimum: 0, maximum: 1}
-      toTime: {type: "number", title: "To Time", description: "Set playback time to a target playback point, in seconds.", minimum: 0}
+      offset: {type: 'integer', title: "Offset", description: "Number of frames by which to adjust the scrub target time.", default: 2}
+      duration: {type: 'integer', title: "Duration", description: "Number of milliseconds over which to scrub time.", minimum: 0, format: 'milliseconds'}
+      toRatio: {type: 'number', title: "To Progress Ratio", description: "Set playback time to a target playback progress ratio.", minimum: 0, maximum: 1}
+      toTime: {type: 'number', title: "To Time", description: "Set playback time to a target playback point, in seconds.", minimum: 0}
       toGoal: c.shortString(title: "To Goal", description: "Set playback time to when this goal was achieved. (TODO: not implemented.)")
 
   script: c.object {title: "Script", description: "Extra configuration for this action group."},
-    duration: {type: "integer", minimum: 0, title: "Duration", description: "How long this script should last in milliseconds. 0 for indefinite.", format: "milliseconds"}
-    skippable: {type: "boolean", title: "Skippable", description: "Whether this script shouldn"t bother firing when the player skips past all current scripts."}
-    beforeLoad: {type: "boolean", title: "Before Load", description: "Whether this script should fire before the level is finished loading."}
+    duration: {type: 'integer', minimum: 0, title: "Duration", description: "How long this script should last in milliseconds. 0 for indefinite.", format: 'milliseconds'}
+    skippable: {type: 'boolean', title: "Skippable", description: "Whether this script shouldn't bother firing when the player skips past all current scripts."}
+    beforeLoad: {type: 'boolean', title: "Before Load", description: "Whether this script should fire before the level is finished loading."}
 
   sprites: c.array {title: "Sprites", description: "Commands to issue to Sprites on the Surface."}, SpriteCommandSchema
 
   surface: c.object {title: "Surface", description: "Commands to issue to the Surface itself."},
-    focus: c.object {title: "Camera", description: "Focus the camera on a specific point on the Surface.", format: "viewport"},
-      target: {anyOf: [PointSchema, thang, {type: null}], title: "Target", description: "Where to center the camera view."}
-      zoom: {type: "number", minimum: 0, exclusiveMinimum: true, maximum: 64, title: "Zoom", description: "What zoom level to use."}
-      duration: {type: "number", minimum: 0, title: "Duration", description: "in ms"}
-      bounds: c.array {title: "Boundary", maxItems: 2, minItems: 2, default: [{x: 0, y: 0}, {x: 46, y: 39}], format: "bounds"}, PointSchema
-      isNewDefault: {type: "boolean", format: "hidden", title: "New Default", description: "Set this as new default zoom once scripts end."} # deprecated
+    focus: c.object {title: "Camera", description: "Focus the camera on a specific point on the Surface.", format:'viewport'},
+      target: {anyOf: [PointSchema, thang, {type: 'null'}], title: "Target", description: "Where to center the camera view.", default: {x:0, y:0}}
+      zoom: {type: 'number', minimum: 0, exclusiveMinimum: true, maximum: 64, title: "Zoom", description: "What zoom level to use."}
+      duration: {type:'number', minimum: 0, title: "Duration", description: "in ms"}
+      bounds: c.array {title:'Boundary', maxItems: 2, minItems: 2, default:[{x:0,y:0}, {x:46, y:39}], format: 'bounds'}, PointSchema
+      isNewDefault: {type:'boolean', format: 'hidden', title: "New Default", description: 'Set this as new default zoom once scripts end.'} # deprecated
     highlight: c.object {title: "Highlight", description: "Highlight specific Sprites on the Surface."},
       targets: c.array {title: "Targets", description: "Thang IDs of target Sprites to highlight."}, thang
-      delay: {type: "integer", minimum: 0, title: "Delay", description: "Delay in milliseconds before the highlight appears."}
-    lockSelect: {type: "boolean", title: "Lock Select", description: "Whether to lock Sprite selection so that the player can"t select/deselect anything."}
+      delay: {type: 'integer', minimum: 0, title: "Delay", description: "Delay in milliseconds before the highlight appears."}
+    lockSelect: {type: 'boolean', title: "Lock Select", description: "Whether to lock Sprite selection so that the player can't select/deselect anything."}
 
   sound: c.object {title: "Sound", description: "Commands to control sound playback."},
     suppressSelectionSounds: {type: "boolean", title: "Suppress Selection Sounds", description: "Whether to suppress selection sounds made from clicking on Thangs."}
     music: c.object { title: "Music", description: "Control music playing"},
-      play: { title: "Play", type: "boolean"}
-      file: c.shortString(title: "File", enum: ["/music/music_level_1","/music/music_level_2","/music/music_level_3","/music/music_level_4","/music/music_level_5"])
+      play: { title: "Play", type: "boolean" }
+      file: c.shortString(title: "File", enum:['/music/music_level_1','/music/music_level_2','/music/music_level_3','/music/music_level_4','/music/music_level_5'])
 
 ScriptSchema = c.object {
   title: "Script"
