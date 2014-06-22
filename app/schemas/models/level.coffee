@@ -164,77 +164,87 @@ ScriptSchema = c.object {
   noteChain: c.array {title: "Actions", description: "A list of things that happen when this script triggers."}, NoteGroupSchema
 
 LevelThangSchema = c.object {
-  title: "Thang"
-  description: "Thangs are any units, doodads, or abstract things that you use to build the level. (\"Thing\" was too confusing to say.)"
+  title: "Thang",
+  description: "Thangs are any units, doodads, or abstract things that you use to build the level. (\"Thing\" was too confusing to say.)",
   format: "thang"
   required: ["id", "thangType", "components"]
-  "default":
+  'default':
     id: "Boris"
     thangType: "Soldier"
     components: []
 },
-  id: thang # TODO: figure out if we can make this unique and how to set dynamic defaults
+  id: thang  # TODO: figure out if we can make this unique and how to set dynamic defaults
   # TODO: split thangType into "original" and "majorVersion" like the rest for consistency
-  thangType: c.objectId(links: [{rel: "db", href: "/db/thang_type/{($)}/version"}], title: "Thang Type", description: "A reference to the original Thang template being configured.", format: "thang-type")
-  components: c.array {title: "Components", description: "Thangs are configured by changing the Components attached to them.", uniqueItems: true, format: "thang-components-array"}, ThangComponentSchema # TODO: uniqueness should be based on "original", not whole thing
+  thangType: c.objectId(links: [{rel: "db", href: "/db/thang.type/{($)}/version"}], title: "Thang Type", description: "A reference to the original Thang template being configured.", format: 'thang-type')
+  components: c.array {title: "Components", description: "Thangs are configured by changing the Components attached to them.", uniqueItems: true, format: 'thang-components-array'}, ThangComponentSchema  # TODO: uniqueness should be based on "original", not whole thing
 
 LevelSystemSchema = c.object {
   title: "System"
   description: "Configuration for a System that this Level uses."
-  format: "level-system"
-  required: ["original", "majorVersion"]
-  "default":
+  format: 'level-system'
+  required: ['original', 'majorVersion']
+  'default':
     majorVersion: 0
     config: {}
   links: [{rel: "db", href: "/db/level.system/{(original)}/version/{(majorVersion)}"}]
 },
   original: c.objectId(title: "Original", description: "A reference to the original System being configured.", format: "hidden")
-  config: c.object {title: "Configuration", description: "System-specific configuration properties.", additionalProperties: true, format: "level-system-configuration"}
-  majorVersion: {title: "Major Version", description: "Which major version of the System is being used.", type: "integer", minimum: 0, default: 0, format: "hidden"}
+  config: c.object {title: "Configuration", description: "System-specific configuration properties.", additionalProperties: true, format: 'level-system-configuration'}
+  majorVersion: {title: "Major Version", description: "Which major version of the System is being used.", type: 'integer', minimum: 0, default: 0, format: "hidden"}
 
 GeneralArticleSchema = c.object {
   title: "Article"
   description: "Reference to a general documentation article."
-  required: ["original"]
-  format: "latest-version-reference"
-  "default":
+  required: ['original']
+  format: 'latest-version-reference'
+  'default':
     original: null
     majorVersion: 0
   links: [{rel: "db", href: "/db/article/{(original)}/version/{(majorVersion)}"}]
 },
-  original: c.objectId(title: "Original", description: "A reference to the original Article.")
-  majorVersion: {title: "Major Version", description: "Which major version of the Article is being used.", type: "integer", minimum: 0}
+  original: c.objectId(title: "Original", description: "A reference to the original Article.")#, format: "hidden")  # hidden?
+  majorVersion: {title: "Major Version", description: "Which major version of the Article is being used.", type: 'integer', minimum: 0}#, format: "hidden"}  # hidden?
 
 LevelSchema = c.object {
   title: "Level"
   description: "A spectacular level which will delight and educate its stalwart players with the sorcery of coding."
   required: ["name", "description", "scripts", "thangs", "documentation"]
-  "default":
+  'default':
     name: "Ineffable Wizardry"
     description: "This level is indescribably flarmy."
     documentation: {specificArticles: [], generalArticles: []}
     scripts: []
     thangs: []
 }
-c.extendNamedProperties LevelSchema # let"s have the name be the first property
+c.extendNamedProperties LevelSchema  # let's have the name be the first property
 _.extend LevelSchema.properties,
-  description: {title: "Description", description: "A short explanation of what this level is about.", type: "string", maxLength: 65536, "default": "This level is indescribably flarmy!", format: "markdown"}
-  documentation: c.object {title: "Documentation", description: "Documentation articles relating to this level.", required: ["specificArticles", "generalArticles"], "default": {specificArticles: [], generalArticles: []}},
+  description: {title: "Description", description: "A short explanation of what this level is about.", type: "string", maxLength: 65536, "default": "This level is indescribably flarmy!", format: 'markdown'}
+  documentation: c.object {title: "Documentation", description: "Documentation articles relating to this level.", required: ["specificArticles", "generalArticles"], 'default': {specificArticles: [], generalArticles: []}},
     specificArticles: c.array {title: "Specific Articles", description: "Specific documentation articles that live only in this level.", uniqueItems: true, "default": []}, SpecificArticleSchema
     generalArticles: c.array {title: "General Articles", description: "General documentation articles that can be linked from multiple levels.", uniqueItems: true, "default": []}, GeneralArticleSchema
-  background: c.objectId({format: "hidden"})
-  nextLevel: c.objectId(links: [{rel: "extra", href: "/db/level/{($)}"}, {rel: "db", href: "/db/level/{(original)}/version/{(majorVersion)}"}], format: "latest-version-reference", title: "Next Level", description: "Reference to the next level players will play after beating this one.")
+  background: c.objectId({format: 'hidden'})
+  nextLevel: {
+    type:'object',
+    links: [{rel: "extra", href: "/db/level/{($)}"}, {rel:'db', href: "/db/level/{(original)}/version/{(majorVersion)}"}],
+    format: 'latest-version-reference',
+    title: "Next Level",
+    description: "Reference to the next level players will play after beating this one."
+  }
   scripts: c.array {title: "Scripts", description: "An array of scripts that trigger based on what the player does and affect things outside of the core level simulation.", "default": []}, ScriptSchema
   thangs: c.array {title: "Thangs", description: "An array of Thangs that make up the level.", "default": []}, LevelThangSchema
-  systems: c.array {title: "Systems", description: "Levels are configured by changing the Systems attached to them.", uniqueItems: true, default: []}, LevelSystemSchema # TODO: uniqueness should be based on "original", not whole thing
-  victory: c.object {title: "Victory Screen", default: {}, properties: {"body": {type: "string", format: "markdown", title: "Body Text", description: "Inserted into the Victory Modal once this level is complete. Tell the player they did a good job and what they accomplished!"}, i18n: {type: "object", format: "i18n", props: ["body"], description: "Help translate this victory message"}}}
-  i18n: {type: "object", format: "i18n", props: ["name", "description"], description: "Help translate this level"}
-  icon: {type: "string", format: "image-file", title: "Icon"}
+  systems: c.array {title: "Systems", description: "Levels are configured by changing the Systems attached to them.", uniqueItems: true, default: []}, LevelSystemSchema  # TODO: uniqueness should be based on "original", not whole thing
+  victory: c.object {title: "Victory Screen", default: {}, properties: {'body': {type: 'string', format: 'markdown', title: 'Body Text', description: 'Inserted into the Victory Modal once this level is complete. Tell the player they did a good job and what they accomplished!'}, i18n: {type: "object", format: 'i18n', props: ['body'], description: "Help translate this victory message"}}}
+  i18n: {type: "object", format: 'i18n', props: ['name', 'description'], description: "Help translate this level"}
+  icon: { type: 'string', format: 'image-file', title: 'Icon' }
+  goals: c.array {title: 'Goals', description: 'An array of goals which are visible to the player and can trigger scripts.'}, GoalSchema
+  type: c.shortString(title: "Type", description: "What kind of level this is.", "enum": ['campaign', 'ladder', 'ladder-tutorial'])
+  showsGuide: c.shortString(title: "Shows Guide", description: "If the guide is shown at the beginning of the level.", "enum": ['first-time', 'always'])
 
-c.extendBasicProperties LevelSchema, "level"
+c.extendBasicProperties LevelSchema, 'level'
 c.extendSearchableProperties LevelSchema
-c.extendVersionedProperties LevelSchema, "level"
-c.extendPermissionsProperties LevelSchema, "level"
+c.extendVersionedProperties LevelSchema, 'level'
+c.extendPermissionsProperties LevelSchema, 'level'
+c.extendPatchableProperties LevelSchema
 
 module.exports = LevelSchema
 
@@ -243,4 +253,4 @@ module.exports = LevelSchema
 # 2. Open up the Treema demo page http://localhost:9090/demo.html
 # 3. tv4.addSchema(metaschema.id, metaschema)
 # 4. S = <paste big schema here>
-# 5. tv4.validateMultiple(S, metaschema) and look for errors
+# 5. tv4.validateMultiple(S, metaschema)   and look for errors
