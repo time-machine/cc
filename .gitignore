@@ -23,7 +23,6 @@ Thumbs.db
 # Vim
 .*.sw[a-z]
 *.un~i
-.vim_auto_ses
 
 # Sublime
 *.sublime-project
@@ -45,6 +44,7 @@ always-ignore extensions
 *.rej
 *.vi
 *.sass-cache
+.zedstate
 
 # OS or Editor folders
 .cache
@@ -87,8 +87,6 @@ login.coffee
 # debugging
 *.heapsnapshot
 
-# local stuffs
-dump.tar.gz
-server.js
-
+temp/
 ### If you add something here, copy it to the end of .npmignore, too. ###
+
