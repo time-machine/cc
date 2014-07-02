@@ -4,6 +4,8 @@ config.unittest = process.argv.indexOf("--unittest") > -1
 
 config.port = process.env.COCO_PORT or process.env.COCO_NODE_PORT or 3000
 config.ssl_port = process.env.COCO_SSL_PORT or process.env.COCO_SSL_NODE_PORT or 3443
+config.cloudflare =
+  token: process.env.COCO_CLOUDFLARE_API_KEY or ''
 
 config.mongo =
   port: process.env.COCO_MONGO_PORT or 27017
@@ -26,6 +28,7 @@ config.mail =
   mailchimpAPIKey: process.env.COCO_MAILCHIMP_API_KEY or ""
   mailchimpWebhook: process.env.COCO_MAILCHIMP_WEBHOOK or "/mail/webhook"
   sendwithusAPIKey: process.env.COCO_SENDWITHUS_API_KEY or ""
+  stackleadAPIKey: process.env.COCO_STACKLEAD_API_KEY or ""
   cronHandlerPublicIP: process.env.COCO_CRON_PUBLIC_IP or ""
   cronHandlerPrivateIP: process.env.COCO_CRON_PRIVATE_IP or ""
 
@@ -43,7 +46,7 @@ config.cookie_secret = process.env.COCO_COOKIE_SECRET or "chips ahoy"
 
 config.isProduction = config.mongo.host isnt "localhost"
 
-if not config.unittest and  not config.isProduction # TOFIX: remove extra space
+if not config.unittest and  not config.isProduction
   # change artificially slow down non-static requests for testing
   config.slow_down = false
 
