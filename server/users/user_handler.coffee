@@ -11,6 +11,7 @@ log = require 'winston'
 LevelSession = require('../levels/sessions/LevelSession')
 LevelSessionHandler = require '../levels/sessions/level_session_handler'
 EarnedAchievement = require '../achievements/EarnedAchievement'
+UserRemark = require './remarks/UserRemark'
 
 serverProperties = ['passwordHash', 'emailLower', 'nameLower', 'passwordReset']
 privateProperties = [
@@ -23,18 +24,13 @@ candidateProperties = [
 
 UserHandler = class UserHandler extends Handler
   modelClass: User
-
+  jsonSchema: schema
   editableProperties: [
     'name', 'photoURL', 'password', 'anonymous', 'wizardColor1', 'volume',
     'firstName', 'lastName', 'gender', 'facebookID', 'gplusID', 'emails',
     'testGroupNumber', 'music', 'hourOfCode', 'hourOfCodeComplete', 'preferredLanguage',
     'wizard', 'aceConfig', 'autocastDelay', 'lastLevel', 'jobProfile'
   ]
-
-  jsonSchema: schema
-
-  constructor: ->
-    console.log 'TD: constructor'
 
   getEditableProperties: (req, document) ->
     console.log 'TD: getEditableProperties'
@@ -45,7 +41,7 @@ UserHandler = class UserHandler extends Handler
     delete obj[prop] for prop in serverProperties
     includePrivates = req.user and (req.user.isAdmin() or req.user._id.equals(document._id))
     delete obj[prop] for prop in privateProperties unless includePrivates
-    includeCandidate = includePrivates or (obj.jobProfileApproved and req.user and ('employer' in (req.user.get('permissions') ? [])) and @employerCanViewCandidate req.user, obj)
+    includeCandidate = includePrivates or (obj.jobProfile?.active and req.user and ('employer' in (req.user.get('permissions') ? [])) and @employerCanViewCandidate req.user, obj)
     delete obj[prop] for prop in candidateProperties unless includeCandidate
     return obj
 
@@ -92,11 +88,17 @@ UserHandler = class UserHandler extends Handler
   avatar: (req, res, id) ->
     console.log 'TD: avatar'
 
+  getLevelSessionsForEmployer: (req, res, userID) ->
+    console.log 'TD: getLevelSessionsForEmployer'
+
   getLevelSessions: (req, res, userID) ->
     console.log 'TD: getLevelSessions'
 
   getEarnedAchievements: (req, res, userID) ->
     console.log 'TD: getEarnedAchievements'
+
+  trackActivity: (req, res, userID, activityName, increment=1) ->
+    console.log 'TD: trackActivity'
 
   agreeToEmployerAgreement: (req, res) ->
     console.log 'TD: agreeToEmployerAgreement'
@@ -110,6 +112,9 @@ UserHandler = class UserHandler extends Handler
   employerCanViewCandidate: (employer, candidate) ->
     console.log 'TD: employerCanViewCandidate'
 
+  getEmployers: (req, res) ->
+    console.log 'TD: getEmployers'
+
   buildGravatarURL: (user, size, fallback) ->
     console.log 'TD: buildGravatarURL'
 
@@ -121,5 +126,8 @@ UserHandler = class UserHandler extends Handler
     else
       hash.update(user.get('_id') + '')
     hash.digest('hex')
+
+  getRemark: (req, res, userID) ->
+    console.log 'TD: getRemark'
 
 module.exports = new UserHandler()
