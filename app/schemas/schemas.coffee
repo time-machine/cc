@@ -164,12 +164,36 @@ me.FunctionArgumentSchema = me.object {
   name: {type: 'string', pattern: me.identifierPattern, title: "Name", description: "Name of the function argument."}
   # not actual JS types, just whatever they describe...
   type: me.shortString(title: "Type", description: "Intended type of the argument.")
-  example: me.shortString(title: "Example", description: "Example value for the argument.")
-  description: {title: "Description", type: 'string', description: "Description of the argument.", maxLength: 1000}
+  example:
+    oneOf: [
+      me.shortString(title: "Example", description: "Example value for the argument.")
+      {
+        type: 'object',
+        title: "Language Examples",
+        description: "Examples by code language.",
+        additionalProperties: me.shortString(description: 'Example value for the argument.')
+      }
+    ]
+  description:
+    oneOf: [
+      {title: "Description", type: 'string', description: "Description of the argument.", maxLength: 1000}
+      {
+        type: 'object',
+        title: "Language Descriptions",
+        description: "Example argument descriptions by code language.",
+        additionalProperties: {type: 'string', description: "Description of the argument.", maxLength: 1000}
+      }
+    ]
   "default":
     title: "Default"
     description: "Default value of the argument. (Your code should set this.)"
     "default": null
+
+me.codeSnippet = (mode) ->
+  return snippet =
+    code: {type: 'string', title: 'Snippet', default: '', description: 'Code snippet. Use ${1:defaultValue} syntax to add flexible arguments'}
+    # code: {type: 'string', format: 'ace', aceMode: 'ace/mode/'+mode, title: 'Snippet', default: '', description: 'Code snippet. Use ${1:defaultValue} syntax to add flexible arguments'}
+    tab: {type: 'string', description: 'Tab completion text. Will be expanded to the snippet if typed and hit tab.'}
 
 me.activity = me.object {description: "Stats on an activity"},
   first: me.date()
