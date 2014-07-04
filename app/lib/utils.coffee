@@ -14,7 +14,7 @@ module.exports.combineAncestralObject = (obj, propertyName) ->
     if obj.__proto__
       obj = obj.__proto__
     else
-      # IE has no __proto__. TOOD: does this even work? At most it doesnt' crash
+      # IE has no __proto__. TODO: does this even work? At most it doesn't crash.
       obj = Object.getPrototypeOf(obj)
   combined
 
@@ -25,7 +25,15 @@ module.exports.normalizeFunc = (func_thing, object) ->
   if _.isString(func_thing)
     func = object[func_thing]
     if not func
-      console.error('Could not find method', func_thing, 'in object', @)
+      console.error("Could not find method", func_thing, 'in object', @)
       return => null # always return a func, or Mediator will go boom
     func_thing = func
   return func_thing
+
+module.exports.hexToHSL = (hex) ->
+  rgbToHsl(hexToR(hex), hexToG(hex), hexToB(hex))
+
+hexToR = (h) -> parseInt (cutHex(h)).substring(0, 2), 16
+hexToG = (h) -> parseInt (cutHex(h)).substring(2, 4), 16
+hexToB = (h) -> parseInt (cutHex(h)).substring(4, 6), 16
+cutHex = (h) -> (if (h.charAt(0) is "#") then h.substring(1, 7) else h)
