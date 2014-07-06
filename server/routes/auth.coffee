@@ -1,7 +1,7 @@
-authentication = require('passport')
+authentication = require 'passport'
 LocalStrategy = require('passport-local').Strategy
-User = require('../users/User')
-UserHandler = require('../users/user_handler')
+User = require '../users/User'
+UserHandler = require '../users/user_handler'
 LevelSession = require '../levels/sessions/LevelSession'
 config = require '../../server_config'
 errors = require '../commons/errors'
@@ -15,10 +15,11 @@ module.exports.setup = (app) ->
 
   authentication.use(new LocalStrategy(
     (username, password, done) ->
-      User.findOne({emailLower:username.toLowerCase()}).exec((err, user) ->
+      User.findOne({emailLower: username.toLowerCase()}).exec((err, user) ->
         console.log 'TD: User.findOne'
       )
   ))
+
   app.post '/auth/spy', (req, res, next) ->
     console.log 'TD: /auth/spy'
 
@@ -61,6 +62,5 @@ createMailOptions = (receiver, password) ->
     from: config.mail.username
     to: receiver
     replyTo: config.mail.username
-    subject: "[CodeCombat] Password Reset"
+    subject: '[CodeCombat] Password Reset'
     text: "You can log into your account with: #{password}"
-

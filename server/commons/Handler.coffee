@@ -1,5 +1,5 @@
 async = require 'async'
-mongoose = require('mongoose')
+mongoose = require 'mongoose'
 Grid = require 'gridfs-stream'
 errors = require './errors'
 log = require 'winston'
@@ -7,7 +7,7 @@ Patch = require '../patches/Patch'
 User = require '../users/User'
 sendwithus = require '../sendwithus'
 
-PROJECT = {original:1, name:1, version:1, description: 1, slug:1, kind: 1}
+PROJECT = {original: 1, name: 1, version: 1, description: 1, slug: 1, kind: 1}
 FETCH_LIMIT = 200
 
 module.exports = class Handler
@@ -148,7 +148,6 @@ module.exports = class Handler
       @modelClass.findOne {slug: idOrSlug}, (err, document) ->
         done(err, document)
 
-
   doWaterfallChecks: (req, document, done) ->
     console.log 'TD: doWaterfallChecks'
 
@@ -158,6 +157,6 @@ module.exports = class Handler
   getPropertiesFromMultipleDocuments: (res, model, properties, ids) ->
     console.log 'TD: getPropertiesFromMultipleDocuments'
 
-  delete: (req, res) -> @sendMethodNotAllowed res, @allowedMethods, "DELETE not allowed."
+  delete: (req, res) -> @sendMethodNotAllowed res, @allowedMethods, 'DELETE not allowed.'
 
-  head: (req, res) -> @sendMethodNotAllowed res, @allowedMethods, "HEAD not allowed."
+  head: (req, res) -> @sendMethodNotAllowed res, @allowedMethods, 'HEAD not allowed.'
