@@ -1,5 +1,5 @@
-LevelSession = require('./LevelSession')
-Handler = require('../../commons/Handler')
+LevelSession = require './LevelSession'
+Handler = require '../../commons/Handler'
 log = require 'winston'
 
 TIMEOUT = 1000 * 30 # no activity for 30 seconds means it's not active
@@ -8,7 +8,8 @@ class LevelSessionHandler extends Handler
   modelClass: LevelSession
   editableProperties: ['multiplayer', 'players', 'code', 'codeLanguage', 'completed', 'state',
                        'levelName', 'creatorName', 'levelID', 'screenshot',
-                       'chat', 'teamSpells', 'submitted', 'unsubscribed','playtime']
+                       'chat', 'teamSpells', 'submitted', 'submittedCodeLanguage', 'unsubscribed', 'playtime']
+  privateProperties: ['code', 'submittedCode', 'unsubscribed']
   jsonSchema: require '../../../app/schemas/models/level_session'
 
   getByRelationship: (req, res, args...) ->
