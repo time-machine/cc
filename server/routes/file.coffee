@@ -1,15 +1,15 @@
 Grid = require 'gridfs-stream'
 fs = require 'fs'
 request = require 'request'
-mongoose = require('mongoose')
+mongoose = require 'mongoose'
 errors = require '../commons/errors'
+config = require '../../server_config'
 
 module.exports.setup = (app) ->
   app.all '/file*', (req, res) ->
     return fileGet(req, res) if req.route.method is 'get'
     return filePost(req, res) if req.route.method is 'post'
     return errors.badMethod(res, ['GET', 'POST'])
-
 
 fileGet = (req, res) ->
   path = req.path[6..]
@@ -32,7 +32,7 @@ fileGet = (req, res) ->
   else
     Grid.gfs.collection('media').findOne query, (err, filedata) =>
       return errors.notFound(res) if not filedata
-      readstream = Grid.gfs.createReadStream({_id: filedata._id, root:'media'})
+      readstream = Grid.gfs.createReadStream({_id: filedata._id, root: 'media'})
       if req.headers['if-modified-since'] is filedata.uploadDate
         res.status(304)
         return res.end()
@@ -93,3 +93,6 @@ CHUNK_SIZE = 1024*256
 
 createPostOptions = (req) ->
   console.log 'TD: createPostOptions'
+
+clearCloudFlareCacheForFile = (path='/file') ->
+  console.log 'TD: clearCloudFlareCacheForFile'

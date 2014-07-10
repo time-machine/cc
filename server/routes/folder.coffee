@@ -1,4 +1,4 @@
-mongoose = require('mongoose')
+mongoose = require 'mongoose'
 errors = require '../commons/errors'
 
 module.exports.setup = (app) ->
