@@ -83,3 +83,57 @@ parseTaskQueueMessage = (message, cb) ->
 
 constructTaskObject = (taskMessageBody, message, callback) ->
   console.log 'TD: constructTaskObject'
+
+constructTaskLogObject = (calculatorUserID, taskObject, message, callback) ->
+  console.log 'constructTaskLogObject'
+
+processTaskObject = (taskObject, taskLogObject, message, cb) ->
+  console.log 'TD: processTaskObject'
+
+getSessionInformation = (sessionIDString, callback) ->
+  console.log 'getSessionInformation'
+
+module.exports.processTaskResult = (req, res) ->
+  console.log 'TD: processTaskResult'
+
+verifyClientResponse = (responseObject, callback) ->
+  console.log 'TD: verifyClientResponse'
+
+fetchTaskLog = (responseObject, callback) ->
+  console.log 'TD: fetchTaskLog'
+
+checkTaskLog = (taskLog, callback) ->
+  console.log 'TD: checkTaskLog'
+
+deleteQueueMessage = (callback) ->
+  console.log 'TD: deleteQueueMessage'
+
+fetchLevelSession = (callback) ->
+  console.log 'TD: fetchLevelSession'
+
+checkSubmissionDate = (callback) ->
+  console.log 'TD: checkSubmissionDate'
+
+logTaskComputation = (callback) ->
+  console.log 'TD: logTaskComputation'
+
+updateSessions = (callback) ->
+  console.log 'TD: updateSessions'
+
+saveNewScoresToDatabase = (newScoreArray, callback) ->
+  console.log 'TD: saveNewScoresToDatabase'
+
+updateScoreInSession = (scoreObject, callback) ->
+  console.log 'TD: updateScoreInSession'
+
+indexNewScoreArray = (newScoreArray, callback) ->
+  console.log 'TD: indexNewScoreArray'
+
+addMatchToSessions = (newScoreObject, callback) ->
+  console.log 'TD: addMatchToSessions'
+
+updateMatchesInSession = (matchObject, sessionID, callback) ->
+  console.log 'TD: updateMatchesInSession'
+
+updateUserSimulationCounts = (reqUserID, callback) ->
+  console.log 'TD: updateUserSimulationCounts'
