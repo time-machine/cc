@@ -137,3 +137,53 @@ updateMatchesInSession = (matchObject, sessionID, callback) ->
 
 updateUserSimulationCounts = (reqUserID, callback) ->
   console.log 'TD: updateUserSimulationCounts'
+
+incrementUserSimulationCount = (userID, type, callback) =>
+  console.log 'TD: incrementUserSimulationCount'
+
+determineIfSessionShouldContinueAndUpdateLog = (cb) ->
+  console.log 'TD: determineIfSessionShouldContinueAndUpdateLog'
+
+findNearestBetterSessionID = (cb) ->
+  console.log 'TD: findNearestBetterSessionID'
+
+retrieveAllOpponentSessionIDs = (sessionID, cb) ->
+  console.log 'TD: retrieveAllOpponentSessionIDs'
+
+calculateOpposingTeam = (sessionTeam) ->
+  console.log 'TD: calculateOpposingTeam'
+
+addNewSessionsToQueue = (sessionID, callback) ->
+  console.log 'TD: addNewSessionsToQueue'
+
+messageIsInvalid = (message) -> (not message?) or message.isEmpty()
+
+sendEachTaskPairToTheQueue = (taskPairs, callback) -> console.log 'TD: sendEachTaskPairToTheQueue'
+
+generateTaskPairs = (submittedSessions, sessionToScore) ->
+  console.log 'TD: generateTaskPairs'
+
+sendTaskPairToQueue = (taskPair, callback) ->
+  console.log 'TD: sendTaskPairToQueue'
+
+getUserIDFromRequest = (req) -> if req.user? then return req.user._id else return null
+
+isUserAnonymous = (req) -> if req.user? then return req.user.get('anonymous') else return true
+
+isUserAdmin = (req) -> return Boolean(req.user?.isAdmin())
+
+sendResponseObject = (req, res, object) ->
+  console.log 'TD: sendResponseObject'
+
+hasTaskTimedOut = (taskSentTimestamp) -> taskSentTimestamp + scoringTaskTimeoutInSeconds * 1000 < Date.now()
+
+handleTimedOutTask = (req, res, taskBody) -> errors.clientTimeout res, 'The results weren\'t provided within the timeout'
+
+putRankingFromMetricsIntoScoreObject = (taskObject, scoreObject) ->
+  console.log 'TD: putRankingFromMetricsIntoScoreObject'
+
+retrieveOldSessionData = (sessionID, callback) ->
+  console.log 'TD: retrieveOldSessionData'
+
+markSessionAsDoneRanking = (sessionID, cb) ->
+  console.log 'TD: markSessionAsDoneRanking'
